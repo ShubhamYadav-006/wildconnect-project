@@ -1,0 +1,284 @@
+/* ==========================================
+   Admin Panel Common Styles
+   ========================================== */
+
+.admin-page-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .admin-page-container {
+    padding: 2rem 1rem;
+  }
+}
+
+/* ==========================================
+   Header Elements
+   ========================================== */
+.admin-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.admin-page-title {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.admin-page-subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-top: 0.35rem;
+}
+
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-back-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-accent);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s;
+  margin-bottom: 2rem;
+}
+
+.admin-back-link:hover {
+  color: #c45b1c;
+}
+
+/* ==========================================
+   Grids & Layouts
+   ========================================== */
+.admin-grid-stats {
+  display: grid;
+  grid-template-cols: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .admin-grid-stats {
+    grid-template-cols: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-grid-stats {
+    grid-template-cols: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.admin-layout-grid {
+  display: grid;
+  grid-template-cols: repeat(1, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .admin-layout-grid {
+    grid-template-cols: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.admin-sidebar-col {
+  grid-column: span 1 / span 1;
+}
+
+.admin-main-col {
+  grid-column: span 3 / span 3;
+}
+
+/* ==========================================
+   Admin Stat & Navigation Cards
+   ========================================== */
+.admin-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.admin-stat-card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border-left-width: 4px;
+  border-left-style: solid;
+}
+
+.admin-stat-card.blue {
+  border-left-color: #3b82f6;
+}
+
+.admin-stat-card.primary {
+  border-left-color: var(--color-primary);
+}
+
+.admin-stat-card.green {
+  border-left-color: var(--color-success);
+}
+
+.admin-stat-card.orange {
+  border-left-color: var(--color-accent);
+}
+
+.admin-stat-icon-wrapper {
+  padding: 0.75rem;
+  border-radius: 9999px;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-stat-icon-wrapper.blue {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+.admin-stat-icon-wrapper.primary {
+  background-color: rgba(var(--primary), 0.08);
+  color: var(--color-primary);
+}
+
+.admin-stat-icon-wrapper.green {
+  background-color: #ecfdf5;
+  color: var(--color-success);
+}
+
+.admin-stat-icon-wrapper.orange {
+  background-color: #fff7ed;
+  color: var(--color-accent);
+}
+
+.admin-stat-label {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  opacity: 0.7;
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin-stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0.25rem 0 0 0;
+}
+
+/* ==========================================
+   Admin Badges
+   ========================================== */
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.admin-badge svg {
+  margin-right: 0.25rem;
+}
+
+.admin-badge.success {
+  background-color: #ecfdf5;
+  color: #065f46;
+}
+
+.admin-badge.warning {
+  background-color: #fffbeb;
+  color: #92400e;
+}
+
+.admin-badge.danger {
+  background-color: #fef2f2;
+  color: #991b1b;
+}
+
+.admin-badge.info {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+.admin-badge.neutral {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+/* ==========================================
+   Admin Buttons
+   ========================================== */
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.admin-btn-primary:hover {
+  background-color: rgba(var(--primary), 0.9);
+  transform: translateY(-1px);
+}
+
+.admin-btn-accent {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+.admin-btn-accent:hover {
+  background-color: #c45b1c;
+  transform: translateY(-1px);
+}
+
+.admin-btn-secondary {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.admin-btn-secondary:hover {
+  background-color: #f9f8f6;
+}
+
+.admin-btn-danger {
+  background-color: var(--color-error);
+  color: white;
+}
+
+.admin-btn-danger:hover {
+  background-color: #b02a2a;
+}

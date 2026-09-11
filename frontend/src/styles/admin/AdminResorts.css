@@ -1,0 +1,1025 @@
+/* ==========================================================
+   ADMIN RESORTS
+   ========================================================== */
+
+.admin-resorts-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(1, minmax(0, 1fr));
+
+  gap: 1.25rem;
+}
+
+
+/* ==========================================================
+   RESORT CARD
+   ========================================================== */
+
+.admin-resort-card {
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  height: 100%;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-resort-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow: var(--shadow-md);
+}
+
+
+/* ==========================================================
+   IMAGE
+   ========================================================== */
+
+.admin-resort-img,
+.admin-resort-placeholder {
+  width: 100%;
+
+  height: 190px;
+
+  object-fit: cover;
+
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-resort-placeholder {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #f4f6f3;
+
+  color: #a8b0aa;
+}
+
+
+/* ==========================================================
+   BODY
+   ========================================================== */
+
+.admin-resort-body {
+  flex: 1;
+
+  padding: 1.25rem;
+}
+
+.admin-resort-title {
+  margin: 0 0 0.35rem;
+
+  font-size: 1.15rem;
+
+  font-weight: 700;
+
+  color: var(--color-text-primary);
+}
+
+.admin-resort-destination {
+  margin: 0 0 0.45rem;
+
+  font-size: 0.72rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
+
+  color: #32805f;
+}
+
+.admin-resort-address {
+  margin: 0 0 0.7rem;
+
+  font-size: 0.78rem;
+
+  color: var(--color-text-muted);
+}
+
+.admin-resort-description {
+  margin: 0;
+
+  font-size: 0.85rem;
+
+  line-height: 1.55;
+
+  color: var(--color-text-muted);
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 3;
+
+  line-clamp: 3;
+
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+.admin-resort-rating {
+  display: inline-flex;
+
+  margin-top: 0.9rem;
+
+  padding: 0.3rem 0.55rem;
+
+  border-radius: 7px;
+
+  background: #fff5e9;
+
+  color: #d46a24;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+}
+
+
+/* ==========================================================
+   ACTIONS
+   ========================================================== */
+
+.admin-resort-actions {
+  padding: 0.9rem 1.25rem;
+
+  border-top: 1px solid var(--color-border);
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 0.5rem;
+
+  background: #fafaf8;
+}
+
+.admin-resort-actions .admin-btn {
+  padding: 0.45rem 0.7rem;
+
+  font-size: 0.73rem;
+}
+
+
+/* ==========================================================
+   EMPTY STATE
+   ========================================================== */
+
+.admin-resort-empty-state {
+  padding: 4rem 2rem;
+
+  text-align: center;
+}
+
+.admin-resort-empty-icon {
+  width: 3rem;
+
+  height: 3rem;
+
+  color: var(--color-text-muted);
+
+  opacity: 0.45;
+
+  margin: 0 auto 1rem;
+}
+
+.admin-resort-empty-title {
+  margin: 0;
+
+  font-size: 1.15rem;
+
+  font-weight: 650;
+
+  color: var(--color-text-primary);
+}
+
+.admin-resort-empty-desc {
+  margin: 0.35rem 0 1.25rem;
+
+  font-size: 0.85rem;
+
+  color: var(--color-text-muted);
+}
+
+.admin-resort-empty-btn {
+  margin-top: 0.25rem;
+}
+
+
+/* ==========================================================
+   LOADING
+   ========================================================== */
+
+.admin-resort-loading {
+  min-height: 40vh;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: var(--color-text-muted);
+
+  font-size: 0.9rem;
+}
+
+
+/* ==========================================================
+   MODAL
+   ========================================================== */
+
+.admin-resort-modal {
+  width: min(100%, 680px) !important;
+
+  max-width: 680px !important;
+
+  max-height: 90vh;
+
+  overflow: hidden;
+}
+
+.admin-resort-form {
+  max-height: calc(90vh - 73px);
+
+  overflow-y: auto;
+}
+
+
+/* ==========================================================
+   FORM GRID
+   ========================================================== */
+
+.admin-resort-form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 1rem;
+}
+
+
+/* ==========================================================
+   HELP TEXT
+   ========================================================== */
+
+.admin-form-help {
+  display: block;
+
+  margin-top: 0.35rem;
+
+  font-size: 0.68rem;
+
+  color: var(--color-text-muted);
+}
+
+
+/* ==========================================================
+   SELECT
+   ========================================================== */
+
+.admin-resort-form select.form-input {
+  appearance: none;
+
+  cursor: pointer;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, #7c8780 50%),
+    linear-gradient(135deg, #7c8780 50%, transparent 50%);
+
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 13px) 50%;
+
+  background-size:
+    5px 5px,
+    5px 5px;
+
+  background-repeat: no-repeat;
+
+  padding-right: 2.5rem;
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (min-width: 768px) {
+
+  .admin-resorts-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+@media (min-width: 1100px) {
+
+  .admin-resorts-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+}
+
+
+@media (max-width: 640px) {
+
+  .admin-resort-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-resort-modal {
+    width: calc(100% - 1rem) !important;
+
+    max-width: none !important;
+
+    max-height: 94vh;
+  }
+
+  .admin-resort-form {
+    max-height: calc(94vh - 65px);
+  }
+
+  .admin-resort-actions {
+    flex-wrap: wrap;
+  }
+
+  .admin-resort-actions .admin-btn {
+    flex: 1;
+  }
+
+}
+
+/* ==========================================================
+   ADD / EDIT RESORT MODAL
+   Resort-specific modal styling only
+   ========================================================== */
+
+
+/* ==========================================================
+   1. MODAL BACKDROP
+   ========================================================== */
+
+.admin-resort-modal {
+  width: min(680px, calc(100vw - 2rem)) !important;
+  max-width: 680px !important;
+
+  max-height: 90vh;
+
+  padding: 0 !important;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e3dc;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 25px 70px rgba(20, 35, 27, 0.20);
+
+  box-sizing: border-box;
+
+  animation: resortModalIn 0.2s ease-out;
+}
+
+@keyframes resortModalIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* ==========================================================
+   2. MODAL HEADER
+   ========================================================== */
+
+.admin-resort-modal .modal-header {
+
+  min-height: 70px;
+
+  padding: 0 1.5rem;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #ebe8e1;
+
+  box-sizing: border-box;
+}
+
+
+.admin-resort-modal .modal-title {
+
+  margin: 0;
+
+  font-size: 1.25rem;
+
+  line-height: 1.2;
+
+  font-weight: 750;
+
+  letter-spacing: -0.025em;
+
+  color: #14271f;
+}
+
+
+/* ==========================================================
+   3. CLOSE BUTTON
+   ========================================================== */
+
+.admin-resort-modal .modal-close-btn {
+
+  width: 36px;
+  height: 36px;
+
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #727b75;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.admin-resort-modal .modal-close-btn:hover {
+
+  background: #f1f3ef;
+
+  color: #183b2c;
+
+  transform: rotate(2deg);
+
+}
+
+
+/* ==========================================================
+   4. FORM CONTAINER
+   ========================================================== */
+
+.admin-resort-modal .admin-resort-form {
+
+  padding: 1.5rem !important;
+
+  max-height: calc(90vh - 70px);
+
+  overflow-y: auto;
+
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================
+   5. FORM GROUP
+   ========================================================== */
+
+.admin-resort-modal .form-group {
+
+  width: 100%;
+
+  margin: 0 0 1.15rem;
+
+}
+
+
+.admin-resort-modal .form-group:last-child {
+
+  margin-bottom: 0;
+
+}
+
+
+/* ==========================================================
+   6. LABELS
+   ========================================================== */
+
+.admin-resort-modal .form-label {
+
+  display: block;
+
+  margin: 0 0 0.45rem;
+
+  font-size: 0.82rem;
+
+  line-height: 1.35;
+
+  font-weight: 650;
+
+  color: #26352e;
+}
+
+
+/* Required star */
+
+.admin-resort-modal .form-label {
+
+  color: #26352e;
+
+}
+
+
+/* ==========================================================
+   7. INPUT
+   ========================================================== */
+
+.admin-resort-modal .form-input {
+
+  width: 100% !important;
+
+  height: 46px;
+
+  padding: 0 0.85rem;
+
+  box-sizing: border-box;
+
+  border: 1px solid #d8dcd7 !important;
+
+  border-radius: 10px !important;
+
+  background: #ffffff !important;
+
+  color: #1b2a23 !important;
+
+  font-family: inherit;
+
+  font-size: 0.87rem;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+
+.admin-resort-modal .form-input:hover {
+
+  border-color: #b8c1ba !important;
+
+}
+
+
+.admin-resort-modal .form-input:focus {
+
+  border-color: #32785b !important;
+
+  background: #ffffff !important;
+
+  box-shadow:
+    0 0 0 3px rgba(50, 120, 91, 0.10);
+
+  outline: none;
+
+}
+
+
+.admin-resort-modal .form-input::placeholder {
+
+  color: #a0a8a3;
+
+  opacity: 1;
+
+}
+
+
+/* ==========================================================
+   8. SELECT
+   ========================================================== */
+
+.admin-resort-modal select.form-input {
+
+  appearance: none;
+
+  cursor: pointer;
+
+  padding-right: 2.5rem;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, #7b857f 50%),
+    linear-gradient(135deg, #7b857f 50%, transparent 50%);
+
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 13px) 50%;
+
+  background-size:
+    5px 5px,
+    5px 5px;
+
+  background-repeat: no-repeat;
+}
+
+
+.admin-resort-modal select.form-input:focus {
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, #32785b 50%),
+    linear-gradient(135deg, #32785b 50%, transparent 50%);
+
+}
+
+
+/* ==========================================================
+   9. TEXTAREA
+   ========================================================== */
+
+.admin-resort-modal .form-textarea {
+
+  width: 100% !important;
+
+  min-height: 110px;
+
+  padding: 0.75rem 0.85rem;
+
+  box-sizing: border-box;
+
+  resize: vertical;
+
+  border: 1px solid #d8dcd7 !important;
+
+  border-radius: 10px !important;
+
+  background: #ffffff !important;
+
+  color: #1b2a23 !important;
+
+  font-family: inherit;
+
+  font-size: 0.87rem;
+
+  line-height: 1.5;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.admin-resort-modal .form-textarea:hover {
+
+  border-color: #b8c1ba !important;
+
+}
+
+
+.admin-resort-modal .form-textarea:focus {
+
+  border-color: #32785b !important;
+
+  box-shadow:
+    0 0 0 3px rgba(50, 120, 91, 0.10);
+
+  outline: none;
+
+}
+
+
+.admin-resort-modal .form-textarea::placeholder {
+
+  color: #a0a8a3;
+
+  opacity: 1;
+
+}
+
+
+/* ==========================================================
+   10. RATING + AMENITIES GRID
+   ========================================================== */
+
+.admin-resort-modal .admin-resort-form-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.7fr) minmax(0, 1.3fr);
+
+  gap: 1rem;
+
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================
+   11. HELP TEXT
+   ========================================================== */
+
+.admin-resort-modal .admin-form-help {
+
+  display: block;
+
+  margin-top: 0.35rem;
+
+  font-size: 0.68rem;
+
+  line-height: 1.4;
+
+  color: #8a948e;
+}
+
+
+/* ==========================================================
+   12. FORM ACTIONS / FOOTER
+   ========================================================== */
+
+.admin-resort-modal .form-actions {
+
+  width: 100%;
+
+  margin-top: 1.5rem !important;
+
+  padding-top: 1.15rem !important;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 0.65rem;
+
+  border-top: 1px solid #ebe8e1 !important;
+
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================
+   13. CANCEL BUTTON
+   ========================================================== */
+
+.admin-resort-modal .form-actions .admin-btn-secondary {
+
+  min-height: 44px;
+
+  padding: 0.65rem 1rem;
+
+  border-radius: 10px;
+
+  border: 1px solid #d9ddd8;
+
+  background: #ffffff;
+
+  color: #35423b;
+
+  font-size: 0.83rem;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.admin-resort-modal .form-actions .admin-btn-secondary:hover {
+
+  background: #f5f7f4;
+
+  border-color: #c5ccc6;
+
+  transform: translateY(-1px);
+
+}
+
+
+/* ==========================================================
+   14. CREATE / SAVE BUTTON
+   ========================================================== */
+
+.admin-resort-modal .form-actions .admin-btn-accent {
+
+  min-height: 44px;
+
+  padding: 0.65rem 1.15rem;
+
+  border-radius: 10px;
+
+  border: 1px solid #df6c27;
+
+  background: #df6c27;
+
+  color: #ffffff;
+
+  font-size: 0.83rem;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 10px rgba(223, 108, 39, 0.14);
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.admin-resort-modal .form-actions .admin-btn-accent:hover {
+
+  background: #c95e20;
+
+  border-color: #c95e20;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 7px 16px rgba(223, 108, 39, 0.20);
+
+}
+
+
+/* ==========================================================
+   15. FOCUS / ACCESSIBILITY
+   ========================================================== */
+
+.admin-resort-modal button:focus-visible,
+.admin-resort-modal input:focus-visible,
+.admin-resort-modal select:focus-visible,
+.admin-resort-modal textarea:focus-visible {
+
+  outline: 2px solid rgba(50, 120, 91, 0.35);
+
+  outline-offset: 2px;
+
+}
+
+
+/* ==========================================================
+   16. MODAL SCROLLBAR
+   ========================================================== */
+
+.admin-resort-modal .admin-resort-form::-webkit-scrollbar {
+
+  width: 6px;
+
+}
+
+
+.admin-resort-modal .admin-resort-form::-webkit-scrollbar-track {
+
+  background: transparent;
+
+}
+
+
+.admin-resort-modal .admin-resort-form::-webkit-scrollbar-thumb {
+
+  background: #d1d6d1;
+
+  border-radius: 999px;
+
+}
+
+
+.admin-resort-modal .admin-resort-form::-webkit-scrollbar-thumb:hover {
+
+  background: #b9c1ba;
+
+}
+
+
+/* ==========================================================
+   17. MOBILE
+   ========================================================== */
+
+@media (max-width: 640px) {
+
+  .admin-resort-modal {
+
+    width: calc(100vw - 1rem) !important;
+
+    max-width: none !important;
+
+    max-height: 94vh;
+
+    border-radius: 17px;
+
+  }
+
+
+  .admin-resort-modal .modal-header {
+
+    min-height: 62px;
+
+    padding: 0 1rem;
+
+  }
+
+
+  .admin-resort-modal .modal-title {
+
+    font-size: 1.1rem;
+
+  }
+
+
+  .admin-resort-modal .admin-resort-form {
+
+    padding: 1.15rem !important;
+
+    max-height: calc(94vh - 62px);
+
+  }
+
+
+  .admin-resort-modal .admin-resort-form-grid {
+
+    grid-template-columns: 1fr;
+
+    gap: 0;
+
+  }
+
+
+  .admin-resort-modal .form-actions {
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+
+  }
+
+
+  .admin-resort-modal .form-actions .admin-btn {
+
+    width: 100%;
+
+  }
+
+}
+
+
+/* ==========================================================
+   18. VERY SMALL MOBILE
+   ========================================================== */
+
+@media (max-width: 400px) {
+
+  .admin-resort-modal {
+
+    width: calc(100vw - 0.75rem) !important;
+
+  }
+
+
+  .admin-resort-modal .admin-resort-form {
+
+    padding: 1rem !important;
+
+  }
+
+}

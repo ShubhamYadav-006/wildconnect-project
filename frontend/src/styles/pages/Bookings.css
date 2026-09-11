@@ -1,0 +1,17 @@
+/* ==========================================
+   Traveler Bookings Page Styles
+   ========================================== */
+
+.booking-card-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+  .booking-card-row {
+    flex-direction: row;
+    align-items: center;
+  }
+}

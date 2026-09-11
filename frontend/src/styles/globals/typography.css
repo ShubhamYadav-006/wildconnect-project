@@ -1,0 +1,83 @@
+/* ==========================================
+   Typography Styles
+   ========================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.25;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+}
+
+.editorial-title {
+  font-family: var(--font-editorial);
+  letter-spacing: -0.01em;
+}
+
+/* Heading Sizes */
+.h1-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.h2-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.h3-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.h4-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .h1-title {
+    font-size: 1.75rem;
+  }
+  .h2-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Text Variants */
+.text-body {
+  font-size: 1rem;
+}
+
+.text-muted {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.text-xs-muted {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.text-bold {
+  font-weight: 600;
+}
+
+.text-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition-default);
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}

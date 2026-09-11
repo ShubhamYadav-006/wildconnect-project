@@ -1,0 +1,88 @@
+/* ==========================================
+   Global Theme Variables
+   WildConnect Project CSS Custom Properties
+   ========================================== */
+
+:root {
+  /* ==========================================
+     Theme Colors (Hex-based - New standard)
+     ========================================== */
+  --color-primary: #1F4D3A;        /* Deep Forest */
+  --color-primary-dark: #16382B;   /* Pine */
+  --color-secondary: #6B8E5A;      /* Secondary Moss */
+  --color-accent: #D99A3D;         /* Warm Amber */
+  --color-background: #F7F5EF;     /* Ivory */
+  --color-surface: #FFFFFF;        /* White */
+  --color-text-primary: #26332D;   /* Charcoal */
+  --color-text-muted: #6F7B73;     /* Sage Gray */
+  --color-border: #DCE2DC;         /* Border */
+  --color-success: #3F7D4A;        /* Success */
+  --color-error: #B94A48;          /* Error */
+
+  /* ==========================================
+     Legacy RGB Colors (Space-separated for rgba support)
+     Maintained for backwards compatibility where hex cannot be used
+     ========================================== */
+  --primary: 31 77 58;            /* #1F4D3A - Deep Forest */
+  --primary-foreground: 255 255 255;
+  
+  --secondary: 107 142 90;        /* #6B8E5A - Secondary Moss */
+  --secondary-foreground: 255 255 255;
+  
+  --accent: 217 154 61;           /* #D99A3D - Warm Amber */
+  --accent-foreground: 255 255 255;
+  
+  --bg-light: 247 245 239;        /* #F7F5EF - Ivory */
+  --surface-light: 255 255 255;   /* #FFFFFF - White */
+  
+  --bg-dark: 22 56 43;            /* #16382B - Pine */
+  --surface-dark: 31 77 58;       /* #1F4D3A - Deep Forest */
+
+  --text-dark: 38 51 45;          /* #26332D - Charcoal */
+  --text-light: 247 245 239;      /* #F7F5EF - Ivory */
+  --text-muted: 111 123 115;      /* #6F7B73 - Sage Gray */
+
+  --border-light: 220 226 220;    /* #DCE2DC - Border */
+  --border-dark: 22 56 43;        /* #16382B - Pine */
+
+  /* Compatibility Mapping */
+  --background: var(--bg-light);
+  --foreground: var(--text-dark);
+  --surface: var(--surface-light);
+  --muted: 111 123 115;           /* #6F7B73 - Sage Gray */
+  --border: var(--border-light);
+  
+  /* Status Colors */
+  --status-success: 63 125 74;    /* #3F7D4A - Success */
+  --status-warning: 217 154 61;   /* #D99A3D - Warm Amber */
+  --status-danger: 185 74 72;     /* #B94A48 - Error */
+  --status-info: 55 107 197;      /* #376BC5 - Info */
+
+  /* ==========================================
+     Shadows & Radius Tokens
+     ========================================== */
+  --shadow-sm: 0 2px 8px rgba(38, 51, 45, 0.04);
+  --shadow-md: 0 8px 24px rgba(38, 51, 45, 0.08);
+  --shadow-lg: 0 16px 40px rgba(38, 51, 45, 0.12);
+  --shadow-cinematic: 0 20px 50px rgba(0, 0, 0, 0.5);
+  
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-4xl: 2.5rem;
+  --radius-full: 9999px;
+
+  /* ==========================================
+     Typography & Layout
+     ========================================== */
+  --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  --font-editorial: 'Playfair Display', Georgia, serif;
+  
+  --max-width-7xl: 80rem;          /* 1280px */
+  --transition-default: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  --transition-snappy: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}

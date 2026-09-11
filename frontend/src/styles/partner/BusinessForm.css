@@ -1,0 +1,225 @@
+/* ==========================================
+   Business Form Container
+========================================== */
+.business-form-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   Header Row
+========================================== */
+.form-header-row {
+  margin-bottom: 1.5rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-muted, #6b7280);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--color-primary, #8c6a34);
+}
+
+/* ==========================================
+   Form Card
+========================================== */
+.business-form-card {
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-lg, 12px);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
+}
+
+.form-card-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  padding-bottom: 1.5rem;
+}
+
+.form-card-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text, #1f2937);
+  margin: 0 0 0.5rem 0;
+}
+
+.form-card-header p {
+  color: var(--color-text-muted, #6b7280);
+  margin: 0;
+}
+
+/* ==========================================
+   Alerts
+========================================== */
+.form-alert-info {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+  padding: 1rem;
+  border-radius: var(--radius-md, 8px);
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+/* ==========================================
+   Form Layout
+========================================== */
+.business-form fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 2.5rem 0;
+}
+
+.business-form fieldset:disabled {
+  opacity: 0.7;
+}
+
+.business-form legend {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text, #1f2937);
+  margin-bottom: 1rem;
+  padding: 0;
+  width: 100%;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-group[style*="grid-column"] {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* ==========================================
+   Form Inputs
+========================================== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #4b5563);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border, #d1d5db);
+  border-radius: var(--radius-md, 8px);
+  font-size: 1rem;
+  color: var(--color-text, #1f2937);
+  background-color: var(--color-surface, #ffffff);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-primary, #8c6a34);
+  box-shadow: 0 0 0 3px rgba(140, 106, 52, 0.1);
+}
+
+.form-group input:disabled,
+.form-group select:disabled,
+.form-group textarea:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+/* ==========================================
+   Form Actions
+========================================== */
+.form-actions-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  margin-top: 1rem;
+}
+
+.submit-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.cancel-btn {
+  color: var(--color-text-muted, #6b7280);
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.75rem 1.25rem;
+}
+
+.cancel-btn:hover {
+  color: var(--color-text, #374151);
+  text-decoration: underline;
+}
+
+.save-btn,
+.submit-review-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-btn {
+  background-color: rgba(140, 106, 52, 0.1);
+  color: var(--color-primary, #8c6a34);
+  border: 1px solid rgba(140, 106, 52, 0.2);
+}
+
+.save-btn:hover:not(:disabled) {
+  background-color: rgba(140, 106, 52, 0.2);
+}
+
+.submit-review-btn {
+  background-color: var(--color-success, #2e7559);
+  color: white;
+}
+
+.submit-review-btn:hover:not(:disabled) {
+  background-color: #235c45;
+}
+
+.save-btn:disabled,
+.submit-review-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

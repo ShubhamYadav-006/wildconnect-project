@@ -1,0 +1,235 @@
+/* ==========================================================
+   Register Page Styles (Centered, No Images)
+   ========================================================== */
+
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-background);
+  padding: 3rem 1.5rem;
+  box-sizing: border-box;
+}
+
+/* Centered Form Card */
+.register-card {
+  width: 100%;
+  max-width: 30rem; /* slightly wider to comfortably fit side-by-side name fields */
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md);
+  padding: 3rem 2.5rem;
+  box-sizing: border-box;
+  animation: fadeRise 0.6s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+/* Brand Logo header */
+.register-logo-container {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.register-logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: var(--transition-snappy);
+}
+
+.register-logo-icon {
+  color: var(--color-secondary); /* Safari Gold brand tree */
+  transition: transform 0.3s ease;
+}
+
+.register-logo-link:hover .register-logo-icon {
+  transform: rotate(5deg) scale(1.05);
+}
+
+/* Header */
+.register-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.register-title {
+  font-family: var(--font-editorial);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.01em;
+}
+
+.register-subtitle {
+  color: var(--color-text-muted);
+  font-family: var(--font-family);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Form Styles */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.register-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.15rem;
+}
+
+@media (min-width: 480px) {
+  .register-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.register-label {
+  display: block;
+  font-family: var(--font-family);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+/* Input Fields Container */
+.register-input {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #FAF8F5; /* warm sand container background */
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0 1rem;
+  transition: var(--transition-snappy);
+  box-sizing: border-box;
+}
+
+.register-input svg {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.register-input .input-field {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  padding: 0.8rem 0;
+  outline: none;
+  font-family: var(--font-family);
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  box-shadow: none !important;
+}
+
+.register-input:focus-within {
+  border-color: #C19A5B; /* Safari Gold Focus */
+  box-shadow: 0 0 0 4px rgba(193, 154, 91, 0.12) !important;
+  background-color: #ffffff;
+}
+
+/* Submit Button */
+.register-btn-submit {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: #D96B27; /* Terracotta Sunset */
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-default);
+  margin-top: 0.5rem;
+}
+
+.register-btn-submit:hover:not(:disabled) {
+  background-color: #c45b1c;
+  box-shadow: 0 8px 20px rgba(217, 107, 39, 0.35);
+  transform: translateY(-2px);
+}
+
+.register-btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Errors */
+.register-error {
+  color: var(--color-error); /* Red Clay error */
+  font-family: var(--font-family);
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin: 0.375rem 0 0 0.25rem;
+}
+
+/* Footer Login Prompt */
+.register-footer {
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-family);
+}
+
+.register-footer p {
+  margin: 0;
+}
+
+.register-link {
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+  margin-left: 0.375rem;
+  transition: var(--transition-snappy);
+}
+
+.register-link:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+/* ==========================================================
+   Micro-Animations
+   ========================================================== */
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .register-page {
+    padding: 2rem 1rem;
+  }
+  .register-card {
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-xl);
+  }
+  .register-title {
+    font-size: 1.75rem;
+  }
+}

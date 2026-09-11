@@ -1,0 +1,157 @@
+/* ==========================================
+   FAQ Section Layout
+   ========================================== */
+.faq-section {
+  max-width: var(--max-width-7xl);
+  margin: 0 auto;
+  padding: 4rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .faq-section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .faq-section {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+.faq-container {
+  width: 100%;
+}
+
+/* ==========================================
+   Section Header
+   ========================================== */
+.faq-header {
+  text-align: center;
+  max-width: 42rem;
+  margin: 0 auto 3.5rem auto;
+}
+
+.faq-subtitle {
+  color: var(--color-secondary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.faq-title {
+  font-family: var(--font-editorial);
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .faq-title {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .faq-title {
+    font-size: 2.5rem;
+  }
+}
+
+.faq-description {
+  color: var(--color-text-muted);
+  font-family: var(--font-family);
+  font-size: 1rem;
+  margin-top: 1rem;
+  line-height: 1.625;
+}
+
+/* ==========================================
+   FAQ List Accordion Layout
+   ========================================== */
+.faq-list {
+  max-width: 42rem;
+  margin: 0 auto;
+  border-top: 1px solid var(--color-border);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  padding: 1.25rem 0.25rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-snappy);
+}
+
+.faq-question {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  transition: var(--transition-snappy);
+  line-height: 1.4;
+}
+
+@media (min-width: 640px) {
+  .faq-question {
+    font-size: 1.125rem;
+  }
+}
+
+.faq-trigger:hover .faq-question,
+.faq-trigger.active .faq-question {
+  color: var(--color-primary);
+}
+
+.faq-icon {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  transition: var(--transition-default);
+  margin-left: 1rem;
+}
+
+.faq-trigger.active .faq-icon {
+  transform: rotate(180deg);
+  color: var(--color-primary);
+}
+
+.faq-collapse {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease;
+  padding: 0 0.25rem;
+}
+
+.faq-collapse.open {
+  max-height: 300px;
+  opacity: 1;
+  padding-bottom: 1.5rem;
+}
+
+.faq-answer {
+  color: var(--color-text-muted);
+  font-family: var(--font-family);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  margin: 0;
+}

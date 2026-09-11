@@ -1,0 +1,240 @@
+/* ==========================================
+   My Businesses Container
+========================================== */
+.my-businesses-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   Header Row
+========================================== */
+.my-businesses-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.my-businesses-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text, #1f2937);
+  margin: 0 0 0.5rem 0;
+}
+
+.my-businesses-subtitle {
+  font-size: 1.125rem;
+  color: var(--color-text-muted, #6b7280);
+  margin: 0;
+}
+
+.create-business-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background-color: var(--color-primary, #8c6a34);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.create-business-btn:hover {
+  background-color: var(--color-primary-dark, #70552a);
+}
+
+/* ==========================================
+   Empty State
+========================================== */
+.my-businesses-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background-color: var(--color-surface, #ffffff);
+  border: 1px dashed var(--color-border, #e5e7eb);
+  border-radius: var(--radius-lg, 12px);
+  text-align: center;
+}
+
+.empty-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(140, 106, 52, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.my-businesses-empty-state h2 {
+  font-size: 1.5rem;
+  color: var(--color-text, #1f2937);
+  margin: 0 0 0.5rem 0;
+}
+
+.my-businesses-empty-state p {
+  color: var(--color-text-muted, #6b7280);
+  max-width: 400px;
+  margin: 0 0 1.5rem 0;
+}
+
+/* ==========================================
+   Businesses Grid
+========================================== */
+.my-businesses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ==========================================
+   Business Card
+========================================== */
+.my-business-card {
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-lg, 12px);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.my-business-card:hover {
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+}
+
+.my-business-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.my-business-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text, #1f2937);
+  margin: 0 0 0.25rem 0;
+}
+
+.business-type {
+  font-size: 0.875rem;
+  color: var(--color-text-muted, #6b7280);
+  text-transform: capitalize;
+}
+
+/* ==========================================
+   Status Badges
+========================================== */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-DRAFT {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.status-PENDING_REVIEW {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.status-APPROVED {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+.status-REJECTED {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.status-SUSPENDED {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* ==========================================
+   Rejection Reason
+========================================== */
+.rejection-reason {
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  padding: 0.75rem 1rem;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.875rem;
+  color: #991b1b;
+}
+
+/* ==========================================
+   Actions
+========================================== */
+.my-business-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md, 8px);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.btn-view {
+  background-color: #f3f4f6;
+  color: #374151;
+  border-color: #e5e7eb;
+}
+
+.btn-view:hover {
+  background-color: #e5e7eb;
+}
+
+.btn-primary {
+  background-color: rgba(140, 106, 52, 0.1);
+  color: var(--color-primary, #8c6a34);
+  border-color: rgba(140, 106, 52, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: rgba(140, 106, 52, 0.2);
+}
+
+.btn-success {
+  background-color: var(--color-success, #2e7559);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #235c45;
+}

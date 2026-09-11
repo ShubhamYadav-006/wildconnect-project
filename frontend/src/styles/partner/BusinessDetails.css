@@ -1,0 +1,241 @@
+/* ==========================================
+   Business Details Container
+========================================== */
+.business-details-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   Header Row
+========================================== */
+.details-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.details-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* ==========================================
+   Card Wrapper
+========================================== */
+.business-details-card {
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-lg, 12px);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
+}
+
+/* ==========================================
+   Cover Image Section
+========================================== */
+.business-cover {
+  height: 350px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.business-cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 2.5rem;
+}
+
+.business-cover-content {
+  color: white;
+  width: 100%;
+}
+
+.business-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  line-height: 1.2;
+}
+
+.large-badge {
+  font-size: 0.875rem;
+  padding: 0.375rem 1rem;
+}
+
+.business-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.business-type-tag {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+}
+
+.business-location, .business-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* ==========================================
+   Alerts
+========================================== */
+.rejection-alert {
+  background-color: #fef2f2;
+  color: #991b1b;
+  padding: 1.25rem 2.5rem;
+  border-bottom: 1px solid #fca5a5;
+  font-size: 1rem;
+}
+
+/* ==========================================
+   Grid Layout
+========================================== */
+.business-info-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2.5rem;
+  padding: 2.5rem;
+}
+
+@media (max-width: 900px) {
+  .business-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================
+   Main Info Sections
+========================================== */
+.info-section {
+  margin-bottom: 2.5rem;
+}
+
+.info-section h2 {
+  font-size: 1.5rem;
+  color: var(--color-text, #1f2937);
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+.business-description {
+  color: var(--color-text-muted, #4b5563);
+  line-height: 1.7;
+  font-size: 1.0625rem;
+  white-space: pre-wrap;
+}
+
+/* ==========================================
+   Gallery Grid
+========================================== */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-item {
+  aspect-ratio: 1;
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item img:hover {
+  transform: scale(1.05);
+}
+
+/* ==========================================
+   Offerings & Tags
+========================================== */
+.offerings-group {
+  margin-bottom: 1.5rem;
+}
+
+.offerings-group h3 {
+  font-size: 1.125rem;
+  color: var(--color-text, #374151);
+  margin: 0 0 0.75rem 0;
+  font-weight: 500;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-background, #f3f4f6);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  color: var(--color-text, #374151);
+}
+
+/* ==========================================
+   Side Cards
+========================================== */
+.side-card {
+  background-color: var(--color-background, #f9fafb);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-md, 8px);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.side-card h3 {
+  font-size: 1.125rem;
+  color: var(--color-text, #1f2937);
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  padding-bottom: 0.5rem;
+}
+
+.contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: var(--color-text-muted, #4b5563);
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+}
+
+.contact-row:last-child {
+  margin-bottom: 0;
+}
+
+.contact-row svg {
+  color: var(--color-primary, #8c6a34);
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.pricing-text {
+  color: var(--color-text-muted, #4b5563);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}

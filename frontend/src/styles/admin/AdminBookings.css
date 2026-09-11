@@ -1,0 +1,205 @@
+/* ==========================================
+   Admin Bookings Styles
+   ========================================== */
+
+.admin-bookings-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-bookings-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-tab-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: white;
+  border: 1px solid var(--color-border, #e2e8f0);
+  color: var(--color-text-secondary, #64748b);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-tab-btn:hover {
+  background: #f8fafc;
+  color: var(--color-text-primary, #1e293b);
+}
+
+.admin-tab-btn.active {
+  background: var(--color-primary, #2d5a27);
+  color: white;
+  border-color: var(--color-primary, #2d5a27);
+}
+
+.admin-search-wrapper {
+  position: relative;
+  min-width: 260px;
+}
+
+.admin-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted, #94a3b8);
+}
+
+.admin-search-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border, #e2e8f0);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.admin-search-input:focus {
+  border-color: var(--color-primary, #2d5a27);
+}
+
+/* ==========================================
+   Table Specific Styling
+   ========================================== */
+
+.admin-booking-ref-id {
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--color-primary, #2d5a27);
+}
+
+.admin-booking-created-date {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #94a3b8);
+  margin-top: 0.2rem;
+}
+
+.admin-traveler-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-traveler-email {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #94a3b8);
+}
+
+.admin-booking-dest {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-text-primary, #1e293b);
+}
+
+.admin-dest-icon {
+  color: var(--color-primary, #2d5a27);
+}
+
+.admin-booking-dates {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+}
+
+.admin-booking-guests {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #94a3b8);
+  margin-top: 0.2rem;
+}
+
+.admin-booking-amount {
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.admin-booking-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.admin-action-btn {
+  padding: 0.35rem 0.65rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s ease;
+}
+
+.admin-action-btn:hover {
+  opacity: 0.85;
+}
+
+.admin-action-btn.complete-btn {
+  background: #10b981;
+  color: white;
+}
+
+.admin-action-btn.cancel-btn {
+  background: #ef4444;
+  color: white;
+}
+
+.admin-action-btn.reinstate-btn {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+/* ==========================================
+   Empty State
+   ========================================== */
+
+.admin-booking-empty-state {
+  padding: 3rem;
+  text-align: center;
+}
+
+.admin-booking-empty-icon {
+  height: 3rem;
+  width: 3rem;
+  color: var(--color-text-muted, #94a3b8);
+  opacity: 0.5;
+  margin: 0 auto 1rem auto;
+}
+
+.admin-booking-empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #1e293b);
+  margin: 0;
+}
+
+.admin-booking-empty-desc {
+  font-size: 0.875rem;
+  color: var(--color-text-muted, #64748b);
+  margin: 0.25rem 0 0 0;
+}
+
+/* ==========================================
+   Responsiveness
+   ========================================== */
+
+@media (max-width: 768px) {
+  .admin-bookings-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-search-wrapper {
+    width: 100%;
+  }
+}

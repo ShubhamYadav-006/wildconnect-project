@@ -1,0 +1,692 @@
+/* ==========================================================
+   Destinations Page Styles (Redesigned Editorial Layout)
+   ========================================================== */
+
+.destinations-page {
+  width: 100%;
+  background-color: var(--color-background, #fbfbfa);
+  color: var(--color-text-primary, #1e2923);
+  padding: 2.5rem 0 5rem;
+  box-sizing: border-box;
+}
+
+.destinations-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  .destinations-container {
+    padding: 0 2rem;
+    gap: 4.5rem;
+  }
+}
+
+/* ==========================================================
+   1. Destination Intro Header
+   ========================================================== */
+
+.destinations-intro {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  animation: fadeRise 0.5s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.destinations-intro-title {
+  font-family: var(--font-editorial, Georgia, serif);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-text-primary, #174d3b);
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .destinations-intro-title {
+    font-size: 2.85rem;
+  }
+}
+
+.destinations-intro-subtitle {
+  font-family: var(--font-family, sans-serif);
+  font-size: 1.05rem;
+  color: var(--color-text-muted, #5c6e65);
+  margin: 0;
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+/* Category Filter Pills */
+.destinations-filter-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 1rem;
+  background-color: rgba(23, 77, 59, 0.05);
+  padding: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(23, 77, 59, 0.08);
+}
+
+.dest-pill {
+  border: none;
+  background: transparent;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-family: var(--font-family, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted, #5c6e65);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.dest-pill:hover {
+  color: #174d3b;
+}
+
+.dest-pill.active {
+  background-color: #174d3b;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(23, 77, 59, 0.25);
+}
+
+/* ==========================================================
+   2. Featured Destination Hero Section (Tadoba)
+   ========================================================== */
+
+.featured-tadoba-section {
+  width: 100%;
+  animation: fadeRise 0.6s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.featured-tadoba-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border, #e2e8e4);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(23, 77, 59, 0.07);
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+@media (min-width: 900px) {
+  .featured-tadoba-card {
+    grid-template-columns: 1.1fr 1fr;
+  }
+}
+
+.featured-tadoba-card:hover {
+  box-shadow: 0 18px 45px rgba(23, 77, 59, 0.12);
+  border-color: #c19a5b;
+}
+
+.featured-tadoba-image-wrapper {
+  position: relative;
+  min-height: 280px;
+  max-height: 480px;
+  overflow: hidden;
+  background-color: #11291f;
+}
+
+@media (min-width: 900px) {
+  .featured-tadoba-image-wrapper {
+    min-height: 420px;
+    height: 100%;
+  }
+}
+
+.featured-tadoba-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.featured-tadoba-card:hover .featured-tadoba-image {
+  transform: scale(1.04);
+}
+
+.featured-badge {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  background: rgba(17, 41, 31, 0.85);
+  backdrop-filter: blur(8px);
+  color: #d4af37;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  font-family: var(--font-family, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.featured-tadoba-content {
+  padding: 2.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.85rem;
+}
+
+@media (min-width: 900px) {
+  .featured-tadoba-content {
+    padding: 3rem 2.8rem;
+  }
+}
+
+.featured-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-family, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #c19a5b;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.featured-location-icon {
+  color: #c19a5b;
+}
+
+.featured-tadoba-title {
+  font-family: var(--font-editorial, Georgia, serif);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #174d3b;
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 768px) {
+  .featured-tadoba-title {
+    font-size: 2.1rem;
+  }
+}
+
+.featured-tadoba-quote {
+  font-family: var(--font-editorial, Georgia, serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: #8c6d36;
+  margin: 0 0 0.25rem;
+}
+
+.featured-tadoba-desc {
+  font-family: var(--font-family, sans-serif);
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: #4a5c53;
+  margin: 0 0 0.75rem;
+}
+
+.featured-tadoba-action {
+  margin-top: 0.5rem;
+}
+
+.featured-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.85rem;
+  background-color: #174d3b;
+  color: #ffffff;
+  border-radius: 999px;
+  font-family: var(--font-family, sans-serif);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(23, 77, 59, 0.2);
+}
+
+.featured-primary-btn:hover {
+  background-color: #11392b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(23, 77, 59, 0.3);
+}
+
+/* ==========================================================
+   3. Why Tadoba Section
+   ========================================================== */
+
+.why-tadoba-section {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.why-tadoba-title {
+  font-family: var(--font-editorial, Georgia, serif);
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #174d3b;
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.why-tadoba-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .why-tadoba-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.why-card {
+  background-color: #ffffff;
+  border: 1px solid rgba(23, 77, 59, 0.1);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.85rem;
+  box-shadow: 0 4px 18px rgba(23, 77, 59, 0.03);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(193, 154, 91, 0.5);
+  box-shadow: 0 10px 25px rgba(23, 77, 59, 0.08);
+}
+
+.why-card-icon-wrapper {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  background-color: rgba(23, 77, 59, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.why-emoji {
+  font-size: 1.6rem;
+}
+
+.why-card-heading {
+  font-family: var(--font-editorial, Georgia, serif);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #174d3b;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.why-card-desc {
+  font-family: var(--font-family, sans-serif);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #5c6e65;
+  margin: 0;
+}
+
+/* ==========================================================
+   4. Tadoba Quick Facts
+   ========================================================== */
+
+.tadoba-quick-facts-section {
+  width: 100%;
+}
+
+.quick-facts-strip {
+  background-color: #174d3b;
+  background-image: linear-gradient(135deg, #174d3b 0%, #0d3125 100%);
+  border-radius: 20px;
+  padding: 1.75rem 2rem;
+  color: #ffffff;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+  box-shadow: 0 8px 30px rgba(23, 77, 59, 0.2);
+}
+
+@media (min-width: 840px) {
+  .quick-facts-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.75rem 3rem;
+    gap: 1rem;
+  }
+}
+
+.fact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.35rem;
+}
+
+.fact-label {
+  font-family: var(--font-family, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+}
+
+.fact-value {
+  font-family: var(--font-editorial, Georgia, serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #f2e3c6;
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 840px) {
+  .fact-value {
+    font-size: 1.45rem;
+  }
+}
+
+.fact-divider {
+  display: none;
+}
+
+@media (min-width: 840px) {
+  .fact-divider {
+    display: block;
+    width: 1px;
+    height: 2.25rem;
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* ==========================================================
+   Extensible: Other Destinations Section
+   ========================================================== */
+
+.other-destinations-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.other-destinations-title {
+  font-family: var(--font-editorial, Georgia, serif);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #174d3b;
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.other-destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.other-dest-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e2e8e4);
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.other-dest-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(23, 77, 59, 0.1);
+}
+
+.other-dest-image-wrapper {
+  height: 180px;
+  overflow: hidden;
+  background-color: #faf8f5;
+  position: relative;
+}
+
+.other-dest-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.other-dest-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5c6e65;
+}
+
+.other-dest-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.other-dest-location {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #c19a5b;
+}
+
+.other-dest-name {
+  font-family: var(--font-editorial, Georgia, serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #174d3b;
+  margin: 0;
+}
+
+.other-dest-desc {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #4a5c53;
+  margin: 0 0 1rem;
+}
+
+.other-dest-btn {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #174d3b;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+}
+
+.other-dest-btn:hover {
+  color: #c19a5b;
+}
+
+/* ==========================================================
+   5. Final Destination Action (CTA)
+   ========================================================== */
+
+.final-destination-action {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.final-cta-card {
+  background-color: #ffffff;
+  border: 1px solid rgba(23, 77, 59, 0.12);
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 8px 30px rgba(23, 77, 59, 0.05);
+}
+
+@media (min-width: 768px) {
+  .final-cta-card {
+    padding: 3.5rem 3rem;
+  }
+}
+
+.final-cta-title {
+  font-family: var(--font-editorial, Georgia, serif);
+  font-size: 1.95rem;
+  font-weight: 800;
+  color: #174d3b;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 768px) {
+  .final-cta-title {
+    font-size: 2.35rem;
+  }
+}
+
+.final-cta-subtitle {
+  font-family: var(--font-family, sans-serif);
+  font-size: 1rem;
+  color: #5c6e65;
+  margin: 0 0 0.5rem;
+  max-width: 520px;
+  line-height: 1.55;
+}
+
+.final-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 2rem;
+  background-color: #174d3b;
+  color: #ffffff;
+  border-radius: 999px;
+  font-family: var(--font-family, sans-serif);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(23, 77, 59, 0.2);
+}
+
+.final-cta-btn:hover {
+  background-color: #11392b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(23, 77, 59, 0.3);
+}
+
+/* ==========================================================
+   Loading State
+   ========================================================== */
+
+.destinations-loading {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #5c6e65;
+  font-family: var(--font-family, sans-serif);
+  font-weight: 600;
+}
+
+.destinations-spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid rgba(23, 77, 59, 0.1);
+  border-top-color: #174d3b;
+  border-radius: 50%;
+  animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================
+   Micro Animations
+   ========================================================== */
+
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================
+   Mobile Responsive Adjustments
+   ========================================================== */
+
+@media (max-width: 480px) {
+  .destinations-intro-title {
+    font-size: 1.85rem;
+  }
+  
+  .featured-tadoba-content {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .featured-tadoba-title {
+    font-size: 1.45rem;
+  }
+
+  .why-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .quick-facts-strip {
+    grid-template-columns: 1fr 1fr;
+    padding: 1.5rem 1rem;
+    gap: 1.25rem;
+  }
+
+  .final-cta-card {
+    padding: 2.25rem 1.25rem;
+  }
+}

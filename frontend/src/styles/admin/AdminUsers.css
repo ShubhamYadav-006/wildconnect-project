@@ -1,0 +1,72 @@
+/* ==========================================
+   Admin Users Management Styles
+   ========================================== */
+
+.admin-user-avatar {
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 9999px;
+  background-color: rgba(var(--primary), 0.1);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.admin-user-info-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-user-name {
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.admin-user-id {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.125rem;
+}
+
+.admin-user-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+}
+
+.admin-user-contact-item svg {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.admin-user-empty-state {
+  padding: 3rem;
+  text-align: center;
+}
+
+.admin-user-empty-icon {
+  height: 3rem;
+  width: 3rem;
+  color: var(--color-text-muted);
+  opacity: 0.5;
+  margin: 0 auto 1rem auto;
+}
+
+.admin-user-empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.admin-user-empty-desc {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0.25rem 0 0 0;
+}

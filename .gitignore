@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+*/.env
+*/.env.*
+!*/.env.example
+
+# Production Builds
+dist/
+build/
+*/dist/
+*/build/
+
+# IDE / System
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Prisma generated runtime (regenerated via npx prisma generate)
+backend/src/generated/
+
+# Uploads / Local files
+uploads/
+*/uploads/
+scratch/

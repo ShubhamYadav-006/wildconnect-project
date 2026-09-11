@@ -1,0 +1,45 @@
+/* ==========================================
+   Global Badge Styles
+   ========================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  line-height: 1;
+}
+
+/* Badge States */
+.badge-pending {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.badge-reviewing {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+.badge-proposal-ready {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.badge-success {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.badge-danger {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.badge-info {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}

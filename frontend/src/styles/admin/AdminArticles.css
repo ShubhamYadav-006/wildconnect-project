@@ -1,0 +1,29 @@
+/* ==========================================
+   Admin Articles Styles
+   ========================================== */
+
+.admin-article-empty-state {
+  padding: 3rem;
+  text-align: center;
+}
+
+.admin-article-empty-icon {
+  height: 3rem;
+  width: 3rem;
+  color: var(--color-text-muted);
+  opacity: 0.5;
+  margin: 0 auto 1rem auto;
+}
+
+.admin-article-empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.admin-article-empty-desc {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0.25rem 0 0 0;
+}

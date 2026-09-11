@@ -1,0 +1,501 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  TOURIST
+  BUSINESS_PARTNER
+}
+
+model User {
+  id        String  @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String  @unique
+  password  String?
+  googleId  String? @unique
+  avatar    String?
+  phone     String?
+  role      Role    @default(TOURIST)
+
+  // Future Relationships (to be implemented later):
+  tripRequests  TripRequest[]
+  proposals     Proposal[]
+  bookings      Booking[]
+  notifications Notification[]
+  articles      Article[] // For ADMIN authors
+  experiences   Experience[] // For TOURIST/ADMIN shared experiences
+  businesses    Business[] // For BUSINESS_PARTNER
+  inquiries     BusinessInquiry[] // Inquiries submitted by this user
+  businessBookings BusinessBooking[]
+  businessReviews  BusinessReview[]
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+}
+
+model Destination {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  slug        String  @unique
+  description String
+  bestSeason  String?
+  state       String
+  country     String
+  coverImage  String?
+  establishedYear Int?
+  totalArea       Float?
+  coreArea        Float?
+  coreGates       Int?
+  bufferArea      Float?
+  bufferGates     Int?
+
+  resorts     Resort[]
+  businesses  Business[]
+
+  // Future Relationships (to be implemented later):
+  tripRequests TripRequest[] // Tourists can request trips for specific destinations
+  proposals    Proposal[]
+  bookings     Booking[]
+  articles     Article[] // Articles can be categorized by destination
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+}
+
+
+
+model Resort {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  address     String
+  starRating  Int?
+  amenities   String[]
+  coverImage  String?
+  images      String[]
+
+  destinationId String
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Restrict)
+
+  // Future Relationships (to be implemented later):
+  // proposals Proposal[] // Travel proposals recommending this resort
+  // bookings  Booking[]  // Confirmed bookings at this resort
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([destinationId])
+}
+
+enum TripStatus {
+  PENDING
+  REVIEWING
+  PROPOSAL_READY
+  BOOKED
+  CANCELLED
+}
+
+model TripRequest {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  destinationId String
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Restrict)
+
+  travelerCount Int
+  startDate     DateTime
+  endDate       DateTime
+  budget        String?
+  preferences   String?
+  notes         String?
+
+  status TripStatus @default(PENDING)
+
+  proposals Proposal[]
+  booking   Booking?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([destinationId])
+  @@index([status])
+}
+
+enum ProposalStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  CHANGE_REQUESTED
+  PENDING
+  REJECTED
+  WITHDRAWN
+}
+
+model Proposal {
+  id            String      @id @default(uuid())
+  tripRequestId String
+  tripRequest   TripRequest @relation(fields: [tripRequestId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  destinationId String?
+  destination   Destination? @relation(fields: [destinationId], references: [id], onDelete: Restrict)
+
+  safariNotes    String?
+  resortIds      String[]
+  businessIds    String[]
+
+  numberOfNights   Int?
+  dayWiseItinerary Json?
+  activities       String[]
+  totalPrice       Float?
+  notes            String?
+  expiryDate       DateTime?
+
+  content       String?
+  status        ProposalStatus @default(DRAFT)
+  changeRequest String?
+
+  sentAt        DateTime?
+  acceptedAt    DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  booking Booking?
+
+  @@index([tripRequestId])
+  @@index([userId])
+  @@index([status])
+  @@index([destinationId])
+}
+
+enum BookingStatus {
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model Booking {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  tripRequestId String      @unique
+  tripRequest   TripRequest @relation(fields: [tripRequestId], references: [id], onDelete: Restrict)
+
+  proposalId String   @unique
+  proposal   Proposal @relation(fields: [proposalId], references: [id], onDelete: Restrict)
+
+  destinationId String
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Restrict)
+
+  travelerCount Int
+  startDate     DateTime
+  endDate       DateTime
+  totalAmount   Float
+
+  safariNotes   String?
+  resortIds     String[]
+  businessIds   String[]
+
+  status BookingStatus @default(CONFIRMED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([destinationId])
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Article {
+  id            String        @id @default(uuid())
+  title         String
+  slug          String        @unique
+  content       String
+  featuredImage String?
+  tags          String[]
+  status        ArticleStatus @default(DRAFT)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  destinationId String?
+  destination   Destination? @relation(fields: [destinationId], references: [id])
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([status])
+  @@index([authorId])
+  @@index([destinationId])
+}
+
+enum ExperienceStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Experience {
+  id            String           @id @default(uuid())
+  title         String
+  description   String
+  featuredImage String?
+  isFeatured    Boolean          @default(false)
+  status        ExperienceStatus @default(DRAFT)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([status])
+  @@index([authorId])
+  @@index([isFeatured])
+}
+
+enum NotificationType {
+  PROPOSAL_CREATED
+  PROPOSAL_ACCEPTED
+  PROPOSAL_REJECTED
+  BOOKING_CONFIRMED
+  BOOKING_COMPLETED
+  SYSTEM_ANNOUNCEMENT
+  BUSINESS_APPROVED
+  BUSINESS_REJECTED
+  BUSINESS_PENDING
+  BUSINESS_SUSPENDED
+  BUSINESS_INQUIRY_RECEIVED
+  BUSINESS_BOOKING_CONFIRMED
+  BUSINESS_BOOKING_CANCELLED
+  BUSINESS_NEW_BOOKING_PARTNER
+  BUSINESS_REVIEW_SUBMITTED
+}
+
+model Notification {
+  id      String           @id @default(uuid())
+  userId  String
+  user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title   String
+  message String
+  type    NotificationType
+  isRead  Boolean          @default(false)
+
+  referenceId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+enum ApprovalStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum BusinessType {
+  RESORT
+  HOTEL
+  HOMESTAY
+  TAXI
+  GUIDE
+  CAMERA_RENTAL
+  RESTAURANT
+  WILDLIFE_EXPERIENCE
+  OTHER
+}
+
+model Business {
+  id            String         @id @default(uuid())
+  name          String
+  slug          String         @unique
+  type          BusinessType
+  description   String
+  coverImage    String?
+  images        String[]
+  contactEmail  String?
+  contactPhone  String?
+  address       String?
+  starRating    Int?
+  amenities     String[]
+  metadata      Json?
+  
+  status        ApprovalStatus @default(DRAFT)
+  rejectionReason String?
+  pendingUpdates Json?
+  verifiedAt    DateTime?
+  
+  destinationId String?
+  destination   Destination?   @relation(fields: [destinationId], references: [id])
+  
+  userId        String
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  inquiries     BusinessInquiry[]
+  rooms         BusinessRoom[]
+  bookings      BusinessBooking[]
+  reviews       BusinessReview[]
+  
+  deletedAt     DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+}
+
+enum InquiryStatus {
+  PENDING
+  RESPONDED
+  CLOSED
+}
+
+model BusinessInquiry {
+  id            String   @id @default(uuid())
+  
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  
+  message       String
+  dateRequested DateTime?
+  
+  status        InquiryStatus @default(PENDING)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([businessId])
+  @@index([userId])
+  @@index([status])
+}
+
+model BusinessRoom {
+  id             String            @id @default(uuid())
+  businessId     String
+  business       Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  name           String
+  description    String
+  capacity       Int
+  basePrice      Float
+  totalInventory Int               @default(1)
+  amenities      String[]
+  images         String[]
+  
+  bookings       BusinessBooking[]
+  
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([businessId])
+}
+
+enum BusinessBookingStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model BusinessBooking {
+  id             String                @id @default(uuid())
+  businessId     String
+  business       Business              @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  roomId         String
+  room           BusinessRoom          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  
+  userId         String
+  user           User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  guestName      String
+  guestEmail     String
+  guestPhone     String?
+  specialRequests String?
+  
+  startDate      DateTime
+  endDate        DateTime
+  travelerCount  Int
+  totalAmount    Float
+  
+  status         BusinessBookingStatus @default(CONFIRMED)
+  
+  review         BusinessReview?
+  
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  @@index([businessId])
+  @@index([roomId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum ReviewStatus {
+  PUBLISHED
+  HIDDEN
+}
+
+model BusinessReview {
+  id                String          @id @default(uuid())
+  businessId        String
+  business          Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  userId            String
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  businessBookingId String          @unique
+  booking           BusinessBooking @relation(fields: [businessBookingId], references: [id], onDelete: Cascade)
+  
+  rating            Int             // 1 to 5
+  comment           String
+  status            ReviewStatus    @default(PUBLISHED)
+  
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([businessId])
+  @@index([userId])
+}
+
+
