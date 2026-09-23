@@ -24,10 +24,19 @@ const allowedOrigins = [
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps, curl, server-to-server)
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin) return callback(null, true);
+    
+    // Check exact matches
+    if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
-    return callback(null, true); // Safe development fallback
+
+    // Allow all vercel deployment subdomains and localhost
+    if (origin.endsWith('.vercel.app') || origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      return callback(null, true);
+    }
+
+    return callback(null, true); // Permissive production fallback
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

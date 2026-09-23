@@ -67,7 +67,7 @@ export class ProposalRepository {
   }
 
   async acceptProposalTransaction(proposalId: string, tripRequestId: string): Promise<Proposal> {
-    return prisma.$transaction(async (tx) => {
+    return prisma.$transaction(async (tx: any) => {
       // 1. Fetch TripRequest
       const tripReq = await tx.tripRequest.findUnique({ where: { id: tripRequestId } });
       if (!tripReq) throw new Error('Trip request not found in transaction');

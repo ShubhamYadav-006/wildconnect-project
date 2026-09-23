@@ -176,7 +176,7 @@ export const createBusinessBooking = asyncHandler(async (req: Request, res: Resp
   const unitsCount = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 
   // Run atomic booking transaction
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: any) => {
     let totalAmount = 0;
     let itemName = '';
 

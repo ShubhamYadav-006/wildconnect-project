@@ -11,7 +11,7 @@ export class PayoutService {
       select: { id: true, name: true },
     });
 
-    const businessIds = businesses.map(b => b.id);
+    const businessIds = businesses.map((b: { id: string; name: string }) => b.id);
 
     const payouts = await prisma.payoutTransaction.findMany({
       where: { businessId: { in: businessIds } },
