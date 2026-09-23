@@ -16,12 +16,14 @@ import {
   changePasswordSchema,
 } from '../validators/auth.validator.js';
 
+import { authLimiter, registerLimiter } from '../middleware/rateLimiter.js';
+
 const router = Router();
 
-// Public routes
-router.post('/register', validate(registerSchema), register);
-router.post('/login', validate(loginSchema), login);
-router.post('/google', googleLogin);
+// Public routes with rate limiting
+router.post('/register', registerLimiter, validate(registerSchema), register);
+router.post('/login', authLimiter, validate(loginSchema), login);
+router.post('/google', authLimiter, googleLogin);
 
 // Protected routes (require valid JWT)
 router.use(protect);

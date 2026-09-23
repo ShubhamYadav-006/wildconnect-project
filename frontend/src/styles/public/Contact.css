@@ -1,0 +1,266 @@
+/* ==========================================================
+   Contact Page Styles
+   WildConnect Wildlife Tourism Platform
+   Full Responsive Layout with Design Tokens
+   ========================================================== */
+
+.contact-container {
+  max-width: var(--max-width-7xl, 80rem);
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem 1.5rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+  .contact-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-container {
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+  }
+}
+
+/* Header Section */
+.contact-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  animation: fadeRise 0.5s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.contact-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.015em;
+}
+
+.contact-subtitle {
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-text-muted, #6F7B73);
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+/* Grid Layout */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .contact-grid {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    align-items: stretch;
+  }
+}
+
+/* ==========================================================
+   Left Panel: Sanctuary Info Card (Dark Theme)
+   ========================================================== */
+.contact-info-card {
+  background-color: #131914;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-2xl, 1.5rem);
+  box-shadow: var(--shadow-cinematic);
+  padding: 2.25rem 1.75rem;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  animation: fadeRise 0.5s cubic-bezier(0.25, 1, 0.5, 1) 0.1s both;
+}
+
+@media (min-width: 640px) {
+  .contact-info-card {
+    padding: 2.75rem 2.25rem;
+  }
+}
+
+.contact-info-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 2rem 0;
+  letter-spacing: -0.01em;
+}
+
+.contact-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.contact-info-icon {
+  color: var(--color-accent, #D99A3D);
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.contact-info-item-title {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 0.25rem 0;
+}
+
+.contact-info-item-desc {
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+}
+
+/* ==========================================================
+   Right Panel: Inquiry Form Card (Light Theme)
+   ========================================================== */
+.contact-form-card {
+  background-color: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: var(--radius-2xl, 1.5rem);
+  box-shadow: var(--shadow-md);
+  padding: 2.25rem 1.75rem;
+  box-sizing: border-box;
+  animation: fadeRise 0.5s cubic-bezier(0.25, 1, 0.5, 1) 0.2s both;
+}
+
+@media (min-width: 640px) {
+  .contact-form-card {
+    padding: 2.75rem 2.25rem;
+  }
+}
+
+.contact-form-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.01em;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact-form-label {
+  display: block;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-primary, #26332D);
+  margin-bottom: 0.375rem;
+}
+
+/* Input Fields & Textarea styling */
+.contact-form .input-field {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #FAF8F5;
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: 0.75rem 1rem;
+  outline: none;
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.875rem;
+  color: var(--color-text-primary, #26332D);
+  transition: var(--transition-snappy);
+  box-shadow: none !important;
+}
+
+.contact-form .input-field:focus {
+  border-color: var(--color-primary, #1F4D3A);
+  box-shadow: 0 0 0 3px rgba(31, 77, 58, 0.12) !important;
+  background-color: #FFFFFF;
+}
+
+.contact-form textarea.input-field {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Submission Button */
+.contact-btn-submit {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-accent, #D99A3D);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-full, 9999px);
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(217, 154, 61, 0.25);
+  transition: var(--transition-default);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.contact-btn-submit:hover:not(:disabled) {
+  background-color: #C4872D;
+  box-shadow: 0 6px 20px rgba(217, 154, 61, 0.35);
+  transform: translateY(-2px);
+}
+
+.contact-btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contact-btn-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Error Labels */
+.contact-form-error {
+  color: var(--color-error, #B94A48);
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0.25rem 0 0 0.15rem;
+}
+
+/* Micro-Animations */
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,7 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { Link } from 'react-router-dom';
-import { Briefcase, CheckCircle, Clock, Bell, Plus, XCircle, Calendar, MessageSquare } from 'lucide-react';
+import {
+  Briefcase,
+  CheckCircle,
+  Clock,
+  Bell,
+  Plus,
+  XCircle,
+  Calendar,
+  MessageSquare,
+  ArrowRight,
+  Building2,
+  FileCheck,
+  ShieldCheck,
+  UserCheck
+} from 'lucide-react';
 import { businessService, type Business } from '../../../services/business.service';
 import { notificationService, type Notification } from '../../../services/notification.service';
 import api from '../../../services/api';
@@ -54,211 +68,327 @@ export const PartnerDashboard = () => {
   }, []);
 
   if (isLoading) {
-    return <LoadingSpinner message="Loading your partner dashboard..." />;
+    return <LoadingSpinner message="Loading partner mission control..." />;
   }
 
-  // ============================================================
   // Calculated Stats
-  // ============================================================
+  const approvedBusinesses = businesses.filter((b) => b.status === 'APPROVED').length;
+  const pendingBusinesses = businesses.filter((b) => b.status === 'PENDING_REVIEW' || b.status === 'DRAFT').length;
+  const rejectedBusinesses = businesses.filter((b) => b.status === 'REJECTED').length;
+  const unreadNotificationsCount = notifications.filter((n) => !n.isRead).length;
 
-  const approvedBusinesses = businesses.filter(b => b.status === 'APPROVED').length;
-  const pendingBusinesses = businesses.filter(b => b.status === 'PENDING_REVIEW').length;
-  const rejectedBusinesses = businesses.filter(b => b.status === 'REJECTED').length;
-  
-  const unreadNotificationsCount = notifications.filter(n => !n.isRead).length;
+  const getBusinessStatusBadge = (status: string) => {
+    switch (status) {
+      case 'APPROVED':
+        return (
+          <span className="partner-status-badge badge-success">
+            <CheckCircle size={12} /> Approved
+          </span>
+        );
+      case 'PENDING_REVIEW':
+        return (
+          <span className="partner-status-badge badge-warning">
+            <Clock size={12} /> Pending Review
+          </span>
+        );
+      case 'REJECTED':
+        return (
+          <span className="partner-status-badge badge-danger">
+            <XCircle size={12} /> Rejected
+          </span>
+        );
+      case 'DRAFT':
+        return <span className="partner-status-badge badge-neutral">Draft</span>;
+      default:
+        return <span className="partner-status-badge badge-neutral">{status.replace('_', ' ')}</span>;
+    }
+  };
+
+  const formatBusinessType = (type: string) => {
+    if (!type) return 'Safari Business';
+    return type.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
+  };
 
   return (
-    <div className="partner-dashboard-container fade-in">
-      
-      {/* Admin Banner */}
-      {user?.role === 'ADMIN' && (
-        <div className="partner-admin-banner">
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span className="partner-admin-banner-indicator"></span>
-            You are logged in as an Administrator (Viewing Partner View)
-          </div>
-          <Link to="/admin" className="text-link" style={{ color: '#8c6a34', fontWeight: 700 }}>
-            Go to Admin Panel &rarr;
-          </Link>
-        </div>
-      )}
+    <div className="partner-dashboard-page">
+      <div className="partner-dashboard-container">
 
-      {/* Header */}
-      <div className="partner-dashboard-header-row">
-        <div>
-          <h1 className="partner-dashboard-header-title">
-            Welcome back, {user?.firstName} 👋
-          </h1>
-          <p className="partner-dashboard-header-subtitle">
-            Manage your wildlife businesses and partnerships.
-          </p>
-        </div>
-
-        <Link
-          to="/partner/businesses/new"
-          className="quick-action-btn primary-action"
-          style={{ padding: '0.875rem 1.5rem', margin: 0 }}
-        >
-          <Plus size={18} />
-          Add New Business
-        </Link>
-      </div>
-
-      {/* Stats Grid */}
-      <div className="partner-dashboard-stats-grid">
-        
-        {/* Total Businesses */}
-        <Link to="/partner/businesses" className="partner-stat-card">
-          <div className="partner-stat-icon-container stat-total">
-            <Briefcase size={24} />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div className="partner-stat-label">Total Businesses</div>
-            <div className="partner-stat-value">{businesses.length}</div>
-            <div className="partner-stat-subtext">Registered on WildConnect</div>
-          </div>
-        </Link>
-
-        {/* Approved Businesses */}
-        <Link to="/partner/businesses" className="partner-stat-card">
-          <div className="partner-stat-icon-container stat-approved">
-            <CheckCircle size={24} />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div className="partner-stat-label">Approved</div>
-            <div className="partner-stat-value">{approvedBusinesses}</div>
-            <div className="partner-stat-subtext">Active listings</div>
-          </div>
-        </Link>
-
-        {/* Pending / Draft Businesses */}
-        <Link to="/partner/businesses" className="partner-stat-card">
-          <div className="partner-stat-icon-container stat-pending">
-            <Clock size={24} />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div className="partner-stat-label">Pending / Draft</div>
-            <div className="partner-stat-value">{pendingBusinesses}</div>
-            <div className="partner-stat-subtext">Awaiting review or draft</div>
-          </div>
-        </Link>
-
-        {/* Direct Bookings */}
-        <Link to="/partner/bookings" className="partner-stat-card">
-          <div className="partner-stat-icon-container stat-approved">
-            <Calendar size={24} />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div className="partner-stat-label">Direct Bookings</div>
-            <div className="partner-stat-value">{bookingsCount}</div>
-            <div className="partner-stat-subtext">Customer reservations</div>
-          </div>
-        </Link>
-
-        {/* Inquiries */}
-        <Link to="/partner/inquiries" className="partner-stat-card">
-          <div className="partner-stat-icon-container stat-notif">
-            <MessageSquare size={24} />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div className="partner-stat-label">Inquiries</div>
-            <div className="partner-stat-value">{inquiriesCount}</div>
-            <div className="partner-stat-subtext">Received customer messages</div>
-          </div>
-        </Link>
-
-        {/* Notifications */}
-        <Link to="/partner/notifications" className="partner-stat-card">
-          <div className="partner-stat-icon-container stat-notif">
-            <Bell size={24} />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div className="partner-stat-label">Notifications</div>
-            <div className="partner-stat-value">{unreadNotificationsCount}</div>
-            <div className="partner-stat-subtext">{unreadNotificationsCount} unread updates</div>
-          </div>
-        </Link>
-      </div>
-
-      {/* Main Content Layout */}
-      <div className="partner-dashboard-main-layout">
-        
-        {/* Left Column: Recent Businesses */}
-        <div>
-          <div className="partner-section-header">
-            <h2 className="partner-section-title">Recent Businesses</h2>
-            <Link to="/partner/businesses" className="partner-section-link">
-              View all &rarr;
+        {/* Admin Banner */}
+        {user?.role === 'ADMIN' && (
+          <div className="partner-admin-banner">
+            <div className="partner-admin-banner-content">
+              <span className="partner-admin-banner-indicator"></span>
+              <span>You are logged in as an Administrator (Viewing Partner Mode)</span>
+            </div>
+            <Link to="/admin" className="partner-admin-banner-link">
+              <span>Go to Admin Dashboard</span>
+              <ArrowRight size={14} />
             </Link>
           </div>
+        )}
 
-          <div className="partner-list-card">
-            {businesses.length === 0 ? (
-              <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-                <p>No businesses found. Start by adding your first business!</p>
-              </div>
-            ) : (
-              businesses.slice(0, 3).map((biz) => (
-                <Link to={`/partner/businesses/${biz.id}`} key={biz.id} className="partner-list-item">
-                  <div>
-                    <h3 className="partner-item-title">{biz.name}</h3>
-                    <div className="partner-item-meta">
-                      <span>{biz.type.replace('_', ' ')}</span>
-                      <span className="partner-item-meta-dot"></span>
-                      <span
-                        style={{
-                          color:
-                            biz.status === 'APPROVED' ? '#2E7559' :
-                            biz.status === 'REJECTED' ? '#ef4444' :
-                            biz.status === 'PENDING_REVIEW' ? '#D96B27' :
-                            'inherit',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {biz.status.replace('_', ' ')}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="partner-item-action">
-                    View &rarr;
-                  </div>
-                </Link>
-              ))
-            )}
+        {/* =========================================
+            1. PAGE HEADER
+        ========================================= */}
+        <header className="partner-dashboard-header">
+          <div className="partner-dashboard-header-text">
+            <span className="partner-dashboard-eyebrow">
+              PARTNER OPERATIONS HUB
+            </span>
+            <h1 className="partner-dashboard-title">
+              Welcome back, {user?.firstName || 'Partner'} 👋
+            </h1>
+            <p className="partner-dashboard-subtitle">
+              Manage your wildlife properties, accommodations, equipment listings & customer inquiries.
+            </p>
           </div>
+
+          <div className="partner-dashboard-header-action">
+            <Link
+              to="/partner/businesses/new"
+              className="partner-primary-btn"
+            >
+              <Plus size={18} />
+              <span>Add New Business</span>
+            </Link>
+          </div>
+        </header>
+
+        {/* =========================================
+            2. STATISTICS GRID (4 KPI STAT CARDS)
+        ========================================= */}
+        <div className="partner-stats-grid">
+
+          {/* Card 1: Total Businesses */}
+          <Link to="/partner/businesses" className="partner-stat-card">
+            <div className="partner-stat-top">
+              <div className="partner-stat-icon-box icon-primary">
+                <Building2 size={20} />
+              </div>
+              <span className="partner-stat-eyebrow">PROPERTIES</span>
+            </div>
+            <div className="partner-stat-bottom">
+              <span className="partner-stat-label">Total Listings</span>
+              <span className="partner-stat-value">{businesses.length}</span>
+              <span className="partner-stat-subtext">
+                {approvedBusinesses} active • {pendingBusinesses} in review
+              </span>
+            </div>
+          </Link>
+
+          {/* Card 2: Direct Bookings */}
+          <Link to="/partner/bookings" className="partner-stat-card">
+            <div className="partner-stat-top">
+              <div className="partner-stat-icon-box icon-green">
+                <Calendar size={20} />
+              </div>
+              <span className="partner-stat-eyebrow">BOOKINGS</span>
+            </div>
+            <div className="partner-stat-bottom">
+              <span className="partner-stat-label">Customer Reservations</span>
+              <span className="partner-stat-value">{bookingsCount}</span>
+              <span className="partner-stat-subtext">Direct guest bookings</span>
+            </div>
+          </Link>
+
+          {/* Card 3: Inquiries */}
+          <Link to="/partner/inquiries" className="partner-stat-card">
+            <div className="partner-stat-top">
+              <div className="partner-stat-icon-box icon-amber">
+                <MessageSquare size={20} />
+              </div>
+              <span className="partner-stat-eyebrow">MESSAGES</span>
+            </div>
+            <div className="partner-stat-bottom">
+              <span className="partner-stat-label">Traveler Inquiries</span>
+              <span className="partner-stat-value">{inquiriesCount}</span>
+              <span className="partner-stat-subtext">Direct messages received</span>
+            </div>
+          </Link>
+
+          {/* Card 4: Notifications */}
+          <Link to="/partner/notifications" className="partner-stat-card">
+            <div className="partner-stat-top">
+              <div className="partner-stat-icon-box icon-blue">
+                <Bell size={20} />
+              </div>
+              <span className="partner-stat-eyebrow">UPDATES</span>
+            </div>
+            <div className="partner-stat-bottom">
+              <span className="partner-stat-label">Notifications</span>
+              <span className="partner-stat-value">{unreadNotificationsCount}</span>
+              <span className="partner-stat-subtext">
+                {unreadNotificationsCount > 0 ? `${unreadNotificationsCount} unread alerts` : 'All caught up'}
+              </span>
+            </div>
+          </Link>
+
         </div>
 
-        {/* Right Column: Rejected/Action Required or Quick Actions */}
-        <div>
-          <div className="partner-section-header">
-            <h2 className="partner-section-title">Action Required</h2>
+        {/* =========================================
+            3. ACTION REQUIRED NOTICE (IF REJECTED ITEMS EXIST)
+        ========================================= */}
+        {rejectedBusinesses > 0 && (
+          <div className="partner-alert-card">
+            <div className="partner-alert-icon-wrap">
+              <XCircle size={22} className="partner-alert-icon" />
+            </div>
+            <div className="partner-alert-body">
+              <h3 className="partner-alert-title">
+                {rejectedBusinesses} listing(s) require your attention
+              </h3>
+              <p className="partner-alert-desc">
+                One or more partner listings were rejected by the admin team. Please review the feedback notes and resubmit for approval.
+              </p>
+            </div>
+            <Link to="/partner/businesses" className="partner-alert-btn">
+              <span>Review Listings</span>
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        )}
+
+        {/* =========================================
+            4. LOWER CONTENT GRID (2 COLUMNS)
+        ========================================= */}
+        <div className="partner-dashboard-content-grid">
+
+          {/* Left Column: Recent Business Listings */}
+          <div className="partner-card partner-listings-card">
+            <div className="partner-card-header">
+              <div>
+                <span className="partner-section-kicker">REGISTERED UNITS</span>
+                <h2 className="partner-card-title">Recent Businesses</h2>
+              </div>
+              <Link to="/partner/businesses" className="partner-view-all-link">
+                <span>View All</span>
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+
+            <div className="partner-listings-list">
+              {businesses.length === 0 ? (
+                <div className="partner-empty-state">
+                  <Briefcase size={32} className="partner-empty-icon" />
+                  <p className="partner-empty-title">No Registered Businesses</p>
+                  <p className="partner-empty-subtitle">
+                    List your safari stay, vehicle fleet, or equipment rentals on WildConnect to receive direct bookings.
+                  </p>
+                  <Link to="/partner/businesses/new" className="partner-empty-action-btn">
+                    <Plus size={16} />
+                    <span>Create First Listing</span>
+                  </Link>
+                </div>
+              ) : (
+                businesses.slice(0, 5).map((biz) => (
+                  <Link
+                    to={`/partner/businesses/${biz.id}`}
+                    key={biz.id}
+                    className="partner-listing-item"
+                  >
+                    <div className="partner-listing-main">
+                      <div className="partner-listing-icon-box">
+                        <Building2 size={18} />
+                      </div>
+                      <div className="partner-listing-info">
+                        <h4 className="partner-listing-title">{biz.name}</h4>
+                        <div className="partner-listing-meta">
+                          <span>{formatBusinessType(biz.type)}</span>
+                          <span className="partner-meta-dot">•</span>
+                          <span>{biz.destination?.name || 'Central Reserve'}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="partner-listing-status-wrap">
+                      {getBusinessStatusBadge(biz.status)}
+                      <ArrowRight size={16} className="partner-item-arrow" />
+                    </div>
+                  </Link>
+                ))
+              )}
+            </div>
           </div>
 
-          {rejectedBusinesses > 0 ? (
-            <div className="partner-action-required-card">
-              <div className="action-icon">
-                <XCircle size={24} color="#ef4444" />
-              </div>
-              <div className="action-content">
-                <h3>{rejectedBusinesses} business(es) rejected</h3>
-                <p>Please review the rejection reasons and update your listings to resubmit.</p>
-                <Link to="/partner/businesses" className="quick-action-btn primary-action">
-                  Review Listings
-                </Link>
+          {/* Right Column: Quick Management Links */}
+          <div className="partner-card partner-quick-card">
+            <div className="partner-card-header">
+              <div>
+                <span className="partner-section-kicker">PORTAL TOOLS</span>
+                <h2 className="partner-card-title">Partner Management</h2>
               </div>
             </div>
-          ) : (
-             <div className="partner-quick-actions">
-               <Link to="/partner/businesses/new" className="quick-action-btn primary-action">
-                 <Plus size={18} />
-                 Add New Business
-               </Link>
-               <Link to="/partner/profile" className="quick-action-btn">
-                 Update Profile
-               </Link>
-             </div>
-          )}
+
+            <div className="partner-quick-list">
+              <Link to="/partner/businesses/new" className="partner-quick-item group-highlight">
+                <div className="partner-quick-item-left">
+                  <div className="partner-quick-icon-box box-primary">
+                    <Plus size={19} />
+                  </div>
+                  <div className="partner-quick-info">
+                    <span className="partner-quick-item-title">Add New Listing</span>
+                    <span className="partner-quick-item-subtitle">Create property or service</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="partner-quick-arrow" />
+              </Link>
+
+              <Link to="/partner/rooms" className="partner-quick-item">
+                <div className="partner-quick-item-left">
+                  <div className="partner-quick-icon-box box-green">
+                    <Building2 size={19} />
+                  </div>
+                  <div className="partner-quick-info">
+                    <span className="partner-quick-item-title">Rooms & Stays</span>
+                    <span className="partner-quick-item-subtitle">Manage inventory & rates</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="partner-quick-arrow" />
+              </Link>
+
+              <Link to="/partner/kyc" className="partner-quick-item">
+                <div className="partner-quick-item-left">
+                  <div className="partner-quick-icon-box box-blue">
+                    <ShieldCheck size={19} />
+                  </div>
+                  <div className="partner-quick-info">
+                    <span className="partner-quick-item-title">KYC Verification</span>
+                    <span className="partner-quick-item-subtitle">Upload compliance documents</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="partner-quick-arrow" />
+              </Link>
+
+              <Link to="/partner/finances" className="partner-quick-item">
+                <div className="partner-quick-item-left">
+                  <div className="partner-quick-icon-box box-amber">
+                    <FileCheck size={19} />
+                  </div>
+                  <div className="partner-quick-info">
+                    <span className="partner-quick-item-title">Finances & Payouts</span>
+                    <span className="partner-quick-item-subtitle">Revenue statements & history</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="partner-quick-arrow" />
+              </Link>
+
+              <Link to="/partner/profile" className="partner-quick-item">
+                <div className="partner-quick-item-left">
+                  <div className="partner-quick-icon-box box-neutral">
+                    <UserCheck size={19} />
+                  </div>
+                  <div className="partner-quick-info">
+                    <span className="partner-quick-item-title">Partner Profile</span>
+                    <span className="partner-quick-item-subtitle">Contact info & business credentials</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="partner-quick-arrow" />
+              </Link>
+            </div>
+          </div>
+
         </div>
+
       </div>
     </div>
   );

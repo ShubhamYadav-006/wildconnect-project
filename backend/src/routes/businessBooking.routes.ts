@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { protect, restrictTo } from '../middleware/auth.middleware.js';
 import {
-  checkRoomAvailability,
+  checkAvailability,
   createBusinessBooking,
   getMyBookings,
   getPartnerBookings,
@@ -10,8 +10,8 @@ import {
 
 const router = Router();
 
-// Public: Check room availability for dates
-router.get('/availability', checkRoomAvailability);
+// Public: Check availability for dates (room/vehicle/equipment)
+router.get('/availability', checkAvailability);
 
 // Authenticated Routes
 router.use(protect);

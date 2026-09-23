@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { logger } from '../config/logger.js';
 
 interface EmailOptions {
   to: string;
@@ -42,7 +43,7 @@ class EmailService {
   async sendEmail(options: EmailOptions): Promise<boolean> {
     try {
       if (!this.transporter) {
-        console.log(`[EMAIL SIMULATION] To: ${options.to} | Subject: ${options.subject}`);
+        logger.info(`[EMAIL SIMULATION] To: ${options.to} | Subject: ${options.subject}`);
         return true;
       }
 
@@ -55,10 +56,10 @@ class EmailService {
         html: options.html,
       });
 
-      console.log(`[EMAIL SENT] MessageId: ${info.messageId} to ${options.to}`);
+      logger.info(`[EMAIL SENT] MessageId: ${info.messageId} to ${options.to}`);
       return true;
     } catch (error) {
-      console.error('[EMAIL ERROR] Failed to send email:', error);
+      logger.error('[EMAIL ERROR] Failed to send email:', error);
       return false; // graceful failure
     }
   }

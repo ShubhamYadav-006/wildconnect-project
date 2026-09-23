@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Users, Check, Calendar, X } from 'lucide-react';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
@@ -24,12 +24,15 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ businessId, busines
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Date selection
+  // Default dates: tomorrow and day after
   const today = new Date().toISOString().split('T')[0];
-  const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const dayAfter = new Date();
+  dayAfter.setDate(dayAfter.getDate() + 2);
 
-  const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(tomorrow);
+  const [startDate, setStartDate] = useState(tomorrow.toISOString().split('T')[0]);
+  const [endDate, setEndDate] = useState(dayAfter.toISOString().split('T')[0]);
   const [availabilityMap, setAvailabilityMap] = useState<{ [roomId: string]: boolean }>({});
   const [checking, setChecking] = useState(false);
 
@@ -42,37 +45,7 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ businessId, busines
   const [specialRequests, setSpecialRequests] = useState('');
   const [bookingLoading, setBookingLoading] = useState(false);
 
-  useEffect(() => {
-    fetchRooms();
-    // Auto-fill logged in user info
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        const u = JSON.parse(storedUser);
-        setGuestName(`${u.firstName} ${u.lastName}`);
-        setGuestEmail(u.email);
-      } catch (e) {}
-    }
-  }, [businessId]);
-
-  const fetchRooms = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get(`/rooms/public/${businessId}`);
-      const roomList = Array.isArray(res?.data?.data) ? res.data.data : [];
-      setRooms(roomList);
-      if (roomList.length > 0) {
-        checkAllAvailability(roomList, startDate, endDate);
-      }
-    } catch (err) {
-      console.error('Failed to load rooms');
-      setRooms([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const checkAllAvailability = async (roomList: Room[], start: string, end: string) => {
+  const checkAllAvailability = useCallback(async (roomList: Room[], start: string, end: string) => {
     try {
       setChecking(true);
       const map: { [roomId: string]: boolean } = {};
@@ -89,7 +62,36 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ businessId, busines
     } finally {
       setChecking(false);
     }
-  };
+  }, []);
+
+  const fetchRooms = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await api.get(`/rooms/public/${businessId}`);
+      const roomList = Array.isArray(res?.data?.data) ? res.data.data : [];
+      setRooms(roomList);
+      if (roomList.length > 0) {
+        checkAllAvailability(roomList, startDate, endDate);
+      }
+    } catch {
+      setRooms([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [businessId, startDate, endDate, checkAllAvailability]);
+
+  useEffect(() => {
+    fetchRooms();
+    // Auto-fill logged in user info
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const u = JSON.parse(storedUser);
+        setGuestName(`${u.firstName} ${u.lastName}`);
+        setGuestEmail(u.email);
+      } catch { }
+    }
+  }, [fetchRooms]);
 
   const handleDateChange = (newStart: string, newEnd: string) => {
     setStartDate(newStart);
@@ -117,11 +119,11 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ businessId, busines
         specialRequests,
       });
 
-      toast.success('🎉 Booking Confirmed! Confirmation email sent.');
+      toast.success('🎉 Stay Enquiry Submitted! Our team/host will contact you shortly with rates & availability.');
       setSelectedRoom(null);
       checkAllAvailability(rooms, startDate, endDate);
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Booking failed. Please try again.');
+      toast.error(err.response?.data?.message || 'Enquiry submission failed. Please try again.');
     } finally {
       setBookingLoading(false);
     }
@@ -132,8 +134,8 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ businessId, busines
   return (
     <section className="room-availability-section">
       <div className="section-header">
-        <h2>Available Units & Rooms</h2>
-        <p>Check live availability and reserve your stay instantly.</p>
+        <h2>Available Rooms & Accommodation Units</h2>
+        <p>Select dates to check real-time availability and reserve directly.</p>
       </div>
 
       <div className="date-picker-bar">
@@ -172,7 +174,7 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ businessId, busines
 
                 <div className="public-room-meta">
                   <span><Users size={16} /> Up to {room.capacity} Guests</span>
-                  <span className="price-tag">${room.basePrice} <span>/ night</span></span>
+                  <span className="room-enquiry-badge">Pricing on Enquiry</span>
                 </div>
 
                 {room.amenities.length > 0 && (
@@ -188,7 +190,7 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ businessId, busines
                   disabled={!isAvailable || checking}
                   onClick={() => setSelectedRoom(room)}
                 >
-                  {isAvailable ? 'Book This Room' : 'Sold Out for Dates'}
+                  {isAvailable ? 'Submit Enquiry' : 'Sold Out for Dates'}
                 </button>
               </div>
             </div>
@@ -201,17 +203,17 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ businessId, busines
         <div className="modal-overlay">
           <div className="modal-content">
             <div className="modal-header">
-              <h2>Confirm Your Stay</h2>
+              <h2>Submit Stay Enquiry</h2>
               <button className="close-btn" onClick={() => setSelectedRoom(null)}>
                 <X size={20} />
               </button>
             </div>
-            
+
             <div className="booking-summary-box">
               <h3>{selectedRoom.name}</h3>
               <p><strong>Property:</strong> {businessName}</p>
-              <p><strong>Dates:</strong> {new Date(startDate).toLocaleDateString()} – {new Date(endDate).toLocaleDateString()}</p>
-              <p><strong>Rate:</strong> ${selectedRoom.basePrice} per night</p>
+              <p><strong>Requested Dates:</strong> {new Date(startDate).toLocaleDateString()} – {new Date(endDate).toLocaleDateString()}</p>
+              <p><strong>Pricing:</strong> Verified customized tariff shared via email/phone upon enquiry</p>
             </div>
 
             <form onSubmit={handleBookSubmit} className="booking-form">
@@ -272,7 +274,7 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ businessId, busines
                   Cancel
                 </button>
                 <button type="submit" className="btn-primary" disabled={bookingLoading}>
-                  {bookingLoading ? 'Processing...' : 'Confirm Reservation'}
+                  {bookingLoading ? 'Submitting...' : 'Submit Enquiry'}
                 </button>
               </div>
             </form>

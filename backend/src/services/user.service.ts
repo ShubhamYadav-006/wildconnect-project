@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import { userRepository } from '../repositories/user.repository.js';
 import { NotFoundError, BadRequestError } from '../utils/AppError.js';
 import { Prisma } from '../generated/prisma/index.js';
+import { prisma } from '../config/db.js';
+import { notificationService } from './notification.service.js';
 
 export class UserService {
   async getProfile(userId: string) {
@@ -52,6 +54,35 @@ export class UserService {
     await userRepository.update(userId, { password: hashedNewPassword });
 
     return { message: 'Password updated successfully' };
+  }
+
+  async updateUserRole(userId: string, newRole: any) {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+
+    const updatedUser = await userRepository.update(userId, { role: newRole });
+
+    if (newRole === 'BUSINESS_PARTNER') {
+      // If user has a pending KYC, update it to verified
+      await prisma.partnerKyc.updateMany({
+        where: { userId },
+        data: { status: 'KYC_VERIFIED', verifiedAt: new Date() },
+      }).catch(() => {});
+
+      // Send approval notification to the user
+      await notificationService.createNotification({
+        userId,
+        title: 'Business Partner Application Approved!',
+        message: 'Congratulations! Your request to become a Business Partner on WildConnect has been approved by the Administrator. You now have full access to the Partner Dashboard.',
+        type: 'KYC_VERIFIED' as any,
+        referenceId: userId,
+      }).catch(() => {});
+    }
+
+    const { password, deletedAt, ...userWithoutPassword } = updatedUser;
+    return userWithoutPassword;
   }
 }
 

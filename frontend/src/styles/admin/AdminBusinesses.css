@@ -2,23 +2,101 @@
    Admin Businesses Page
 ========================================== */
 .admin-businesses-page {
-  padding: 1rem;
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.admin-header {
+/* ==========================================
+   Header & Action Controls
+========================================== */
+.admin-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .admin-header h2 {
-  font-size: 1.8rem;
-  color: #333;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
 }
 
+.admin-header p {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.admin-create-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-primary, #1e3a2b);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(30, 58, 43, 0.15);
+}
+
+.admin-create-btn:hover {
+  background-color: #162c20;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(30, 58, 43, 0.25);
+}
+
+/* ==========================================
+   Navigation Tabs
+========================================== */
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.925rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  margin-bottom: -1px;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: #1f2937;
+}
+
+.tab-btn.active {
+  color: var(--color-primary, #1e3a2b);
+  border-bottom-color: var(--color-primary, #1e3a2b);
+}
+
+/* ==========================================
+   Table & Badges
+========================================== */
 .table-container {
   overflow-x: auto;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
 }
 
 .admin-table {
@@ -28,175 +106,327 @@
 
 .admin-table th,
 .admin-table td {
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.925rem;
 }
 
 .admin-table th {
-  background-color: #f9f9f9;
+  background-color: #f9fafb;
   font-weight: 600;
-  color: #555;
+  color: #4b5563;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
 }
 
 .admin-table tr:hover {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
+}
+
+.table-subtext {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.business-type-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background-color: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #dbeafe;
+}
+
+.owner-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.owner-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+}
+
+.owner-email {
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+.owner-admin-tag {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-size: 0.78rem;
+  font-weight: 600;
 }
 
 .status-badge {
   display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .status-DRAFT {
-  background: #f5f5f5;
-  color: #666;
+  background: #f3f4f6;
+  color: #4b5563;
 }
 
-.status-PENDING {
-  background: #fff3cd;
-  color: #856404;
+.status-PENDING,
+.status-PENDING_REVIEW {
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .status-APPROVED {
-  background: #d4edda;
-  color: #155724;
+  background: #dcfce7;
+  color: #166534;
 }
 
 .status-REJECTED {
-  background: #f8d7da;
-  color: #721c24;
+  background: #fee2e2;
+  color: #991b1b;
 }
 
-.action-buttons {
-  display: flex;
-  gap: 0.5rem;
+.status-SUSPENDED {
+  background: #e5e7eb;
+  color: #374151;
 }
 
-.action-btn {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.85rem;
+.status-REMOVED,
+.status-DELETED {
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
-.btn-success {
-  background: #28a745;
-  color: white;
+.action-link-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.85rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
-.btn-success:hover {
-  background: #218838;
+.action-link-btn:hover {
+  background-color: #e5e7eb;
+  color: var(--color-primary, #1e3a2b);
 }
 
-.btn-danger {
-  background: #dc3545;
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #c82333;
-}
-
-/* Modal */
+/* ==========================================
+   Create Business Modal
+========================================== */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 1.5rem;
 }
 
-.modal-content {
-  background: white;
+.modal-content.admin-business-modal {
+  background: #ffffff;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 16px;
   width: 100%;
-  max-width: 500px;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-.modal-content h3 {
-  margin: 0;
-}
-
-.admin-tabs {
+.modal-header {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid var(--color-border, #e5e7eb);
-  padding-bottom: 0;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.tab-btn {
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modal-icon {
+  color: var(--color-primary, #1e3a2b);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #111827;
+  font-weight: 700;
+}
+
+.modal-header p {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.modal-close-btn {
   background: none;
   border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--color-text-muted, #6b7280);
+  color: #9ca3af;
   cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s ease;
-  margin-bottom: -1px;
-}
-
-.tab-btn:hover {
-  color: var(--color-text, #374151);
-}
-
-.tab-btn.active {
-  color: var(--color-primary, #8c6a34);
-  border-bottom-color: var(--color-primary, #8c6a34);
-}
-
-.action-link-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  background-color: var(--color-background, #f3f4f6);
-  color: var(--color-text, #374151);
-  text-decoration: none;
+  padding: 0.4rem;
   border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
   transition: all 0.2s ease;
 }
 
-.action-link-btn:hover {
-  background-color: #e5e7eb;
-  color: var(--color-primary, #8c6a34);
+.modal-close-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* ==========================================
+   Modal Form & Grid Layouts
+========================================== */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #1f2937;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-primary, #1e3a2b);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(30, 58, 43, 0.1);
 }
 
 .form-group textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: inherit;
+  resize: vertical;
 }
 
-.form-actions {
+.modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
 }
 
-.btn-secondary {
-  background: #e0e0e0;
-  color: #333;
+.btn-cancel {
+  padding: 0.65rem 1.25rem;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+.btn-submit {
+  padding: 0.65rem 1.5rem;
+  background-color: var(--color-primary, #1e3a2b);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #162c20;
+}
+
+.btn-submit:disabled,
+.btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* ==========================================
+   Responsive Breakpoints
+========================================== */
+@media (max-width: 768px) {
+  .admin-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content.admin-business-modal {
+    padding: 1.25rem;
+  }
 }

@@ -7,21 +7,21 @@ export class BusinessController {
   
   // Public Endpoints
   getPublicBusinesses = asyncHandler(async (req: Request, res: Response) => {
-    // Only grab query parameters we care about
+    // Grab query parameters
     const filters: any = {};
     
     if (req.query.type) {
       filters.type = req.query.type;
     } else if (req.query.category === 'accommodation') {
-      filters.type = { in: ['RESORT', 'HOTEL', 'HOMESTAY'] };
+      filters.type = 'RESORT';
     }
 
-    if (req.query.destinationId) {
-      filters.destinationId = req.query.destinationId as string;
-    }
-
-    if (req.query.destinationSlug) {
-      filters.destination = { slug: req.query.destinationSlug as string };
+    const destParam = (req.query.destination || req.query.destinationSlug || req.query.destinationId) as string;
+    if (destParam) {
+      filters.OR = [
+        { destinationId: destParam },
+        { destination: { slug: destParam } },
+      ];
     }
 
     filters.deletedAt = null;
@@ -52,14 +52,16 @@ export class BusinessController {
 
   createBusiness = asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user!.id;
-    const business = await businessService.createBusiness(userId, req.body);
-    res.status(201).json(ApiResponse.success('Business application created successfully', business));
+    const role = req.user!.role;
+    const business = await businessService.createBusiness(userId, req.body, role);
+    res.status(201).json(ApiResponse.success('Business created successfully', business));
   });
 
   updateBusiness = asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user!.id;
+    const role = req.user!.role;
     const id = req.params.id as string;
-    const business = await businessService.updateBusiness(id, userId, req.body);
+    const business = await businessService.updateBusiness(id, userId, req.body, role);
     res.status(200).json(ApiResponse.success('Business updated successfully', business));
   });
 
@@ -87,6 +89,25 @@ export class BusinessController {
     const { status, rejectionReason } = req.body;
     const business = await businessService.updateBusinessStatus(id, status, rejectionReason);
     res.status(200).json(ApiResponse.success(`Business status updated to ${status}`, business));
+  });
+
+  approvePendingUpdates = asyncHandler(async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    const business = await businessService.approvePendingUpdates(id);
+    res.status(200).json(ApiResponse.success('Pending updates approved and merged successfully', business));
+  });
+
+  rejectPendingUpdates = asyncHandler(async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    const { rejectionReason } = req.body;
+    const business = await businessService.rejectPendingUpdates(id, rejectionReason);
+    res.status(200).json(ApiResponse.success('Pending updates rejected', business));
+  });
+
+  deleteBusiness = asyncHandler(async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    const result = await businessService.deleteBusiness(id);
+    res.status(200).json(ApiResponse.success(result.message));
   });
 }
 

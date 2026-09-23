@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { destinationService, type Destination } from '../../services/destination.service';
 import { businessService, type Business } from '../../services/business.service';
@@ -12,15 +12,13 @@ import {
   Car,
   ShieldCheck,
   Sparkles,
-  Home as HomeIcon,
-  Hotel as HotelIcon,
   Tent,
   Check
 } from 'lucide-react';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 
 // Component Stylesheet
-import '../../styles/pages/Resorts.css';
+import '../../styles/public/Resorts.css';
 
 const Resorts: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +33,6 @@ const Resorts: React.FC = () => {
   const [loadingDestinations, setLoadingDestinations] = useState(true);
   const [loadingBusinesses, setLoadingBusinesses] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [activeTypeFilter, setActiveTypeFilter] = useState<'ALL' | 'RESORT' | 'HOTEL' | 'HOMESTAY'>('ALL');
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const listingsRef = useRef<HTMLDivElement>(null);
@@ -95,7 +92,7 @@ const Resorts: React.FC = () => {
             if (destRes?.data) {
               currentDest = destRes.data;
             }
-          } catch (e) {
+          } catch {
             // Slug fetch fallback
           }
         }
@@ -117,7 +114,7 @@ const Resorts: React.FC = () => {
 
         // Strict client-side filter to guarantee only approved accommodation types
         const approvedAccommodations = (Array.isArray(businessData) ? businessData : []).filter(
-          b => b.status === 'APPROVED' && ['RESORT', 'HOTEL', 'HOMESTAY'].includes(b.type)
+          b => b.status === 'APPROVED' && b.type === 'RESORT'
         );
 
         setBusinesses(approvedAccommodations);
@@ -131,12 +128,6 @@ const Resorts: React.FC = () => {
 
     fetchDestinationAccommodations();
   }, [destinationQuery, destinations]);
-
-  // Filter accommodations by accommodation type tab
-  const filteredBusinesses = useMemo(() => {
-    if (activeTypeFilter === 'ALL') return businesses;
-    return businesses.filter(b => b.type === activeTypeFilter);
-  }, [businesses, activeTypeFilter]);
 
   // Handle selecting a destination from the dropdown
   const handleSelectDestination = (slug: string) => {
@@ -164,28 +155,9 @@ const Resorts: React.FC = () => {
     return <Sparkles size={14} className="amenity-icon" />;
   };
 
-  // Calculate starting room price
-  const getMinPrice = (business: Business) => {
-    if (business.rooms && business.rooms.length > 0) {
-      const prices = business.rooms.map(r => r.basePrice).filter(p => typeof p === 'number' && p > 0);
-      if (prices.length > 0) {
-        return Math.min(...prices);
-      }
-    }
-    return null;
-  };
-
   // Helper for business type display badge
-  const getTypeBadge = (type: string) => {
-    switch (type) {
-      case 'HOTEL':
-        return { label: 'Hotel & Suites', icon: <HotelIcon size={13} /> };
-      case 'HOMESTAY':
-        return { label: 'Jungle Homestay', icon: <HomeIcon size={13} /> };
-      case 'RESORT':
-      default:
-        return { label: 'Wilderness Resort', icon: <Tent size={13} /> };
-    }
+  const getTypeBadge = (_type: string, meta?: any) => {
+    return { label: meta?.category || 'Wilderness Stay', icon: <Tent size={13} /> };
   };
 
   const destinationTitle = selectedDestination
@@ -332,32 +304,11 @@ const Resorts: React.FC = () => {
                 </p>
               </div>
 
-              {/* Type Filter Pills */}
+              {/* Stay count badge */}
               <div className="resorts-type-filter-group">
-                <button
-                  className={`resorts-type-pill ${activeTypeFilter === 'ALL' ? 'active' : ''}`}
-                  onClick={() => setActiveTypeFilter('ALL')}
-                >
-                  All Stays ({businesses.length})
-                </button>
-                <button
-                  className={`resorts-type-pill ${activeTypeFilter === 'RESORT' ? 'active' : ''}`}
-                  onClick={() => setActiveTypeFilter('RESORT')}
-                >
-                  Resorts
-                </button>
-                <button
-                  className={`resorts-type-pill ${activeTypeFilter === 'HOTEL' ? 'active' : ''}`}
-                  onClick={() => setActiveTypeFilter('HOTEL')}
-                >
-                  Hotels
-                </button>
-                <button
-                  className={`resorts-type-pill ${activeTypeFilter === 'HOMESTAY' ? 'active' : ''}`}
-                  onClick={() => setActiveTypeFilter('HOMESTAY')}
-                >
-                  Homestays
-                </button>
+                <span className="resorts-type-pill active">
+                  Verified Stays ({businesses.length})
+                </span>
               </div>
             </div>
 
@@ -366,7 +317,7 @@ const Resorts: React.FC = () => {
               <div className="resorts-loading">
                 <LoadingSpinner message={`Finding approved stays in ${destinationTitle}...`} />
               </div>
-            ) : filteredBusinesses.length === 0 ? (
+            ) : businesses.length === 0 ? (
               /* Empty state if no approved accommodations exist */
               <div className="resorts-empty-state">
                 <div className="resorts-empty-icon-wrap">
@@ -393,9 +344,8 @@ const Resorts: React.FC = () => {
             ) : (
               /* Accommodation Cards Grid */
               <div className="resorts-grid">
-                {filteredBusinesses.map((business, index) => {
-                  const typeInfo = getTypeBadge(business.type);
-                  const minPrice = getMinPrice(business);
+                {businesses.map((business, index) => {
+                  const typeInfo = getTypeBadge(business.type, business.metadata);
                   const cardImage = business.coverImage || (business.images && business.images[0]) || 'https://images.unsplash.com/photo-1542640244-7e672d6cef4e?q=80&w=1000';
 
                   return (
@@ -423,15 +373,6 @@ const Resorts: React.FC = () => {
                           <ShieldCheck size={12} />
                           <span>Verified</span>
                         </div>
-
-                        {/* Price Tag if available */}
-                        {minPrice !== null && (
-                          <div className="resort-card-price">
-                            <span className="price-prefix">From</span>
-                            <span className="price-val">₹{minPrice.toLocaleString('en-IN')}</span>
-                            <span className="price-unit">/night</span>
-                          </div>
-                        )}
                       </div>
 
                       <div className="resort-card-content">
@@ -478,7 +419,7 @@ const Resorts: React.FC = () => {
 
                         <div className="resort-card-action">
                           <Link
-                            to={`/businesses/${business.slug}`}
+                            to={`/resorts/${business.slug}`}
                             className="resort-card-btn"
                           >
                             <span>View Details & Rooms</span>

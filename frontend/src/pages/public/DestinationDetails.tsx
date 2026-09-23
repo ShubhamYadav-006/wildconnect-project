@@ -5,14 +5,13 @@ import { resortService, Resort } from '../../services/resort.service';
 import TadobaDetails from './TadobaInformation';
 import {
   MapPin,
-  Calendar,
   Compass,
   Tent,
   AlertTriangle
 } from 'lucide-react';
 
 // Component Styles
-import "../../styles/pages/DestinationDetails.css";
+import "../../styles/public/DestinationDetails.css";
 
 const DEFAULT_TADOBA_DESTINATION: Destination = {
   id: 'tadoba-andhari-tiger-reserve',
@@ -20,7 +19,6 @@ const DEFAULT_TADOBA_DESTINATION: Destination = {
   slug: 'tadoba-andhari-tiger-reserve',
   state: 'Maharashtra',
   country: 'India',
-  bestSeason: 'October to June',
   description: "Tadoba-Andhari Tiger Reserve (TATR) is one of Central India's most iconic wildlife landscapes. Located in Maharashtra's Chandrapur district, it harmoniously combines Maharashtra's oldest national park with the Andhari Wildlife Sanctuary.",
   establishedYear: 1955,
   totalArea: 1727.59,
@@ -119,10 +117,6 @@ const DestinationDetails = () => {
                 <MapPin className="dest-details-hero-meta-icon" />
                 <span>{destination.state}, India</span>
               </div>
-              <div className="dest-details-hero-meta-item">
-                <Calendar className="dest-details-hero-meta-icon" />
-                <span>Best Season: {destination.bestSeason}</span>
-              </div>
             </div>
           </div>
         </div>
@@ -200,13 +194,13 @@ const DestinationDetails = () => {
                       </div>
                       <div className="dest-details-resort-info">
                         <h4 className="dest-details-resort-name">{resort.name}</h4>
-                        <p className="dest-details-resort-price">₹{resort.pricePerNight} / night</p>
+                        <p className="dest-details-resort-price">Inquire for Stay</p>
                       </div>
                     </Link>
                   ))}
                   {resorts.length > 3 && (
                     <Link to="/resorts" className="dest-details-resorts-viewall">
-                      View all resorts
+                      View all stays &amp; resorts
                     </Link>
                   )}
                 </div>

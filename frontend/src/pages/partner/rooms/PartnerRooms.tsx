@@ -57,12 +57,12 @@ const PartnerRooms: React.FC = () => {
       setLoading(true);
       const res = await api.get('/businesses/my/all');
       const all = Array.isArray(res?.data?.data) ? res.data.data : [];
-      const accommodations = all.filter((b: Business) => ['RESORT', 'HOTEL', 'HOMESTAY'].includes(b.type));
+      const accommodations = all.filter((b: Business) => b.type === 'RESORT');
       setBusinesses(accommodations);
       if (accommodations.length > 0) {
         setSelectedBusinessId(accommodations[0].id);
       }
-    } catch (err) {
+    } catch {
       toast.error('Failed to load your accommodation businesses');
     } finally {
       setLoading(false);
@@ -74,7 +74,7 @@ const PartnerRooms: React.FC = () => {
       setLoading(true);
       const res = await api.get(`/rooms/business/${bId}`);
       setRooms(Array.isArray(res?.data?.data) ? res.data.data : []);
-    } catch (err) {
+    } catch {
       toast.error('Failed to fetch rooms');
     } finally {
       setLoading(false);
@@ -115,7 +115,7 @@ const PartnerRooms: React.FC = () => {
       await api.delete(`/rooms/${roomId}`);
       toast.success('Room deleted successfully');
       setRooms(rooms.filter(r => r.id !== roomId));
-    } catch (err) {
+    } catch {
       toast.error('Failed to delete room');
     }
   };

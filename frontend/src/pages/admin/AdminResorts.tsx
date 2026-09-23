@@ -21,6 +21,8 @@ import {
   type Destination,
 } from '../../services/destination.service';
 
+import { ImageUpload } from '../../components/ui/ImageUpload';
+
 import '../../styles/admin/AdminCommon.css';
 import '../../styles/admin/AdminResorts.css';
 import '../../styles/globals/modals.css';
@@ -43,7 +45,7 @@ const AdminResorts = () => {
     starRating: '',
     amenities: '',
     coverImage: '',
-    images: '',
+    images: [] as string[],
   });
 
 
@@ -106,7 +108,7 @@ const AdminResorts = () => {
       starRating: '',
       amenities: '',
       coverImage: '',
-      images: '',
+      images: [],
     });
 
     setIsModalOpen(true);
@@ -134,8 +136,8 @@ const AdminResorts = () => {
         : '',
       coverImage: resort.coverImage || '',
       images: Array.isArray(resort.images)
-        ? resort.images.join(', ')
-        : '',
+        ? resort.images
+        : [],
     });
 
     setIsModalOpen(true);
@@ -213,12 +215,7 @@ const AdminResorts = () => {
 
         coverImage: formData.coverImage.trim() || undefined,
 
-        images: formData.images
-          ? formData.images
-            .split(',')
-            .map((item) => item.trim())
-            .filter(Boolean)
-          : [],
+        images: formData.images || [],
       };
 
       if (payload.name.length < 2) {
@@ -251,24 +248,24 @@ const AdminResorts = () => {
         }
       }
 
-      const isValidUrl = (url: string) => {
+      const isValidPathOrUrl = (str: string) => {
+        if (!str) return false;
+        if (str.startsWith('/') || str.startsWith('./')) return true;
         try {
-          new URL(url);
+          new URL(str);
           return true;
         } catch {
           return false;
         }
       };
 
-      if (payload.coverImage && !isValidUrl(payload.coverImage)) {
-        toast.error('Cover image must be a valid URL (starting with http:// or https://)');
+      if (payload.coverImage && !isValidPathOrUrl(payload.coverImage)) {
+        toast.error('Cover image must be a valid uploaded file or URL.');
         return;
       }
 
-      if (payload.images.some((img) => !isValidUrl(img))) {
-        toast.error(
-          'All additional images must be valid URLs (starting with http:// or https://)'
-        );
+      if (payload.images.some((img) => !isValidPathOrUrl(img))) {
+        toast.error('All additional images must be valid uploaded files or URLs.');
         return;
       }
 
@@ -719,53 +716,28 @@ const AdminResorts = () => {
               </div>
 
 
-              {/* Cover Image */}
+              {/* Resort Images Upload from Local System or Direct Link */}
 
               <div className="form-group">
 
                 <label className="form-label">
-                  Cover Image URL
+                  Resort Photos (Paste image links / URLs or upload files)
                 </label>
 
-                <input
-                  type="url"
-                  value={formData.coverImage}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      coverImage: e.target.value,
-                    })
+                <ImageUpload
+                  coverImage={formData.coverImage}
+                  images={formData.images}
+                  onChange={(coverImage, images) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      coverImage,
+                      images,
+                    }))
                   }
-                  placeholder="https://example.com/resort.jpg"
-                  className="form-input"
-                />
-
-              </div>
-
-
-              {/* Additional Images */}
-
-              <div className="form-group">
-
-                <label className="form-label">
-                  Additional Image URLs
-                </label>
-
-                <textarea
-                  value={formData.images}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      images: e.target.value,
-                    })
-                  }
-                  placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
-                  rows={3}
-                  className="form-textarea"
                 />
 
                 <small className="admin-form-help">
-                  Add multiple image URLs separated by commas.
+                  Paste web image links (Unsplash, CDN) or upload local files. The first image is set as the Cover Photo (click the star icon to change).
                 </small>
 
               </div>

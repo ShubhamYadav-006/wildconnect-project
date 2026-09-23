@@ -1,506 +1,257 @@
 # WildConnect - Product Requirements Document (PRD)
 
-**Version:** 2.0 (V1 Scope)
-**Status:** Approved for Development
-**Project Type:** Final Year Project + Startup MVP
-**Last Updated:** July 2026
+**Version:** 3.0 (Production Implementation Scope)  
+**Status:** Active & Implemented  
+**Project Type:** Final Year Major Project + Wildlife Tourism Marketplace MVP  
+**Document Owner:** WildConnect Team  
+**Last Updated:** September 2026  
 
 ---
 
 # 1. Product Overview
 
-## Product Name
-
+## 1.1 Product Name
 **WildConnect**
 
-## Product Vision
+## 1.2 Product Vision
+WildConnect is a centralized, digital wildlife tourism platform designed to connect nature enthusiasts, wildlife photographers, and safari travelers with verified wildlife destinations, trusted local business partners, and personalized safari planning services.
 
-WildConnect is a centralized wildlife tourism platform that helps travelers discover wildlife destinations, explore verified resorts, submit personalized trip requests, receive customized travel proposals, and manage their bookings through a single platform.
-
-Instead of searching multiple websites for safari information, resorts, travel contacts, and trip planning, users can access everything in one place.
-
-The first version (V1) focuses on creating a reliable and professional wildlife tourism management platform with a manual proposal and booking workflow.
+The platform bridges the gap between travelers and the wildlife tourism ecosystem through two primary pillars:
+1. **Direct Verified Business Partner Ecosystem**: A multi-service marketplace where local business partners (resorts, hotels, homestays, safari gypsies, taxi transfers, camera gear rentals) onboard through KYC verification, list properties and fleets, manage calendar blackouts, track escrow payouts, and accept direct bookings.
+2. **Bespoke Safari Trip Planning**: A managed travel planning workflow where tourists submit custom trip requirements, receive tailored day-wise proposals and quotes from the WildConnect admin team, and confirm comprehensive safari packages.
 
 ---
 
 # 2. Problem Statement
 
-Planning a wildlife trip is currently fragmented.
+Planning a wildlife and safari trip in India is historically fragmented and complex.
 
-A traveler often has to:
+A typical safari traveler faces numerous friction points:
+- **Scattered Park Information**: Wildlife sanctuary details, core vs. buffer zones, gate rules, and seasonal timings are spread across disparate sources.
+- **Unverified Accommodations**: Finding reliable lodges near specific safari gates often requires searching multiple websites and dealing with unverified listings.
+- **Disjointed Services**: Arranging 4x4 safari vehicles, airport transfers, expert naturalists, and telephoto camera rentals requires juggling separate phone calls and WhatsApp chats.
+- **Lack of Customization**: Standard travel portals do not understand safari zone logistics, game drive timings, and wildlife photography needs.
+- **Financial Ambiguity**: Independent operators lack structured escrow security, booking guarantees, and clear cancellation policies.
 
-- Search Google for destination information
-- Compare resorts across multiple websites
-- Contact multiple resort owners individually
-- Search separately for safari information
-- Find transportation independently
-- Manage everything through calls and WhatsApp
-
-This process is:
-
-- Time consuming
-- Confusing
-- Difficult for first-time visitors
-- Lacks personalized guidance
-- Offers no centralized trip management
-
-WildConnect aims to solve this problem by providing a single platform for wildlife tourism.
+WildConnect resolves these challenges by providing a dedicated, unified platform tailored specifically for wildlife tourism.
 
 ---
 
-# 3. What We Are Building
+# 3. Target Users & User Roles
 
-WildConnect is **not** an online hotel booking website.
+The platform supports four distinct user roles:
 
-WildConnect is a wildlife tourism management platform where users can:
+```text
+┌────────────────────────────────────────────────────────────────────────┐
+│                                 ROLES                                  │
+├─────────────────┬─────────────────┬──────────────────┬─────────────────┤
+│     Visitor     │     Tourist     │ Business Partner │      Admin      │
+│  (Unregistered) │   (`TOURIST`)   │(`BUSINESS_PARTNER`)│   (`ADMIN`)   │
+└─────────────────┴─────────────────┴──────────────────┴─────────────────┘
+```
 
-- Explore wildlife destinations
-- Browse verified resorts
-- Read travel articles
-- View wildlife experiences
-- Submit trip requirements
-- Receive personalized travel proposals
-- Confirm bookings
-- Track their trips
-- Receive notifications
+### 3.1 Visitor (Public / Unregistered)
+* **Profile**: Travelers researching wildlife parks, browsing destinations, or discovering local resorts and services.
+* **Capabilities**:
+  - Explore national parks and wildlife destinations (e.g., Tadoba-Andhari Tiger Reserve)
+  - Browse verified businesses across 3 categories: Stays/Resorts, Safari Vehicles & Taxis, Camera Rentals
+  - View live room, vehicle, and equipment availability and pricing
+  - Read wildlife articles, travel tips, and park gate guides
+  - Submit direct inquiries to approved partner businesses
+  - Access authentication pages (Login, Register with role selection)
 
-The platform acts as a bridge between travelers and the WildConnect team.
+### 3.2 Tourist (`TOURIST`)
+* **Profile**: Registered travelers planning, booking, and managing wildlife trips.
+* **Capabilities**:
+  - **Account & Profile**: Manage profile, avatar, contact details, and password settings
+  - **Direct Multi-Service Bookings**: Book verified partner rooms, reserve safari gypsies for specific drive slots (Morning/Afternoon/Full-day), and rent photography gear
+  - **Bespoke Trip Requests**: Submit customized safari requests (destination, dates, traveler counts, preferences, budget)
+  - **Proposal Interaction**: Receive, review, accept, reject, or request changes on Admin-generated custom itineraries
+  - **Booking Management**: View all confirmed bookings (both direct marketplace bookings and custom safari packages) and request cancellations
+  - **Verified Reviews**: Submit ratings (1–5 stars) and detailed reviews for completed stays
+  - **Notifications**: Receive instant alerts for proposal dispatches, booking confirmations, and status updates
 
----
+### 3.3 Business Partner (`BUSINESS_PARTNER`)
+* **Profile**: Local wildlife business owners, resort managers, homestay hosts, safari operators, taxi fleets, and photography equipment providers.
+* **Capabilities**:
+  - **Partner Command Center**: Real-time dashboard displaying listing status, active bookings, incoming inquiries, and financial metrics
+  - **KYC & Legal Verification**: Submit business PAN, GSTIN, ID proof, business proof, and bank details for Admin verification
+  - **Multi-Service Listing Management**: Create and manage business profiles under `RESORT`, `TAXI`, or `CAMERA_RENTAL` categories
+  - **Inventory Management**:
+    - *Accommodations*: Configure room categories, capacities, base pricing, amenities, and room quantities
+    - *Transport & Safari*: Manage 4x4 Gypsies, Innova transfers, Canters, driver contacts, and supported safari slots
+    - *Photography Gear*: Manage camera bodies, telephoto lenses, accessory kits, daily rental fees, and security deposits
+  - **Calendar Blackouts**: Lock inventory dates for property maintenance, offline bookings, monsoon closures, or personal use
+  - **Booking Oversight**: Monitor guest reservations, check-in schedules, passenger details, and handle cancellations
+  - **Escrow & Finances**: Track gross booking amounts, platform commission deductions, escrow statuses (`HELD_IN_ESCROW` → `PAID`), settlement dates, and bank UTR numbers
+  - **Inquiry Handling**: Review direct customer inquiries, monitor SLA response deadlines, and resolve customer messages
 
-# 4. Goals
-
-## Primary Goals
-
-- Simplify wildlife trip planning
-- Centralize tourism information
-- Build trust through verified listings
-- Reduce planning time
-- Improve customer experience
-
-## Business Goals
-
-- Build a scalable wildlife tourism platform
-- Create a professional digital presence
-- Generate trip inquiries
-- Increase resort partnerships
-- Prepare the platform for future expansion
-
----
-
-# 5. Target Users
-
-## Primary Users
-
-### Wildlife Tourists
-
-People planning wildlife trips.
-
-Examples:
-
-- Families
-- Couples
-- Solo travelers
-- Nature lovers
-- Wildlife photographers
-- Bird watchers
-
-Needs:
-
-- Destination information
-- Resort options
-- Trip planning
-- Booking assistance
+### 3.4 Admin (`ADMIN`)
+* **Profile**: WildConnect operations, compliance, and content management team (Primary Admin: `info.tadobatracks@gmail.com`).
+* **Capabilities**:
+  - **Admin Command Deck**: Platform-wide metrics on users, destinations, partner listings, trip requests, bookings, KYC submissions, and revenue
+  - **User Management & Moderation**: Real-time user administration (`/admin/users`) with capabilities to promote users to `BUSINESS_PARTNER`, revoke roles, or safely delete accounts
+  - **KYC Verification Queue**: Review submitted partner documents (PAN, GSTIN, banking proof) and approve/reject with detailed feedback
+  - **Business Verification**: Audit submitted listings (`PENDING_REVIEW`), approve to publish live on Tourism Services (`/businesses`), reject with feedback, or suspend non-compliant businesses
+  - **Custom Safari Proposals**: Build bespoke itineraries (day-wise schedule, resort/business attachments, activity list, quotes) in response to tourist trip requests
+  - **Booking & Payout Oversight**: Track platform bookings, resolve escalated inquiries, and oversee payout settlements
+  - **Destination Management**: Full CRUD for wildlife sanctuaries (area stats, gate counts, best seasons, guide content)
+  - **Content Moderation**: Author and publish wildlife articles and educational guides
 
 ---
 
-### Returning Travelers
+# 4. Core Features & Capabilities
 
-Users who have already visited wildlife destinations and want to plan another trip.
+```text
+┌────────────────────────────────────────────────────────────────────────┐
+│                       WILDCONNECT CORE MODULES                         │
+├───────────────────────────────────┬────────────────────────────────────┤
+│ 1. Partner Marketplace & Fleet    │ 2. Managed Safari Trip Planning    │
+│    • Stays, Safari 4x4, Gear      │    • Custom Trip Requests          │
+│    • Partner KYC Verification     │    • Day-wise Admin Proposals      │
+│    • Multi-Resource Inventory     │    • Proposal Accept / Change Flow │
+│    • Calendar Blackout Planner    │    • Managed Booking Confirmation  │
+│    • Atomic Direct Bookings       │                                    │
+│    • Escrow & Payout Settlement   │                                    │
+├───────────────────────────────────┼────────────────────────────────────┤
+│ 3. Destinations & Guides          │ 4. Platform Infrastructure         │
+│    • National Park statistics     │    • JWT & Google OAuth Auth       │
+│    • Core / Buffer gate counts    │    • Role-based Route Protection   │
+│    • Educational Articles         │    • 22 Event In-App Notifications │
+│    • Destination Guides           │    • Multi-image Upload Pipeline   │
+└───────────────────────────────────┴────────────────────────────────────┘
+```
 
-Needs:
+### 4.1 Partner KYC & Compliance System
+1. **Document Submission**:
+   - Partner submits Business PAN, optional GSTIN, government ID proof, business proof document, bank account name/number/IFSC/bank name, and cancelled cheque.
+2. **Verification State Machine**:
+   - `KYC_UNSUBMITTED` → `KYC_PENDING` → `KYC_VERIFIED` or `KYC_REJECTED`.
+3. **Secure Document Access**:
+   - Secure route allows only the document owner or Admin to view KYC documents.
 
-- Faster planning
-- Better resort selection
-- Easier booking management
+### 4.2 Multi-Service Partner Marketplace
+1. **Service Categories**:
+   - `RESORT`: Lodges, resorts, farm stays, homestays, cottages.
+   - `TAXI`: 4x4 Safari Gypsies, airport transfer Innovas, Canters.
+   - `CAMERA_RENTAL`: Professional bodies, super-telephoto lenses, accessory kits.
+2. **Business Lifecycle & Verification Flow**:
+   - `DRAFT` → `PENDING_REVIEW` → `APPROVED` / `REJECTED` / `SUSPENDED`.
+   - *Auto Re-verification*: Editing an approved business automatically marks it `PENDING_REVIEW`.
+3. **Multi-Resource Inventory**:
+   - `BusinessRoom`: Capacity, nightly base price, inventory quantity, amenities, photos.
+   - `BusinessVehicle`: Vehicle type, registration number, driver details, max passengers, drive slots (`MORNING_SAFARI`, `AFTERNOON_SAFARI`, `FULL_DAY_TRANSFER`), slot price.
+   - `BusinessEquipment`: Category, brand/model, serial number, daily rate, security deposit, condition, kit items.
+4. **Calendar Blackout Management**:
+   - Block specific units/vehicles for date ranges with reasons (`PROPERTY_MAINTENANCE`, `WALK_IN_OFFLINE_BOOKING`, `MONSOON_CLOSURE`, `PERSONAL_USE`).
+5. **Atomic Booking Engine**:
+   - Real-time overlap calculation against bookings and blackout blocks.
+   - Atomic Prisma transaction preventing double booking.
+6. **Escrow Payout Engine**:
+   - Automatic calculation of gross amount, platform fee, and net payout.
+   - Escrow status tracking: `HELD_IN_ESCROW` → `PENDING_CLEARANCE` → `PROCESSING` → `PAID` / `ON_HOLD`.
+   - Bank UTR recording and settlement date timestamps.
 
----
+### 4.3 Inquiries with SLA & Escalation
+- Direct inquiry form on public business listings.
+- Inquiry statuses: `PENDING` → `RESPONDED` → `CLOSED` / `ESCALATED` / `EXPIRED`.
+- Automatic SLA deadline monitoring and escalation alerts for unresponsive partners.
 
-### WildConnect Admin Team
+### 4.4 Managed Safari Trip Planning
+1. **Trip Request Submission**:
+   - Tourist selects target destination, travel dates, traveler count, budget preference, and safari notes.
+2. **Admin Proposal Builder**:
+   - Admin creates day-wise itinerary, recommended safari gates/zones, curated lodge/business IDs, activity list, quotes, and validity dates.
+3. **Interactive Proposal Review**:
+   - Actions: **Accept** (creates confirmed booking), **Reject**, or **Request Changes** (with custom feedback).
 
-Platform administrators responsible for managing:
-
-- Destinations
-- Resorts
-- Trip Requests
-- Proposals
-- Bookings
-- Articles
-- Experiences
-- Users
-
----
-
-# 6. User Roles
-
-## Visitor
-
-Can:
-
-- Browse destinations
-- Browse resorts
-- Read articles
-- View experiences
-- Contact WildConnect
-
-Cannot:
-
-- Submit trip requests
-- Receive proposals
-- View bookings
-
----
-
-## Tourist
-
-Can:
-
-- Register/Login
-- Submit trip requests
-- View proposals
-- Accept or reject proposals
-- View bookings
-- Receive notifications
-- Manage profile
-
----
-
-## Admin
-
-Full system access.
-
-Can:
-
-- Manage all content
-- Review requests
-- Create proposals
-- Manage bookings
-- Publish articles
-- Verify resorts
-- Manage destinations
-- View users
+### 4.5 Destinations & Wildlife Content
+- Comprehensive park statistics (Tadoba core area, buffer area, core gates, buffer gates, seasons, history, transit distances).
+- Rich editorial articles published by Admins.
 
 ---
 
-# 7. Core Features (V1)
+# 5. User Journey & Core Workflows
 
-## Authentication
+## 5.1 Direct Multi-Service Booking Journey
+```text
+Tourist / Visitor
+       │
+       ▼
+Browse Destinations / Businesses (Stays, Safari 4x4, Gear)
+       │
+       ▼
+Select Approved Business & Specific Unit (Room / Vehicle Slot / Gear)
+       │
+       ▼
+Select Dates & Check Live Availability (API: overlap & blackout check)
+       │
+       ▼
+Authenticate (Login / Register as Tourist)
+       │
+       ▼
+Confirm Booking (API: /api/business-bookings [Prisma Atomic $transaction])
+       │
+       ├─────────────────────────────────┬────────────────────────────────┐
+       ▼                                 ▼                                ▼
+Booking Confirmed               Escrow Transaction Created      Partner & Tourist Notified
+(Status: CONFIRMED)             (Status: HELD_IN_ESCROW)        (In-App Notification)
+```
 
-- User Registration
-- Login
-- Logout
-- JWT Authentication
-- Protected Routes
-- Role Based Access
+## 5.2 Partner Onboarding & KYC Journey
+```text
+Business Partner
+       │
+       ▼
+Register Account (`role: BUSINESS_PARTNER`)
+       │
+       ▼
+Complete KYC Profile (Upload PAN, ID Proof, Business Proof, Bank Details)
+       │
+       ▼
+Admin Reviews KYC Documents (/api/kyc/admin/all) ──► Verified / Rejected
+       │
+       ▼
+Create Business Profile & Add Inventory (Rooms / Vehicles / Gear)
+       │
+       ▼
+Submit for Listing Approval (/api/businesses/:id/submit)
+       │
+       ▼
+Admin Approves Listing ──► Live on Public Marketplace
+```
 
----
-
-## Destination Management
-
-Users can:
-
-- Browse destinations
-- View destination details
-- View best visiting season
-- Read destination highlights
-- Explore wildlife information
-
-Admin can:
-
-- Create destinations
-- Edit destinations
-- Delete destinations
-
-
-
-## Resort Module
-
-Users can:
-
-- Browse resorts
-- View resort details
-- View amenities
-- Search resorts
-- Filter resorts
-
-Admin can:
-
-- Manage resort listings
-- Upload images
-- Update amenities
-
-
-
-## Trip Request Module
-
-Registered users can:
-
-- Submit trip requirements
-- Mention travel dates
-- Mention group size
-- Mention budget
-- Add special requirements
-
-Admin can review requests.
-
----
-
-## Proposal Module
-
-Admin creates personalized travel proposals.
-
-Proposal includes:
-
-- Resort recommendation
-- Stay duration
-- Pricing
-- Trip details
-- Additional notes
-
-Users can:
-
-- Accept proposal
-- Reject proposal
+## 5.3 Managed Safari Trip Planning Journey
+```text
+Tourist
+   │
+   ▼
+Submit Trip Request (Destination, Dates, Travelers, Budget, Notes)
+   │
+   ▼
+Admin Reviews in Admin Command Deck
+   │
+   ▼
+Admin Builds Tailored Proposal (Day-wise Itinerary, Gates, Lodges, Price)
+   │
+   ▼
+Tourist Receives Notification & Reviews Proposal
+   │
+   ├───────────────────────┬────────────────────────┐
+   ▼                       ▼                        ▼
+[Accept Proposal]    [Request Changes]      [Reject Proposal]
+   │                       │                        │
+   ▼                       ▼                        ▼
+Creates Confirmed     Admin Updates         Status: REJECTED
+Platform Booking      Proposal
+```
 
 ---
 
-## Booking Module
-
-After proposal acceptance:
-
-Admin confirms booking.
-
-Users can:
-
-- View booking details
-- View booking history
-
----
-
-## Articles Module
-
-Users can:
-
-- Read wildlife articles
-- Explore travel tips
-- Learn about destinations
-
-Admin can:
-
-- Publish articles
-- Edit articles
-- Archive articles
-
----
-
-## Experiences Module
-
-Users can:
-
-- Read travel stories
-- Browse wildlife experiences
-
-Admin manages all experiences.
-
----
-
-## Notification Module
-
-Users receive notifications for:
-
-- Proposal received
-- Booking confirmed
-- Booking updated
-- Important announcements
-
----
-
-## Admin Dashboard
-
-Admin dashboard includes:
-
-- User management
-- Destination management
-- Resort management
-- Trip request management
-- Proposal management
-- Booking management
-- Article management
-- Experience management
-- Notifications
-
----
-
-# 8. Features NOT Included in V1
-
-To keep the MVP focused, the following features are intentionally excluded.
-
-## AI Features
-
-- AI itinerary generation
-- AI travel assistant
-- AI chatbot
-- AI recommendations
-
----
-
-## Online Payments
-
-- Credit Card Payments
-- UPI Payments
-- Payment Gateway Integration
-
----
-
-## Resort Owner Portal
-
-Resort owners cannot manage their listings directly.
-
-All listings are managed by the WildConnect Admin.
-
----
-
-## Taxi Booking
-
-Not included.
-
----
-
-## Safari Ticket Booking
-
-Not included.
-
----
-
-## Camera Rental
-
-Not included.
-
----
-
-## Hotel Availability Sync
-
-Not included.
-
----
-
-## Live Chat
-
-Not included.
-
----
-
-## Wishlist
-
-Not included.
-
----
-
-## Ratings & Reviews
-
-Not included.
-
----
-
-## Coupon System
-
-Not included.
-
----
-
-## Multi-language Support
-
-Not included.
-
----
-
-## Mobile Application
-
-Only responsive web application in V1.
-
----
-
-# 9. Functional Requirements
-
-The system shall allow users to:
-
-- Register an account
-- Login securely
-- Browse destinations
-- Browse resorts
-- Search resorts
-- Submit trip requests
-- View personalized proposals
-- Accept or reject proposals
-- View bookings
-- Read articles
-- Read experiences
-- Receive notifications
-
-The system shall allow administrators to:
-
-- Manage users
-- Manage destinations
-- Manage resorts
-- Review trip requests
-- Create proposals
-- Manage bookings
-- Publish articles
-- Publish experiences
-- Send notifications
-
----
-
-# 10. Success Criteria
-
-The MVP will be considered successful if users can:
-
-- Discover wildlife destinations
-- Explore verified resorts
-- Submit trip requests
-- Receive personalized proposals
-- Confirm bookings
-- Access trip information from a single platform
-
----
-
-# 11. Future Scope (V2)
-
-After successful completion of V1, WildConnect may include:
-
-- AI-powered itinerary planning
-- AI travel assistant
-- Online payment gateway
-- Resort owner dashboard
-- Safari booking integration
-- Taxi booking
-- Camera rental booking
-- Wishlist
-- User reviews and ratings
-- Mobile application
-- Multi-language support
-- Advanced analytics
-- Recommendation engine
-- Partner portal
-- Dynamic pricing
-- Email and SMS automation
-
----
-
-# 12. MVP Summary
-
-WildConnect V1 focuses on solving one core problem:
-
-> "Provide a centralized platform where wildlife travelers can discover destinations, explore verified resorts, submit trip requests, receive personalized travel proposals, and manage bookings without visiting multiple websites."
-
-The first version prioritizes simplicity, reliability, and a scalable architecture over advanced automation, creating a strong foundation for future AI-powered features and partner integrations.
+# 6. Success Metrics & Validation
+
+The WildConnect platform is validated against the following operational criteria:
+- **Zero Double-Bookings**: Atomic transactional integrity ensures rooms, vehicles, and equipment are never over-allocated.
+- **Fast Discovery**: Seamless exploration of parks, verified lodges, safari transports, and camera gear in one unified interface.
+- **100% Verified Listings**: Mandatory Admin approval and partner KYC compliance guarantee listing quality.
+- **End-to-End Workflow**: Complete lifecycle support from initial safari inquiry to confirmed booking, escrow settlement, and verified customer reviews.

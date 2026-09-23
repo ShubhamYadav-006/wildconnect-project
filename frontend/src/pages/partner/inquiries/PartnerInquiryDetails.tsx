@@ -18,7 +18,7 @@ const PartnerInquiryDetails: React.FC = () => {
         setLoading(true);
         const res = await api.get(`/partner/inquiries/${id}`);
         setInquiry(res.data.data);
-      } catch (err: any) {
+      } catch {
         toast.error('Failed to load inquiry details');
         navigate('/partner/inquiries');
       } finally {
@@ -34,7 +34,7 @@ const PartnerInquiryDetails: React.FC = () => {
       await api.patch(`/partner/inquiries/${id}/status`, { status });
       setInquiry({ ...inquiry, status });
       toast.success(`Inquiry marked as ${status.toLowerCase()}`);
-    } catch (err: any) {
+    } catch {
       toast.error('Failed to update status');
     } finally {
       setUpdating(false);

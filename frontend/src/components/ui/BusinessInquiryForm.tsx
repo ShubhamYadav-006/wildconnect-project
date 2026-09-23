@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
-import { Send, X } from 'lucide-react';
+import { Send, X, Mail } from 'lucide-react';
 import '../../styles/public/BusinessInquiryForm.css';
 
 interface BusinessInquiryFormProps {
@@ -12,7 +12,13 @@ interface BusinessInquiryFormProps {
   defaultName?: string;
 }
 
-const BusinessInquiryForm: React.FC<BusinessInquiryFormProps> = ({ businessId, businessName, onClose, defaultEmail, defaultName }) => {
+const BusinessInquiryForm: React.FC<BusinessInquiryFormProps> = ({
+  businessId,
+  businessName,
+  onClose,
+  defaultEmail,
+  defaultName
+}) => {
   const [formData, setFormData] = useState({
     customerName: defaultName || '',
     customerEmail: defaultEmail || '',
@@ -46,34 +52,47 @@ const BusinessInquiryForm: React.FC<BusinessInquiryFormProps> = ({ businessId, b
   };
 
   return (
-    <div className="inquiry-modal-overlay">
+    <div className="inquiry-modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="inquiry-modal">
         <div className="inquiry-modal-header">
-          <h2>Enquire Now</h2>
+          <div className="inquiry-title-wrap">
+            <div className="inquiry-icon-badge">
+              <Mail size={18} />
+            </div>
+            <h2>Enquire Now</h2>
+          </div>
           <button className="close-btn" onClick={onClose} aria-label="Close">
-            <X size={24} />
+            <X size={20} />
           </button>
         </div>
         
-        <p className="inquiry-subtitle">Send a message directly to <strong>{businessName}</strong></p>
+        <p className="inquiry-subtitle">
+          Send an inquiry directly to <strong>{businessName}</strong>
+        </p>
         
         <form onSubmit={handleSubmit} className="inquiry-form">
           <div className="form-group">
-            <label>Full Name *</label>
+            <label htmlFor="customerName">
+              Full Name <span className="required-star">*</span>
+            </label>
             <input 
+              id="customerName"
               type="text" 
               name="customerName" 
               value={formData.customerName} 
               onChange={handleChange} 
               required 
-              placeholder="John Doe"
+              placeholder="e.g. John Doe"
             />
           </div>
           
           <div className="form-row">
             <div className="form-group">
-              <label>Email Address *</label>
+              <label htmlFor="customerEmail">
+                Email Address <span className="required-star">*</span>
+              </label>
               <input 
+                id="customerEmail"
                 type="email" 
                 name="customerEmail" 
                 value={formData.customerEmail} 
@@ -84,20 +103,26 @@ const BusinessInquiryForm: React.FC<BusinessInquiryFormProps> = ({ businessId, b
             </div>
             
             <div className="form-group">
-              <label>Phone Number (Optional)</label>
+              <label htmlFor="customerPhone">
+                Phone Number <span className="optional-tag">(Optional)</span>
+              </label>
               <input 
+                id="customerPhone"
                 type="tel" 
                 name="customerPhone" 
                 value={formData.customerPhone} 
                 onChange={handleChange} 
-                placeholder="+1 234 567 8900"
+                placeholder="+91 98765 43210"
               />
             </div>
           </div>
           
           <div className="form-group">
-            <label>Preferred Date (Optional)</label>
+            <label htmlFor="dateRequested">
+              Preferred Date <span className="optional-tag">(Optional)</span>
+            </label>
             <input 
+              id="dateRequested"
               type="date" 
               name="dateRequested" 
               value={formData.dateRequested} 
@@ -107,19 +132,24 @@ const BusinessInquiryForm: React.FC<BusinessInquiryFormProps> = ({ businessId, b
           </div>
 
           <div className="form-group">
-            <label>Message *</label>
+            <label htmlFor="message">
+              Message <span className="required-star">*</span>
+            </label>
             <textarea 
+              id="message"
               name="message" 
               value={formData.message} 
               onChange={handleChange} 
               required 
               rows={4}
-              placeholder="What would you like to know? E.g., availability, pricing, specific requirements..."
+              placeholder="What would you like to know? E.g., room availability, pricing, amenities, or special requests..."
             />
           </div>
 
           <button type="submit" className="submit-inquiry-btn" disabled={isSubmitting}>
-            {isSubmitting ? 'Sending...' : (
+            {isSubmitting ? (
+              <span>Sending inquiry...</span>
+            ) : (
               <>
                 <Send size={18} /> Send Inquiry
               </>

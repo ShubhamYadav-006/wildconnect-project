@@ -1,0 +1,281 @@
+/* ==========================================
+   Unauthorized Page Styles
+   WildConnect Access Control & Error State
+   ========================================== */
+
+/* ==========================================
+   Page Container & Background
+   ========================================== */
+.unauthorized-page {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-background);
+}
+
+.unauthorized-background-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(185, 74, 72, 0.08) 0%, rgba(31, 77, 58, 0.03) 50%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ==========================================
+   Card Component
+   ========================================== */
+.unauthorized-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 34rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+
+/* ==========================================
+   Icon & Badge Section
+   ========================================== */
+.unauthorized-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: var(--radius-full);
+  background-color: rgba(185, 74, 72, 0.08);
+  border: 1px solid rgba(185, 74, 72, 0.2);
+  margin-bottom: 1.75rem;
+}
+
+.unauthorized-icon {
+  color: var(--color-error);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unauthorized-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  background-color: rgba(185, 74, 72, 0.1);
+  color: var(--color-error);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.unauthorized-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-error);
+}
+
+/* ==========================================
+   Typography & Content
+   ========================================== */
+.unauthorized-title {
+  font-family: var(--font-display, var(--font-family));
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.25;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.02em;
+}
+
+.unauthorized-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  margin: 0 0 1.75rem 0;
+  max-width: 26rem;
+}
+
+/* ==========================================
+   Info Notice Box
+   ========================================== */
+.unauthorized-info-box {
+  width: 100%;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1rem 1.25rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  text-align: left;
+}
+
+.unauthorized-info-icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.unauthorized-info-text {
+  font-size: 0.825rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.unauthorized-info-text strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* ==========================================
+   Action Buttons
+   ========================================== */
+.unauthorized-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.unauthorized-btn-link {
+  text-decoration: none;
+  display: inline-flex;
+  flex: 1;
+}
+
+.unauthorized-btn-login {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-default);
+}
+
+.unauthorized-btn-login:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.unauthorized-btn-dashboard {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: var(--radius-xl);
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-border);
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition-default);
+}
+
+.unauthorized-btn-dashboard:hover {
+  border-color: var(--color-primary);
+  background-color: rgba(31, 77, 58, 0.04);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+/* ==========================================
+   Footer Assistance
+   ========================================== */
+.unauthorized-footer {
+  margin-top: 1.75rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.unauthorized-footer-link {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition-snappy);
+}
+
+.unauthorized-footer-link:hover {
+  text-decoration: underline;
+  color: var(--color-primary-dark);
+}
+
+/* ==========================================
+   Responsive Media Queries
+   ========================================== */
+@media (max-width: 768px) {
+  .unauthorized-card {
+    padding: 2.25rem 1.75rem;
+  }
+
+  .unauthorized-title {
+    font-size: 1.5rem;
+  }
+
+  .unauthorized-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .unauthorized-btn-link {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .unauthorized-page {
+    padding: 2rem 1rem;
+  }
+
+  .unauthorized-card {
+    padding: 2rem 1.25rem;
+    border-radius: var(--radius-xl);
+  }
+
+  .unauthorized-icon-wrapper {
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .unauthorized-info-box {
+    padding: 0.875rem 1rem;
+  }
+}

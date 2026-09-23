@@ -9,8 +9,8 @@ import StatusBadge from '../../../components/badges/StatusBadge';
 import Card from '../../../components/cards/Card';
 import SecondaryButton from '../../../components/buttons/SecondaryButton';
 import ConfirmationDialog from '../../../components/modals/ConfirmationDialog';
-import '../../../styles/pages/DashboardSubpages.css';
-import '../../../styles/pages/Dashboard.css';
+import '../../../styles/tourist/DashboardSubpages.css';
+import '../../../styles/tourist/Dashboard.css';
 
 export const Bookings = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);

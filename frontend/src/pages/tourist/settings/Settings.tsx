@@ -10,8 +10,8 @@ import api from '../../../services/api';
 import Input from '../../../components/forms/Input';
 import PrimaryButton from '../../../components/buttons/PrimaryButton';
 import SecondaryButton from '../../../components/buttons/SecondaryButton';
-import '../../../styles/pages/DashboardSubpages.css';
-import '../../../styles/pages/Dashboard.css';
+import '../../../styles/tourist/DashboardSubpages.css';
+import '../../../styles/tourist/Dashboard.css';
 
 const passwordSchema = z.object({
   currentPassword: z.string().min(6, 'Password must be at least 6 characters'),

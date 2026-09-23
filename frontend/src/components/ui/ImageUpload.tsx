@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { UploadCloud, X, Star, MoveLeft, MoveRight } from 'lucide-react';
+import { UploadCloud, X, Star, MoveLeft, MoveRight, Link as LinkIcon, Plus } from 'lucide-react';
 import { uploadService } from '../../services/upload.service';
 import toast from 'react-hot-toast';
 import LoadingSpinner from './LoadingSpinner';
@@ -17,6 +17,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [urlInput, setUrlInput] = useState('');
 
   // Combine coverImage and images for display, making sure coverImage is distinct or handled appropriately
   const allImages = coverImage ? [coverImage, ...images.filter(img => img !== coverImage)] : images;
@@ -32,8 +33,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
     try {
       setIsUploading(true);
       const urls = await uploadService.uploadImages(files);
+      const uploadedUrls = Array.isArray(urls) ? urls : (urls as any)?.data || [];
 
-      const newImages = [...allImages, ...urls];
+      const newImages = [...allImages, ...uploadedUrls];
       let newCover = coverImage;
 
       if (!newCover && newImages.length > 0) {
@@ -51,6 +53,45 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
         fileInputRef.current.value = '';
       }
     }
+  };
+
+  const handleAddUrl = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!urlInput.trim()) return;
+
+    // Split by comma or whitespace/newlines in case user pastes multiple URLs
+    const urlsToAdd = urlInput
+      .split(/[\n,]+/)
+      .map(u => u.trim())
+      .filter(u => u.length > 0);
+
+    const validUrls: string[] = [];
+    for (const url of urlsToAdd) {
+      if (
+        url.startsWith('http://') ||
+        url.startsWith('https://') ||
+        url.startsWith('/') ||
+        url.startsWith('data:image/')
+      ) {
+        validUrls.push(url);
+      } else {
+        toast.error(`Invalid URL: ${url.length > 30 ? url.substring(0, 30) + '...' : url}. Must start with http:// or https://`);
+      }
+    }
+
+    if (validUrls.length === 0) return;
+
+    const newImages = [...allImages, ...validUrls];
+    let newCover = coverImage;
+
+    if (!newCover && newImages.length > 0) {
+      newCover = newImages[0];
+    }
+
+    const newGallery = newImages.filter(img => img !== newCover);
+    onChange(newCover, newGallery);
+    setUrlInput('');
+    toast.success(validUrls.length === 1 ? 'Image link added!' : `${validUrls.length} image links added!`);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -101,11 +142,8 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
   const moveImage = (index: number, direction: 'left' | 'right') => {
     if (disabled) return;
 
-    // We only reorder within the gallery, cover image remains static
-    // allImages[0] is coverImage if it exists. 
-    // index in allImages corresponds to the display.
     const imgUrl = allImages[index];
-    if (imgUrl === coverImage) return; // Can't move cover image
+    if (imgUrl === coverImage) return;
 
     const galleryIndex = images.indexOf(imgUrl);
     if (galleryIndex === -1) return;
@@ -122,15 +160,49 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
 
   // Helper function to resolve the API URL for local images
   const resolveImageUrl = (url: string) => {
-    if (url.startsWith('http')) return url;
+    if (url.startsWith('http') || url.startsWith('data:')) return url;
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
-    // Remove /api/v1 to just get the base domain for static files
     const BASE_URL = API_URL.replace('/api/v1', '');
     return `${BASE_URL}${url}`;
   };
 
   return (
     <div className="image-upload-container">
+      {/* Option 1: Direct Image Link / URL Input */}
+      <div className="image-url-input-box">
+        <div className="image-url-input-wrapper">
+          <LinkIcon size={16} className="image-url-icon" />
+          <input
+            type="url"
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleAddUrl();
+              }
+            }}
+            placeholder="Paste image link / web URL (e.g. Unsplash, CDN link)..."
+            className="image-url-field"
+            disabled={disabled || isUploading}
+          />
+          <button
+            type="button"
+            onClick={() => handleAddUrl()}
+            disabled={disabled || !urlInput.trim() || isUploading}
+            className="image-url-add-btn"
+          >
+            <Plus size={16} />
+            <span>Add Link</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="image-upload-divider">
+        <span>or upload files</span>
+      </div>
+
+      {/* Option 2: Drag & Drop File Upload */}
       <div
         className={`upload-dropzone ${isDragging ? 'drag-active' : ''} ${disabled ? 'disabled' : ''}`}
         onDragOver={handleDragOver}
@@ -155,24 +227,31 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
           </div>
         ) : (
           <div className="upload-prompt">
-            <UploadCloud size={32} />
-            <h4>Click or drag images here to upload</h4>
+            <UploadCloud size={28} />
+            <h4>Click or drag image files here</h4>
             <p>Support for JPG, PNG, WebP up to 5MB</p>
           </div>
         )}
       </div>
 
+      {/* Image Gallery Preview Grid */}
       {allImages.length > 0 && (
         <div className="image-gallery-grid">
           {allImages.map((imgUrl, index) => (
             <div key={`${imgUrl}-${index}`} className={`image-card ${imgUrl === coverImage ? 'is-primary' : ''}`}>
-              <img src={resolveImageUrl(imgUrl)} alt={`Gallery item ${index}`} />
+              <img
+                src={resolveImageUrl(imgUrl)}
+                alt={`Gallery item ${index}`}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80';
+                }}
+              />
 
               <div className="image-card-overlay">
                 {imgUrl === coverImage ? (
-                  <span className="primary-badge">Cover Image</span>
+                  <span className="primary-badge">Cover Photo</span>
                 ) : (
-                  <span /> /* spacer */
+                  <span />
                 )}
 
                 {!disabled && (

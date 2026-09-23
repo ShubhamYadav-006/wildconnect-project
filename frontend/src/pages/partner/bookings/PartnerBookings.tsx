@@ -38,7 +38,7 @@ const PartnerBookings: React.FC = () => {
       setLoading(true);
       const res = await api.get('/business-bookings/partner');
       setBookings(Array.isArray(res?.data?.data) ? res.data.data : []);
-    } catch (err) {
+    } catch {
       toast.error('Failed to load bookings');
     } finally {
       setLoading(false);

@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, User as UserIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import wildConnectLogo from '../../assets/Tiger&Logo Image/logo.png';
 import '../../styles/components/Navbar.css';
 
 const Navbar = () => {
@@ -17,15 +18,18 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="navbar-brand">
-          <span>WildConnect</span>
+        <Link to="/" className="navbar-brand" aria-label="WildConnect Home">
+          <img
+            src={wildConnectLogo}
+            alt="WildConnect Logo"
+            className="navbar-logo-img"
+          />
         </Link>
-
         {/* Desktop Links */}
         <div className="navbar-links">
           <Link to="/destinations" className="navbar-link">Destinations</Link>
-          <Link to="/resorts" className="navbar-link">Accommodations</Link>
-          <Link to="/experiences" className="navbar-link">Experiences</Link>
+          <Link to="/businesses" className="navbar-link">Tourism Services</Link>
+          <Link to="/articles" className="navbar-link">Articles</Link>
           <Link to="/contact" className="navbar-link">Contact Us</Link>
         </div>
 
@@ -76,13 +80,13 @@ const Navbar = () => {
         </button>
       </div>
 
-        {/* Mobile Menu Drawer */}
+      {/* Mobile Menu Drawer */}
       {isOpen && (
         <div className="navbar-mobile-menu">
           <div className="navbar-mobile-links">
             <Link to="/destinations" onClick={() => setIsOpen(false)} className="navbar-link">Destinations</Link>
-            <Link to="/resorts" onClick={() => setIsOpen(false)} className="navbar-link">Resorts</Link>
-            <Link to="/experiences" onClick={() => setIsOpen(false)} className="navbar-link">Experiences</Link>
+            <Link to="/businesses" onClick={() => setIsOpen(false)} className="navbar-link">Tourism Services</Link>
+            <Link to="/articles" onClick={() => setIsOpen(false)} className="navbar-link">Articles</Link>
             <Link to="/contact" onClick={() => setIsOpen(false)} className="navbar-link">Contact</Link>
 
             {!isAuthenticated ? (

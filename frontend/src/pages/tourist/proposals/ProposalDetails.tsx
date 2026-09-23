@@ -10,7 +10,7 @@ import Card from '../../../components/cards/Card';
 import PrimaryButton from '../../../components/buttons/PrimaryButton';
 import SecondaryButton from '../../../components/buttons/SecondaryButton';
 import ConfirmationDialog from '../../../components/modals/ConfirmationDialog';
-import '../../../styles/pages/ProposalDetails.css';
+import '../../../styles/tourist/ProposalDetails.css';
 
 export const ProposalDetails = () => {
   const { id } = useParams<{ id: string }>();

@@ -15,54 +15,97 @@ export class BusinessService {
     return slug;
   }
 
-  async createBusiness(userId: string, data: any) {
+  async createBusiness(userId: string, data: any, role?: string) {
     const slug = await this.generateUniqueSlug(data.name);
     const destinationId = data.destinationId ? data.destinationId : null;
+    const targetUserId = (role === 'ADMIN' && data.userId) ? data.userId : userId;
+    const status = (role === 'ADMIN' && data.status) ? data.status : (role === 'ADMIN' ? 'APPROVED' : 'DRAFT');
+    const verifiedAt = status === 'APPROVED' ? new Date() : null;
+
+    const payload = { ...data };
+    delete payload.userId;
+    delete payload.status;
+
     return businessRepository.create({
-      ...data,
+      ...payload,
       destinationId,
       slug,
-      userId,
-      status: 'DRAFT', // Default to draft
+      userId: targetUserId,
+      status,
+      verifiedAt,
     });
   }
 
-  async updateBusiness(id: string, userId: string, data: any) {
+  async updateBusiness(id: string, userId: string, data: any, role?: string) {
     const business = await businessRepository.findById(id);
-    if (!business) throw new NotFoundError('Business not found');
-    if (business.userId !== userId) throw new UnauthorizedError('Not authorized to update this business');
-
-    if (data.name && data.name !== business.name) {
-      data.slug = await this.generateUniqueSlug(data.name);
-    }
+    if (!business || business.deletedAt !== null) throw new NotFoundError('Business not found');
+    if (role !== 'ADMIN' && business.userId !== userId) throw new UnauthorizedError('Not authorized to update this business');
 
     if (data.destinationId !== undefined) {
       data.destinationId = data.destinationId ? data.destinationId : null;
     }
 
-    // Trigger re-verification if editing an approved business
-    if (business.status === 'APPROVED') {
-      data.status = 'PENDING_REVIEW';
-      await notificationService.createNotification({
-        userId,
-        title: 'Business Sent for Re-verification',
-        message: `Your recent edits to "${business.name}" require re-verification by an admin. It has been sent for review.`,
-        type: 'BUSINESS_PENDING' as any,
-        referenceId: business.id
-      });
-    } else {
-      // Cannot update status directly via this method unless it's dropping to pending
-      delete data.status;
-    }
-    
     delete data.rejectionReason;
 
+    // Admin direct update bypasses staging and updates live directly
+    if (role === 'ADMIN') {
+      if (data.name && data.name !== business.name) {
+        data.slug = await this.generateUniqueSlug(data.name);
+      }
+      if (data.userId !== undefined) {
+        if (!data.userId) {
+          delete data.userId;
+        }
+      }
+      return businessRepository.update(id, data);
+    }
+
+    // TIERED UPDATES: If listing is already APPROVED
+    if (business.status === 'APPROVED') {
+      const isCriticalChange = (data.name && data.name !== business.name) ||
+        (data.type && data.type !== business.type) ||
+        (data.destinationId !== undefined && data.destinationId !== business.destinationId);
+
+      if (isCriticalChange) {
+        // Stage critical edits in pendingUpdates without taking listing offline
+        const stagedUpdates = {
+          ...(business.pendingUpdates as object || {}),
+          ...data,
+          requestedAt: new Date().toISOString(),
+        };
+
+        const updated = await businessRepository.update(id, {
+          pendingUpdates: stagedUpdates,
+        });
+
+        await notificationService.createNotification({
+          userId,
+          title: 'Critical Edits Staged for Review',
+          message: `Your changes to core details of "${business.name}" have been staged for admin review. Your live listing remains active.`,
+          type: 'BUSINESS_PENDING' as any,
+          referenceId: business.id,
+        });
+
+        return updated;
+      }
+
+      // Minor edits (photos, description, amenities, contact) auto-apply immediately with zero downtime!
+      delete data.status;
+      return businessRepository.update(id, data);
+    }
+
+    // If listing is DRAFT or REJECTED
+    if (data.name && data.name !== business.name) {
+      data.slug = await this.generateUniqueSlug(data.name);
+    }
+
+    delete data.status;
     return businessRepository.update(id, data);
   }
 
   async submitForReview(id: string, userId: string) {
     const business = await businessRepository.findById(id);
-    if (!business) throw new NotFoundError('Business not found');
+    if (!business || business.deletedAt !== null) throw new NotFoundError('Business not found');
     if (business.userId !== userId) throw new UnauthorizedError('Not authorized');
 
     const updated = await businessRepository.update(id, { status: 'PENDING_REVIEW' });
@@ -73,6 +116,53 @@ export class BusinessService {
       message: `Your business "${business.name}" has been successfully submitted and is pending admin review.`,
       type: 'BUSINESS_PENDING' as any,
       referenceId: business.id
+    });
+
+    return updated;
+  }
+
+  async approvePendingUpdates(id: string) {
+    const business = await businessRepository.findById(id);
+    if (!business || !business.pendingUpdates) throw new NotFoundError('No pending updates found');
+
+    const pending = business.pendingUpdates as any;
+    delete pending.requestedAt;
+
+    if (pending.name && pending.name !== business.name) {
+      pending.slug = await this.generateUniqueSlug(pending.name);
+    }
+
+    const updated = await businessRepository.update(id, {
+      ...pending,
+      pendingUpdates: Prisma.DbNull,
+      verifiedAt: new Date(),
+    });
+
+    await notificationService.createNotification({
+      userId: business.userId,
+      title: 'Critical Edits Approved',
+      message: `Your staged changes for "${business.name}" have been approved and merged into your live listing.`,
+      type: 'BUSINESS_APPROVED' as any,
+      referenceId: business.id,
+    });
+
+    return updated;
+  }
+
+  async rejectPendingUpdates(id: string, rejectionReason?: string) {
+    const business = await businessRepository.findById(id);
+    if (!business || !business.pendingUpdates) throw new NotFoundError('No pending updates found');
+
+    const updated = await businessRepository.update(id, {
+      pendingUpdates: Prisma.DbNull,
+    });
+
+    await notificationService.createNotification({
+      userId: business.userId,
+      title: 'Staged Edits Rejected',
+      message: `Your staged changes for "${business.name}" were rejected. Reason: ${rejectionReason || 'Does not meet listing standards.'}. Your live listing continues unchanged.`,
+      type: 'BUSINESS_REJECTED' as any,
+      referenceId: business.id,
     });
 
     return updated;
@@ -127,19 +217,27 @@ export class BusinessService {
     return updated;
   }
 
+  async deleteBusiness(id: string) {
+    const business = await businessRepository.findById(id);
+    if (!business) throw new NotFoundError('Business not found');
+
+    await businessRepository.softDelete(id);
+    return { message: 'Business deleted successfully' };
+  }
+
   async getMyBusinesses(userId: string) {
     return businessRepository.findByUserId(userId);
   }
 
   async getMyBusinessById(id: string, userId: string) {
     const business = await businessRepository.findById(id);
-    if (!business) throw new NotFoundError('Business not found');
+    if (!business || business.deletedAt !== null) throw new NotFoundError('Business not found');
     if (business.userId !== userId) throw new UnauthorizedError('Not authorized');
     return business;
   }
 
   async getPublicBusinesses(filters: any = {}) {
-    return businessRepository.findAll({ ...filters, status: 'APPROVED' });
+    return businessRepository.findAll({ ...filters, status: 'APPROVED', deletedAt: null });
   }
 
   async getAdminBusinesses(filters: any = {}) {
@@ -153,8 +251,18 @@ export class BusinessService {
   }
 
   async getPublicBusinessBySlug(slug: string) {
-    const business = await businessRepository.findBySlug(slug);
-    if (!business || business.status !== 'APPROVED') {
+    let business = await businessRepository.findBySlug(slug);
+    if (!business) {
+      const allApproved = await businessRepository.findAll({ status: 'APPROVED', deletedAt: null });
+      business = allApproved.find((b: any) => 
+        b.slug === slug || 
+        b.id === slug ||
+        b.slug.startsWith(slug) ||
+        slug.startsWith(b.slug) ||
+        b.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === slug
+      ) || null;
+    }
+    if (!business || business.status !== 'APPROVED' || business.deletedAt !== null) {
       throw new NotFoundError('Business not found');
     }
     return business;

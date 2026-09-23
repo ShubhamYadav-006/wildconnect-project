@@ -38,7 +38,7 @@ const PartnerInquiries: React.FC = () => {
       setLoading(true);
       const response = await api.get('/partner/inquiries');
       setInquiries(Array.isArray(response?.data?.data) ? response.data.data : []);
-    } catch (error: any) {
+    } catch {
       toast.error('Failed to load inquiries');
     } finally {
       setLoading(false);

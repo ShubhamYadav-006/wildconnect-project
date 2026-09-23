@@ -46,3 +46,10 @@ export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
   const result = await userService.getAllUsers();
   res.status(200).json(ApiResponse.success('Users retrieved successfully', result));
 });
+
+export const updateUserRole = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.params.id as string;
+  const { role } = req.body;
+  const updatedUser = await userService.updateUserRole(userId, role);
+  res.status(200).json(ApiResponse.success(`User role updated to ${role} successfully`, updatedUser));
+});

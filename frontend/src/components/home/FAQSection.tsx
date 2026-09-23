@@ -1,5 +1,12 @@
+/* ==========================================================
+   FAQSection Component
+   ----------------------------------------------------------
+   Purpose:
+   Interactive Frequently Asked Questions section for WildConnect.
+ ========================================================== */
+
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { HelpCircle, ChevronDown } from "lucide-react";
 
 import "../../styles/home/FAQSection.css";
 
@@ -40,65 +47,46 @@ const FAQSection = () => {
 
   return (
     <section className="faq-section">
-
       <div className="faq-container">
-
         {/* Section Heading */}
         <div className="faq-header">
-
-          <span className="faq-subtitle">
-            FAQ
-          </span>
-
-          <h2 className="faq-title">
-            Frequently Asked Questions
-          </h2>
-
+          <span className="faq-badge">FAQ</span>
+          <h2 className="faq-title">Frequently Asked Questions</h2>
           <p className="faq-description">
-            Everything you need to know before planning your
-            wildlife adventure with WildConnect.
+            Everything you need to know before planning your wildlife adventure with WildConnect.
           </p>
-
         </div>
 
-        {/* FAQ List (Interactive Accordions) */}
+        {/* FAQ Accordion List */}
         <div className="faq-list">
-
           {faqs.map((faq, index) => {
             const isOpen = activeIndex === index;
             return (
-              <div
-                key={index}
-                className="faq-item"
-              >
-
+              <div key={index} className={`faq-card ${isOpen ? "open" : ""}`}>
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className={`faq-trigger ${isOpen ? "active" : ""}`}
+                  className="faq-question-btn"
+                  aria-expanded={isOpen}
                 >
-                  <span className="faq-question">{faq.question}</span>
+                  <div className="faq-question-left">
+                    <HelpCircle size={20} className="faq-question-icon" />
+                    <h3 className="faq-question-text">{faq.question}</h3>
+                  </div>
+
                   <ChevronDown
-                    size={18}
-                    className="faq-icon"
+                    size={20}
+                    className={`faq-chevron ${isOpen ? "rotated" : ""}`}
                   />
                 </button>
 
-                <div
-                  className={`faq-collapse ${isOpen ? "open" : ""}`}
-                >
-                  <p className="faq-answer">
-                    {faq.answer}
-                  </p>
+                <div className={`faq-collapse-body ${isOpen ? "expanded" : ""}`}>
+                  <p className="faq-answer-text">{faq.answer}</p>
                 </div>
-
               </div>
             );
           })}
-
         </div>
-
       </div>
-
     </section>
   );
 };

@@ -28,13 +28,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/resorts" className="footer-link">
-                  Resorts
-                </Link>
-              </li>
-              <li>
-                <Link to="/experiences" className="footer-link">
-                  Experiences
+                <Link to="/businesses" className="footer-link">
+                  Tourism Services
                 </Link>
               </li>
             </ul>

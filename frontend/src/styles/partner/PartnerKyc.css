@@ -1,0 +1,170 @@
+/* ==========================================================
+   Partner KYC Compliance Stylesheet
+   ========================================================== */
+
+.partner-kyc-container {
+  padding: 1.5rem 0;
+  max-width: 1000px;
+}
+
+.partner-kyc-header {
+  margin-bottom: 2rem;
+}
+
+.partner-kyc-title {
+  font-family: var(--font-editorial, 'Playfair Display', serif);
+  font-size: 1.875rem;
+  color: var(--color-text-primary, #26332D);
+  margin-bottom: 0.5rem;
+}
+
+.partner-kyc-subtitle {
+  color: var(--color-text-muted, #6F7B73);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Status Banner */
+.kyc-status-banner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-lg, 0.75rem);
+  margin-bottom: 2rem;
+  background-color: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+}
+
+.kyc-status-banner.verified {
+  background-color: #EBF5EE;
+  border-color: #A3D4AE;
+  color: #1F4D3A;
+}
+
+.kyc-status-banner.pending {
+  background-color: #FFF9EB;
+  border-color: #F8DA8B;
+  color: #8C5E00;
+}
+
+.kyc-status-banner.rejected {
+  background-color: #FDF2F2;
+  border-color: #F8B4B4;
+  color: #9B1C1C;
+}
+
+.kyc-status-icon {
+  flex-shrink: 0;
+}
+
+.kyc-status-content h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.kyc-status-content p {
+  font-size: 0.9rem;
+}
+
+/* Form Sections */
+.kyc-form-card {
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.kyc-section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border, #DCE2DC);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kyc-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.kyc-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.kyc-form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #26332D);
+}
+
+.kyc-form-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: var(--radius-md, 0.5rem);
+  font-size: 0.95rem;
+  color: var(--color-text-primary, #26332D);
+  background-color: var(--color-surface, #FFFFFF);
+  transition: border-color 0.2s;
+}
+
+.kyc-form-input:focus {
+  outline: none;
+  border-color: var(--color-primary, #1F4D3A);
+}
+
+.kyc-form-input:disabled {
+  background-color: #F7F5EF;
+  cursor: not-allowed;
+}
+
+.kyc-helper-text {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #6F7B73);
+}
+
+/* Submit Bar */
+.kyc-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.kyc-btn-submit {
+  padding: 0.875rem 2rem;
+  background-color: var(--color-primary, #1F4D3A);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-md, 0.5rem);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.kyc-btn-submit:hover {
+  background-color: var(--color-primary-dark, #16382B);
+}
+
+.kyc-btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .kyc-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}

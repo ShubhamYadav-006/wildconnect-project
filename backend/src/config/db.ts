@@ -1,31 +1,23 @@
+import { neonConfig } from '@neondatabase/serverless';
+import { PrismaNeon } from '@prisma/adapter-neon';
+import ws from 'ws';
 import { PrismaClient } from '../generated/prisma/index.js';
-import pg from 'pg';
-import { PrismaPg } from '@prisma/adapter-pg';
 import { env } from './env.js';
+import { logger } from './logger.js';
 
-let connectionString = env.DATABASE_URL;
+neonConfig.webSocketConstructor = ws;
 
-// Ensure libpq compatibility for pg-connection-string to silence SSL mode deprecation warnings
-if (connectionString && connectionString.includes('sslmode=') && !connectionString.includes('uselibpqcompat=')) {
-  const separator = connectionString.includes('?') ? '&' : '?';
-  connectionString = `${connectionString}${separator}uselibpqcompat=true`;
-}
-
-const pool = new pg.Pool({ 
-  connectionString,
-  max: 10,                       // Connection pool capacity
-  idleTimeoutMillis: 30000,       // Keep idle connections active for 30s before closing
-  connectionTimeoutMillis: 15000, // Increased timeout to 15s to handle serverless cold starts & network latency
-  keepAlive: true,                // Enable TCP keepalive to prevent silent socket drops
-});
-
-pool.on('error', (err) => {
-  console.error('Unexpected error on idle PostgreSQL client:', err);
-});
-
-const adapter = new PrismaPg(pool);
+const adapter = new PrismaNeon(
+  { connectionString: env.DATABASE_URL.trim() },
+  {
+    onConnectionError: (err: Error) => {
+      logger.warn(`Neon database connection notice: ${err.message}`);
+    },
+    onPoolError: (err: Error) => {
+      logger.warn(`Neon database pool notice: ${err.message}`);
+    },
+  }
+);
 
 export const prisma = new PrismaClient({ adapter });
-
-
 

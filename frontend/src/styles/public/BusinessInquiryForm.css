@@ -1,35 +1,58 @@
+/* ==========================================
+   Inquiry Modal Overlay & Backdrop
+========================================== */
 .inquiry-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(15, 23, 42, 0.65);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(4px);
-  padding: 1rem;
+  backdrop-filter: blur(5px);
+  padding: 1.25rem;
+  animation: fadeIn 0.2s ease-out;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ==========================================
+   Inquiry Modal Dialog Box
+========================================== */
 .inquiry-modal {
-  background-color: var(--color-background);
-  border-radius: var(--radius-lg);
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #dce2dc);
+  border-radius: var(--radius-xl, 1rem);
   width: 100%;
-  max-width: 600px;
+  max-width: 580px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: var(--shadow-lg);
-  padding: 2rem;
-  animation: slideUp 0.3s ease-out;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.25);
+  padding: 2rem 2.25rem;
+  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
+/* ==========================================
+   Modal Header & Subtitle
+========================================== */
 .inquiry-modal-header {
   display: flex;
   justify-content: space-between;
@@ -37,40 +60,128 @@
   margin-bottom: 0.5rem;
 }
 
+.inquiry-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.inquiry-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md, 8px);
+  background-color: rgba(31, 77, 58, 0.1);
+  color: var(--color-primary, #1f4d3a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .inquiry-modal-header h2 {
-  font-size: 1.5rem;
-  color: var(--color-text);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text-primary, #26332d);
   margin: 0;
 }
 
 .close-btn {
-  background: none;
+  background: #f3f4f6;
   border: none;
-  color: var(--color-text-light);
+  color: #4b5563;
   cursor: pointer;
-  padding: 0.25rem;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-full, 9999px);
   transition: all 0.2s ease;
 }
 
 .close-btn:hover {
-  background-color: var(--color-background-alt);
-  color: var(--color-text);
+  background-color: #e5e7eb;
+  color: #111827;
+  transform: rotate(90deg);
 }
 
 .inquiry-subtitle {
-  color: var(--color-text-light);
-  margin-bottom: 2rem;
-  font-size: 0.95rem;
+  color: var(--color-text-muted, #6f7b73);
+  margin: 0 0 1.75rem 0;
+  font-size: 0.925rem;
+  line-height: 1.4;
 }
 
+.inquiry-subtitle strong {
+  color: var(--color-text-primary, #26332d);
+}
+
+/* ==========================================
+   Form Layout & Input Controls
+========================================== */
 .inquiry-form {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #26332d);
+  display: flex;
+  align-items: center;
+}
+
+.required-star {
+  color: #dc2626;
+  margin-left: 0.2rem;
+}
+
+.optional-tag {
+  color: var(--color-text-muted, #6f7b73);
+  font-weight: 400;
+  font-size: 0.775rem;
+  margin-left: 0.35rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 0.95rem;
+  border: 1.5px solid var(--color-border, #dce2dc);
+  border-radius: var(--radius-md, 8px);
+  background-color: #ffffff;
+  color: var(--color-text-primary, #26332d);
+  font-size: 0.925rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--color-primary, #1f4d3a);
+  box-shadow: 0 0 0 3.5px rgba(31, 77, 58, 0.12);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 90px;
 }
 
 .form-row {
@@ -79,38 +190,58 @@
   gap: 1rem;
 }
 
+/* ==========================================
+   Submit Button & States
+========================================== */
 .submit-inquiry-btn {
-  background-color: var(--color-primary);
-  color: white;
+  background-color: var(--color-primary, #1f4d3a);
+  color: #ffffff;
   border: none;
-  border-radius: var(--radius-md);
-  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md, 8px);
+  padding: 0.85rem 1.5rem;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.975rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-top: 1rem;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 12px rgba(31, 77, 58, 0.2);
 }
 
 .submit-inquiry-btn:hover:not(:disabled) {
-  background-color: var(--color-primary-dark);
+  background-color: var(--color-primary-dark, #16382b);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(31, 77, 58, 0.28);
+}
+
+.submit-inquiry-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .submit-inquiry-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.65;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
+/* ==========================================
+   Responsive Breakpoints
+========================================== */
 @media (max-width: 640px) {
   .form-row {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
   
   .inquiry-modal {
-    padding: 1.5rem;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .inquiry-modal-header h2 {
+    font-size: 1.25rem;
   }
 }

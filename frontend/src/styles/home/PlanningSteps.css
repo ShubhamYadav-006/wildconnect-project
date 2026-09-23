@@ -1,188 +1,223 @@
+/* ==========================================================
+   PlanningSteps Styles
+   WildConnect Luxury Safari Design System
+   Full Responsive Layout with Relative Units
+   ========================================================== */
+
 /* ==========================================
-   Planning Steps Section Layout
-   ========================================== */
+   Planning Section Container
+========================================== */
 .planning-section {
-  max-width: var(--max-width-7xl);
-  margin: 0 auto;
-  padding: 4rem 1rem;
-}
-
-@media (min-width: 640px) {
-  .planning-section {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .planning-section {
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-  }
+  padding: 2.25rem 0;
+  background-color: var(--color-background, #F7F5EF);
 }
 
 .planning-container {
+  max-width: 1240px;
   width: 100%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 /* ==========================================
    Section Header
-   ========================================== */
+========================================== */
 .planning-header {
   text-align: center;
-  max-width: 42rem;
-  margin: 0 auto 3.5rem auto;
+  max-width: 44rem;
+  margin: 0 auto 0.75rem auto;
 }
 
-.planning-subtitle {
-  color: var(--color-secondary);
-  font-weight: 700;
+.planning-badge {
+  display: inline-block;
+  font-family: var(--font-display, 'Outfit', sans-serif);
   font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: block;
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
+  color: var(--color-secondary, #6B8E5A);
+  margin: 0 0 0.25rem 0;
 }
 
 .planning-title {
-  font-family: var(--font-editorial);
-  font-size: 1.875rem;
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  line-height: 1.25;
   font-weight: 700;
-  color: var(--color-text-primary);
-  line-height: 1.2;
-  margin: 0;
-}
-
-@media (min-width: 640px) {
-  .planning-title {
-    font-size: 2.25rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .planning-title {
-    font-size: 2.5rem;
-  }
+  color: var(--color-primary, #1F4D3A);
+  margin: 0 0 0.375rem 0;
 }
 
 .planning-description {
-  color: var(--color-text-muted);
-  font-family: var(--font-family);
-  font-size: 1rem;
-  margin-top: 1rem;
-  line-height: 1.625;
-}
-
-/* ==========================================
-   Planning Grid & Card Design
-   ========================================== */
-.planning-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-}
-
-@media (min-width: 640px) {
-  .planning-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .planning-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2.5rem;
-  }
-}
-
-.planning-card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-2xl);
-  padding: 2.25rem 1.75rem;
-  text-align: center;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-default);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.planning-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: rgb(var(--secondary) / 0.5);
-}
-
-.planning-icon-wrapper {
-  width: 4rem;
-  height: 4rem;
-  border-radius: var(--radius-full);
-  border: 2px solid var(--color-border);
-  background-color: var(--color-background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  color: var(--color-primary);
-  transition: var(--transition-default);
-}
-
-.planning-card:hover .planning-icon-wrapper {
-  background-color: var(--color-primary);
-  color: #ffffff;
-  border-color: var(--color-primary);
-  transform: scale(1.05);
-}
-
-.planning-icon {
-  color: inherit;
-}
-
-.planning-card-title {
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  margin: 0 0 0.875rem 0;
-  line-height: 1.4;
-}
-
-.planning-card-text {
-  color: var(--color-text-muted);
-  font-family: var(--font-family);
-  font-size: 0.875rem;
-  line-height: 1.6;
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.9375rem;
+  color: var(--color-text-muted, #6F7B73);
+  line-height: 1.5;
   margin: 0;
 }
 
 /* ==========================================
-   Planning CTA Action Button
-   ========================================== */
+   Steps Grid & Cards
+========================================== */
+.planning-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.125rem;
+  margin-bottom: 1.25rem;
+}
+
+.planning-card {
+  background: var(--color-surface, #FFFFFF);
+  border-radius: 0.75rem;
+  padding: 1.375rem 1.125rem;
+  border: 1px solid var(--color-border, #DCE2DC);
+  position: relative;
+  box-shadow: 0 3px 12px rgba(38, 51, 45, 0.03);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.planning-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(31, 77, 58, 0.08);
+  border-color: rgba(31, 77, 58, 0.25);
+}
+
+.planning-step-number {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  background: var(--color-background, #F7F5EF);
+  color: var(--color-primary, #1F4D3A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  margin-bottom: 0.875rem;
+  border: 1px solid var(--color-border, #DCE2DC);
+}
+
+.planning-card-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin-bottom: 0.375rem;
+  line-height: 1.25;
+}
+
+.planning-card-text {
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted, #6F7B73);
+  line-height: 1.5;
+}
+
+/* ==========================================
+   CTA Action Button
+========================================== */
 .planning-action-wrapper {
   text-align: center;
-  margin-top: 3.5rem;
 }
 
 .planning-action-btn {
-  background-color: var(--color-accent);
-  color: #ffffff;
-  padding: 0.9rem 2.25rem;
-  border-radius: var(--radius-full);
-  font-weight: 700;
-  font-family: var(--font-family);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-default);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.375rem;
+  padding: 0.625rem 1.5rem;
+  border-radius: 9999px;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  background-color: var(--color-primary, #1F4D3A);
+  color: #FFFFFF;
   text-decoration: none;
-  display: inline-block;
+  border: 1px solid transparent;
+  box-shadow: 0 3px 10px rgba(31, 77, 58, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .planning-action-btn:hover {
-  background-color: rgb(var(--accent) / 0.95);
-  box-shadow: 0 8px 25px rgba(217, 107, 39, 0.3);
-  transform: translateY(-2px);
+  background-color: var(--color-primary-dark, #16382B);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(31, 77, 58, 0.3);
+  color: #FFFFFF;
+}
+
+/* ==========================================
+   Responsive Breakpoints
+   - 1200px (Desktop)
+   - 992px (Laptop)
+   - 768px (Tablet)
+   - 480px (Mobile)
+========================================== */
+
+/* 1200px - Desktop */
+@media (max-width: 1200px) {
+  .planning-container {
+    padding: 0 1.25rem;
+  }
+}
+
+/* 992px - Laptop */
+@media (max-width: 992px) {
+  .planning-section {
+    padding: 3rem 0;
+  }
+
+  .planning-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* 768px - Tablet */
+@media (max-width: 768px) {
+  .planning-section {
+    padding: 2.75rem 0;
+  }
+
+  .planning-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .planning-grid {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .planning-action-btn {
+    width: 100%;
+    max-width: 18rem;
+  }
+}
+
+/* 480px - Mobile */
+@media (max-width: 480px) {
+  .planning-section {
+    padding: 2.25rem 0;
+  }
+
+  .planning-container {
+    padding: 0 1rem;
+  }
+
+  .planning-card {
+    padding: 1.125rem 1rem;
+  }
+
+  .planning-title {
+    font-size: 1.375rem;
+  }
+
+  .planning-description {
+    font-size: 0.875rem;
+  }
 }

@@ -61,7 +61,6 @@ export class DestinationService {
       description: data.description.trim(),
       state: data.state.trim(),
       country: data.country ? data.country.trim() : 'India',
-      bestSeason: data.bestSeason ? data.bestSeason.trim() : undefined,
       coverImage: data.coverImage ? data.coverImage.trim() : undefined,
       establishedYear: data.establishedYear != null && data.establishedYear !== '' ? Number(data.establishedYear) : undefined,
       totalArea: data.totalArea != null && data.totalArea !== '' ? Number(data.totalArea) : undefined,
@@ -92,7 +91,6 @@ export class DestinationService {
     if (data.description !== undefined) updateData.description = data.description.trim();
     if (data.state !== undefined) updateData.state = data.state.trim();
     if (data.country !== undefined) updateData.country = data.country.trim();
-    if (data.bestSeason !== undefined) updateData.bestSeason = data.bestSeason ? data.bestSeason.trim() : null;
     if (data.coverImage !== undefined) updateData.coverImage = data.coverImage ? data.coverImage.trim() : null;
     if (data.establishedYear !== undefined) updateData.establishedYear = data.establishedYear != null && data.establishedYear !== '' ? Number(data.establishedYear) : null;
     if (data.totalArea !== undefined) updateData.totalArea = data.totalArea != null && data.totalArea !== '' ? Number(data.totalArea) : null;

@@ -15,19 +15,20 @@ import {
 import { Destination } from '../../services/destination.service';
 import { Resort } from '../../services/resort.service';
 
-import "../../styles/pages/DestinationDetails.css";
 
-import matkasur from "../../assets/images/matkasur.JPG";
-import maya2 from "../../assets/images/maya2.JPG";
-import tadoba from "../../assets/images/tadoba.jpg";
-import kuwani2 from "../../assets/images/kuwani2.JPG";
-import leopard from "../../assets/images/leopard.JPG";
+import matkasur from "../../assets/Tiger&Logo Image/Matkasur.JPG";
+import matkasur2 from "../../assets/Tiger&Logo Image/Matkasur2.JPG";
+import maya from "../../assets/Tiger&Logo Image/Maya.jpg";
+import tadoba from "../../assets/Tiger&Logo Image/Tadoba.jpg";
+import kuwani from "../../assets/Tiger&Logo Image/Kuwani.JPG";
+import leopard from "../../assets/Tiger&Logo Image/Leopard.JPG";
 
 const CAROUSEL_IMAGES = [
   matkasur,
-  maya2,
+  matkasur2,
+  maya,
   tadoba,
-  kuwani2,
+  kuwani,
   leopard,
 ];
 

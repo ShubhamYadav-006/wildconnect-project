@@ -1,2029 +1,621 @@
 # WildConnect - System Architecture Document
 
-**Version:** 1.0  
-**Status:** Approved for Development  
-**Project Type:** Startup MVP + Final Year Project  
+**Version:** 3.0  
+**Status:** Approved & Current Implementation  
+**Project Type:** Final Year Major Project + Wildlife Tourism Marketplace MVP  
 **Document Owner:** WildConnect Team  
-**Last Updated:** July 2026
+**Last Updated:** September 2026  
 
 ---
 
 # Table of Contents
 
 ## Phase 1 — Foundation Architecture
-
-1. Document Information
+1. Document Purpose & Audience
 2. Architecture Overview
 3. Design Principles
-4. High-Level System Architecture
-5. Technology Stack
-6. Development Philosophy
-7. System Components
-8. Architecture Decisions
-9. Project Directory Overview
+4. Technology Stack & Ecosystem
+5. Architectural Decisions & Standards
 
 ---
 
 ## Phase 2 — Application Architecture
-
-10. Backend Architecture
-11. Frontend Architecture
-12. Database Architecture Overview
-13. Request Lifecycle
-14. Authentication Flow
-15. Website Navigation Flow
-16. User Journey Flow
-17. Module Interaction Flow
-18. API Architecture
+6. Backend Layered Architecture (Controller → Service → Repository)
+7. Frontend Component & Layout Architecture
+8. Database Architecture Overview
+9. Request Lifecycle & Atomic Transaction Flow
+10. Authentication & Role-Based Authorization
+11. Complete REST API Specifications
 
 ---
 
-## Phase 3 — Project Structure
-
-19. Complete Project Structure
-20. Backend Folder Structure
-21. Frontend Folder Structure
-22. File Naming Conventions
-23. Component Organization
-24. Route Organization
-25. API Organization
-26. Environment Configuration
-27. Coding Standards
-28. Reusable Component Strategy
+## Phase 3 — Project Structure & Navigation
+12. Monorepo Project Structure
+13. Backend Directory Architecture
+14. Frontend Directory Architecture
+15. Application Navigation & Route Architecture
+16. CSS Styling & Design System Architecture
 
 ---
 
-## Phase 4 — Development & Scalability
-
-29. Security Architecture
-30. State Management
-31. Error Handling Strategy
-32. Logging Strategy
-33. Deployment Architecture
-34. Performance Considerations
-35. Scalability Strategy
-36. Future Architecture (V2)
-37. Development Workflow
-38. Architecture Summary
+## Phase 4 — Engineering, Security & Scalability
+17. Security Architecture
+18. State Management Strategy
+19. Error Handling & Validation Pipeline
+20. Cloud Deployment Topology
+21. Architecture Summary
 
 ---
 
-# Document Purpose
+# Phase 1 — Foundation Architecture
 
-This document serves as the technical blueprint for the WildConnect platform.
+## 1. Document Purpose & Audience
 
-It explains how the application is structured, how different components interact, the technologies used, project organization, development standards, and architectural decisions.
+This document serves as the definitive technical blueprint for the **WildConnect** platform. It details the technical structure, communication protocols, component interactions, database design, API design, coding standards, and deployment topology.
 
-This document should be referenced throughout the development lifecycle to ensure consistency across the frontend, backend, and database.
-
----
-
-# Intended Audience
-
-This document is intended for:
-
-- Developers
-- Project Contributors
-- Technical Reviewers
-- Mentors
-- Future Team Members
-- Project Maintainers
+### Intended Audience
+- Core Software Engineers & Contributors
+- Technical Evaluators & Project Reviewers
+- System Maintainers
 
 ---
 
-# Related Documents
+## 2. Architecture Overview
 
-- PRD.md
-- DATABASE.md
-- API.md
-- UI_GUIDELINES.md
-- DEVELOPMENT_ROADMAP.md
-- README.md
+WildConnect is engineered as a decoupled, full-stack web application designed for high performance, type safety, maintainability, and domain-specific wildlife tourism management.
+
+```text
+┌────────────────────────────────────────────────────────────────────────┐
+│                        CLIENT LAYER (FRONTEND)                         │
+│  React 18 • TypeScript • Vite • React Router v6 • Pure Vanilla CSS    │
+│  Layouts: PublicLayout | TravelerLayout | PartnerLayout | AdminLayout  │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ HTTPS (JSON / REST APIs)
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                        API LAYER (EXPRESS BACKEND)                     │
+│  Node.js • Express • TypeScript • Zod Validation • JWT Middleware     │
+│  Layered: Routes ──► Controllers ──► Services ──► Repositories         │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ Type-safe Queries (Prisma ORM v7)
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                       PERSISTENCE LAYER (DATABASE)                     │
+│         Neon Serverless PostgreSQL (17 Normalized Tables)              │
+└────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-> **Note:** This document focuses on the technical architecture of WildConnect. Product requirements, business goals, and feature specifications are documented separately in the Product Requirements Document (PRD).
+## 3. Design Principles
 
+1. **Separation of Concerns**: Strict boundary between presentation, routing, business logic, data persistence, and data validation.
+2. **Type Safety Across Layers**: End-to-end TypeScript enforcement across frontend components, API contracts, services, and Prisma database models.
+3. **Transactional Integrity**: Critical operations (multi-resource bookings, date overlap calculations, and escrow records) execute inside atomic database transactions (`$transaction`).
+4. **Pure Vanilla CSS Standards**: 100% standard Vanilla CSS with centralized design tokens (`src/styles/globals/variables.css`). Tailwind CSS is strictly prohibited.
+5. **Role-Based Isolation**: Isolated access controls, layouts, and route guards for `TOURIST`, `BUSINESS_PARTNER`, and `ADMIN` users.
 
+---
 
+## 4. Technology Stack & Ecosystem
+
+### Frontend
+- **Framework**: React 18
+- **Language**: TypeScript
+- **Build Tool**: Vite
+- **Routing**: React Router DOM (v6) with lazy-loading & code-splitting
+- **Styling**: Standard Vanilla CSS with CSS custom properties (Tokens) & modular stylesheets
+- **HTTP Client**: Axios with centralized request/response interceptors
+- **Icons**: Lucide React
+- **Notifications**: React Hot Toast
+
+### Backend
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Language**: TypeScript
+- **ORM**: Prisma v7 (`@prisma/client`) with client output at `src/generated/prisma`
+- **Database**: PostgreSQL (hosted on Neon)
+- **Validation**: Zod (request body, query parameters, and route params)
+- **Security**: JSON Web Tokens (`jsonwebtoken`), `bcrypt` password hashing, Helmet
+- **File Uploads**: Multer (multi-image handling with static file serving)
+- **Logging**: Morgan
+
+---
 
 # Phase 2 — Application Architecture
 
-This phase explains how different parts of WildConnect communicate with each other, how user requests are processed, how authentication works, and how users navigate through the platform.
+## 6. Backend Layered Architecture
 
----
-
-# 10. Backend Architecture
-
-The backend follows a **Layered Architecture (Controller → Service → Repository)** to ensure maintainability, scalability, and separation of concerns.
-
-Each layer has a dedicated responsibility.
+The backend implements a classic **Controller → Service → Repository** pattern:
 
 ```text
-                    Client Request
-                          │
-                          ▼
-                      API Route
-                          │
-                          ▼
-                     Controller
-                          │
-                          ▼
-                       Service
-                          │
-                          ▼
-                    Repository
-                          │
-                          ▼
-                     Prisma ORM
-                          │
-                          ▼
-                   PostgreSQL Database
-```
-
-### Route Layer
-
-Responsible for:
-
-- Defining API endpoints
-- Applying middleware
-- Forwarding requests to controllers
-
----
-
-### Controller Layer
-
-Responsible for:
-
-- Receiving HTTP requests
-- Validating request flow
-- Calling business services
-- Returning API responses
-
-Controllers do not contain business logic.
-
----
-
-### Service Layer
-
-Responsible for:
-
-- Business rules
-- Validation logic
-- Data processing
-- Combining multiple operations
-
-This is the heart of the application.
-
----
-
-### Repository Layer
-
-Responsible for:
-
-- Database operations
-- Prisma queries
-- CRUD operations
-- Returning data to services
-
-Repositories never contain business logic.
-
----
-
-### Prisma ORM
-
-Responsible for:
-
-- Database communication
-- Type-safe queries
-- Migrations
-- Relationship management
-
----
-
-### PostgreSQL Database
-
-Stores all application data including:
-
-- Users
-- Destinations
-- Safari Gates
-- Resorts
-- Trip Requests
-- Proposals
-- Bookings
-- Articles
-- Experiences
-- Notifications
-
----
-
-# 11. Frontend Architecture
-
-The frontend follows a **Component-Based Architecture** using React and TypeScript.
-
-Every screen is built using reusable components.
-
-```text
-Page
- │
- ▼
-Layout
- │
- ▼
-Components
- │
- ▼
-Custom Hooks
- │
- ▼
-API Services
- │
- ▼
-Backend API
-```
-
-### Pages
-
-Responsible for:
-
-- Rendering complete screens
-- Combining layouts and components
-
-Examples:
-
-- Home
-- Destinations
-- Login
-- Dashboard
-
----
-
-### Layouts
-
-Responsible for:
-
-- Shared page structure
-- Navigation
-- Footer
-- Sidebar
-
-Layouts reduce code duplication.
-
----
-
-### Components
-
-Reusable UI elements such as:
-
-- Navbar
-- Footer
-- Cards
-- Buttons
-- Forms
-- Tables
-- Modals
-
----
-
-### Hooks
-
-Responsible for:
-
-- Reusable frontend logic
-- Authentication
-- API state
-- Form handling
-
----
-
-### Services
-
-Responsible for:
-
-- API communication
-- Axios configuration
-- Request handling
-
----
-
-# 12. Database Architecture Overview
-
-WildConnect uses a **Relational Database** powered by PostgreSQL.
-
-Prisma ORM acts as the communication layer between the backend and database.
-
-The database follows normalization principles to reduce redundancy while maintaining efficient relationships.
-
-Core entities include:
-
-- Users
-- Destinations
-- Safari Gates
-- Resorts
-- Trip Requests
-- Proposals
-- Bookings
-- Articles
-- Experiences
-- Notifications
-
-Detailed schema and relationships are documented separately in **DATABASE.md**.
-
----
-
-# 13. Request Lifecycle
-
-Every request follows the same processing flow.
-
-```text
-User
-
-↓
-
-React Component
-
-↓
-
-Axios Request
-
-↓
-
-Express Route
-
-↓
-
-Controller
-
-↓
-
-Service
-
-↓
-
-Repository
-
-↓
-
-Prisma ORM
-
-↓
-
-PostgreSQL
-
-↓
-
-Repository
-
-↓
-
-Service
-
-↓
-
-Controller
-
-↓
-
-JSON Response
-
-↓
-
-Frontend UI
-```
-
-This consistent flow improves maintainability and simplifies debugging.
-
----
-
-# 14. Authentication Flow
-
-WildConnect uses **JWT-based Authentication**.
-
-```text
-User Registers
-
-↓
-
-Password Hashed (bcrypt)
-
-↓
-
-User Stored in Database
-
-↓
-
-User Logs In
-
-↓
-
-Credentials Verified
-
-↓
-
-JWT Generated
-
-↓
-
-Token Returned
-
-↓
-
-Protected Routes Accessible
-```
-
-### Authentication Features
-
-- User Registration
-- Secure Login
-- Password Hashing
-- JWT Authentication
-- Role-Based Authorization
-- Protected Routes
-- Secure Logout
-
----
-
-# 15. Website Navigation Flow
-
-## Public Website
-
-```text
-Home
-│
-├── Destinations
-│      └── Destination Details
-│
-├── Resorts
-│      └── Resort Details
-│
-├── Articles
-│
-├── Experiences
-│
-├── Contact
-│
-├── Login
-│
-└── Register
-```
-
----
-
-## Tourist Dashboard
-
-```text
-Dashboard
-│
-├── Profile
-│
-├── Trip Requests
-│
-├── Proposals
-│
-├── Bookings
-│
-└── Notifications
-```
-
----
-
-## Admin Dashboard
-
-```text
-Admin Dashboard
-│
-├── Dashboard
-│
-├── Users
-│
-├── Destinations
-│
-├── Safari Gates
-│
-├── Resorts
-│
-├── Inquiries
-│
-├── Trip Requests
-│
-├── Proposals
-│
-├── Bookings
-│
-├── Articles
-│
-├── Experiences
-│
-└── Notifications
-```
-
----
-
-# 16. User Journey Flow
-
-The user journey represents the complete lifecycle of a traveler using WildConnect.
-
-```text
-Visitor
-
-↓
-
-Explore Website
-
-↓
-
-Browse Destinations
-
-↓
-
-View Resorts
-
-↓
-
-Register
-
-↓
-
-Login
-
-↓
-
-Submit Trip Request
-
-↓
-
-Admin Reviews Request
-
-↓
-
-Proposal Created
-
-↓
-
-Proposal Sent
-
-↓
-
-User Accepts Proposal
-
-↓
-
-Booking Confirmed
-
-↓
-
-Trip Completed
-```
-
-This workflow forms the foundation of the platform's business process.
-
----
-
-# 17. Module Interaction Flow
-
-Each module communicates independently while remaining connected through shared data.
-
-```text
-Authentication
+Incoming HTTP Request
         │
         ▼
-Destination Module
+   Route Layer          (Defines endpoints, applies Auth & Zod validation middleware)
         │
         ▼
-Safari Gate Module
+ Controller Layer       (Extracts req params/body, invokes services, formats ApiResponse)
         │
         ▼
-Resort Module
+  Service Layer         (Contains business logic, domain rules, notifications, transactions)
         │
         ▼
-Trip Request Module
+Repository Layer        (Executes Prisma queries against the database)
         │
         ▼
-Proposal Module
+   Prisma ORM           (Type-safe SQL query generation)
         │
         ▼
-Booking Module
-        │
-        ▼
-Notification Module
+PostgreSQL Database
 ```
 
-Supporting modules:
-
-- Articles
-- Experiences
-- Inquiry Management
-- Admin Dashboard
-
-These modules operate independently without affecting the booking workflow.
+### Layer Responsibilities
+- **Routes (`src/routes/`)**: Map URI patterns to controllers and bind middleware (`protect`, `restrictTo`, `validate`, `upload`).
+- **Controllers (`src/controllers/`)**: HTTP-aware handlers that parse requests, call corresponding services, and return standardized JSON responses via `ApiResponse`.
+- **Services (`src/services/`)**: Business logic engines containing domain rules, state transitions, unique slug generation, date overlap checks, and notification triggers.
+- **Repositories (`src/repositories/`)**: Encapsulate all database CRUD operations using Prisma queries.
+- **Validators (`src/validators/`)**: Zod schemas validating all input payloads.
 
 ---
 
-# 18. API Architecture
+## 7. Frontend Component & Layout Architecture
 
-WildConnect follows a **RESTful API architecture**.
-
-Each module exposes its own set of endpoints.
-
-Example structure:
+The frontend uses component composition with specialized layout wrappers:
 
 ```text
-/api/auth
-
-/api/destinations
-
-/api/safari-gates
-
-/api/resorts
-
-/api/inquiries
-
-/api/trip-requests
-
-/api/proposals
-
-/api/bookings
-
-/api/articles
-
-/api/experiences
-
-/api/notifications
-
-/api/admin
+                              App Router
+                                  │
+      ┌───────────────────┬───────┴───────────┬────────────────────┐
+      ▼                   ▼                   ▼                    ▼
+ PublicLayout      TravelerLayout       PartnerLayout        AdminLayout
+ (Header, Footer,  (Sidebar, Navbar,   (Partner Sidebar,    (Admin Sidebar,
+  Public Pages)     Tourist Dashboard)  Inventory & Rooms)   Command Center)
 ```
 
-### Supported HTTP Methods
-
-- GET — Retrieve data
-- POST — Create data
-- PUT — Replace existing data
-- PATCH — Update specific fields
-- DELETE — Remove data
+1. **`PublicLayout`**: Floating glassmorphic navigation bar, footer, and container for public exploration pages.
+2. **`TravelerLayout`**: Authenticated traveler portal for managing profile, trip requests, proposals, bookings, and notifications.
+3. **`PartnerLayout`**: Dedicated business owner portal for KYC verification, properties, multi-service inventory (rooms, vehicles, gear), calendar blocks, received bookings, inquiries, and escrow finances.
+4. **`AdminLayout`**: Administrative operations center for KYC reviews, destinations, partner approvals, custom proposals builder, global bookings, and content moderation.
 
 ---
 
-### Standard API Response
+## 8. Database Architecture Overview
 
-Successful responses:
+The database contains 17 normalized models deployed on PostgreSQL (Neon):
+1. **Identity & Access**: `User`, `PartnerKyc`
+2. **Destinations & Stays**: `Destination`, `Resort`
+3. **Partner Marketplace**: `Business`, `BusinessRoom`, `BusinessVehicle`, `BusinessEquipment`, `BusinessInventoryBlock`, `BusinessBooking`, `PayoutTransaction`, `BusinessInquiry`
+4. **Managed Safari Planning**: `TripRequest`, `Proposal`, `Booking`
+5. **Content & Alerts**: `Article`, `Notification`
 
-```json
-{
-  "success": true,
-  "message": "Operation completed successfully",
-  "data": {}
-}
-```
-
-Error responses:
-
-```json
-{
-  "success": false,
-  "message": "Validation failed",
-  "errors": []
-}
-```
-
-Using a consistent response structure improves frontend integration and error handling across the application.
+*Detailed model definitions, foreign keys, and indexes are documented in [DATABASE.md](file:///d:/MERN_PRACTICE/MajorProject/WildConnect/DATABASE.md).*
 
 ---
 
-## Phase 2 Summary
+## 9. Request Lifecycle & Atomic Transaction Flow
 
-Phase 2 defines how the frontend, backend, database, and application modules interact to deliver a consistent user experience.
-
-The layered backend architecture, component-based frontend, RESTful APIs, and clearly defined request lifecycle provide a scalable foundation for WildConnect while keeping the codebase modular, maintainable, and ready for future expansion.
-
-
-
-
-# Phase 3 — Project Structure
-
-This phase defines how the WildConnect codebase is organized. A clean and consistent project structure improves maintainability, scalability, collaboration, and developer productivity.
+### Multi-Resource Direct Booking Lifecycle
+```text
+1. Client checks live availability (checks date overlap + inventory blocks)
+2. Client sends POST /api/business-bookings
+   └── Middleware: `protect` (verifies JWT)
+   └── Controller: `createBusinessBooking`
+       └── Prisma Atomic Transaction:
+           ├── Step 1: Query Business and resource (Room / Vehicle / Equipment)
+           ├── Step 2: Verify business status === 'APPROVED'
+           ├── Step 3: Count active bookings and blackout blocks in date range:
+           │          (startDate < item.endDate AND endDate > item.startDate)
+           ├── Step 4: Verify remaining units >= 1
+           ├── Step 5: Insert BusinessBooking (status: 'CONFIRMED')
+           └── Step 6: Insert PayoutTransaction (status: 'HELD_IN_ESCROW')
+       ├── Trigger notification to Business Partner (BUSINESS_NEW_BOOKING_PARTNER)
+       └── Trigger notification to Tourist (BUSINESS_BOOKING_CONFIRMED)
+```
 
 ---
 
-# 19. Complete Project Structure
-
-The project follows a monorepo-style organization where the frontend, backend, and documentation are maintained in separate directories.
+## 10. Authentication & Role-Based Authorization
 
 ```text
-wildconnect/
-│
-├── backend/
-│
-├── frontend/
-│
-├── docs/
-│
-├── .gitignore
-├── LICENSE
+Registration / Login
+        │
+        ├── Standard: POST /api/auth/register (hashes password with bcrypt)
+        ├── Standard: POST /api/auth/login (issues signed JWT)
+        └── OAuth: POST /api/auth/google (verifies Google token & generates JWT)
+        │
+        ▼
+Client stores JWT in localStorage
+        │
+        ▼
+Subsequent API Requests include: `Authorization: Bearer <token>`
+        │
+        ▼
+Middleware Pipeline:
+  1. `protect`: Decodes JWT, verifies signature, loads current active User into `req.user`.
+  2. `restrictTo(...roles)`: Verifies `req.user.role` matches allowed roles (`ADMIN`, `TOURIST`, `BUSINESS_PARTNER`).
+```
+
+---
+
+## 11. Complete REST API Specifications
+
+The Express backend registers the following 22 route modules in `src/routes/index.ts`:
+
+### 1. Authentication & Profile (`/api/auth`)
+- `POST /api/auth/register` — Register new user (`TOURIST` or `BUSINESS_PARTNER`)
+- `POST /api/auth/login` — Authenticate and receive JWT
+- `POST /api/auth/google` — Google OAuth authentication
+- `GET /api/auth/me` — Get authenticated user profile (`protect`)
+- `PATCH /api/auth/profile` — Update user details (`protect`)
+- `PATCH /api/auth/change-password` — Change password (`protect`)
+- `GET /api/admin/users` — List all platform users with role and business counts (`Admin`)
+- `PATCH /api/admin/users/:id/role` — Update user role (e.g. promote to `BUSINESS_PARTNER` or `ADMIN`) (`Admin`)
+- `DELETE /api/admin/users/:id` — Delete user account from database (`Admin`)
+
+### 2. Partner KYC & Compliance (`/api/kyc`)
+- `GET /api/kyc/my` — Get partner's KYC verification status (`Partner`)
+- `POST /api/kyc/submit` — Submit PAN, GSTIN, ID/Business proof, and bank details (`Partner`)
+- `GET /api/kyc/document/:filename` — Secure document viewing (`protect`)
+- `GET /api/kyc/admin/all` — List all partner KYC submissions (`Admin`)
+- `PATCH /api/kyc/admin/:id/review` — Review and verify/reject KYC (`Admin`)
+
+### 3. Destinations (`/api/destinations`)
+- `GET /api/destinations` — List all destinations (Public)
+- `GET /api/destinations/:slug` — Destination details with wildlife statistics (Public)
+- `GET /api/destinations/:destinationId/resorts` — Get resorts by destination (Public)
+- `POST /api/destinations` — Create destination (`Admin`)
+- `PATCH /api/destinations/:id` — Update destination (`Admin`)
+- `DELETE /api/destinations/:id` — Soft-delete destination (`Admin`)
+
+### 4. Business Partner Listings (`/api/businesses`)
+- `GET /api/businesses` — Get approved public businesses (Public)
+- `GET /api/businesses/:slug` — Get approved business by slug (Public)
+- `GET /api/businesses/my` — Get partner's businesses (`Partner`)
+- `GET /api/businesses/user/my/:id` — Get partner business by ID (`Partner`)
+- `POST /api/businesses` — Create new business in `DRAFT` status (`Partner`)
+- `PUT /api/businesses/:id` — Update business details (`Partner`, triggers re-verification)
+- `POST /api/businesses/:id/submit` — Submit draft for review (`Partner` → `PENDING_REVIEW`)
+- `GET /api/businesses/admin/all` — List all businesses across all statuses (`Admin`)
+- `GET /api/businesses/admin/:id` — Review business details (`Admin`)
+- `PATCH /api/businesses/:id/status` — Update approval status (`Admin`: `APPROVED`, `REJECTED`, `SUSPENDED`)
+
+### 5. Room Categories & Inventory (`/api/rooms`)
+- `GET /api/rooms/public/:businessId` — List rooms for approved business (Public)
+- `GET /api/rooms/business/:businessId` — List partner rooms (`Partner`)
+- `POST /api/rooms` — Create room type (`Partner`)
+- `PUT /api/rooms/:id` — Update room pricing, capacity, inventory (`Partner`)
+- `DELETE /api/rooms/:id` — Delete room type (`Partner`)
+
+### 6. Safari Vehicles & Transfers (`/api/vehicles`)
+- `GET /api/vehicles/public/:businessId` — List public vehicles for business (Public)
+- `GET /api/vehicles/business/:businessId` — List partner vehicles (`Partner`)
+- `POST /api/vehicles` — Add new vehicle (`Partner`)
+- `PUT /api/vehicles/:id` — Update vehicle details & slots (`Partner`)
+- `DELETE /api/vehicles/:id` — Delete vehicle (`Partner`)
+
+### 7. Camera & Equipment Rentals (`/api/equipment`)
+- `GET /api/equipment/public/:businessId` — List public gear for rental business (Public)
+- `GET /api/equipment/business/:businessId` — List partner gear (`Partner`)
+- `POST /api/equipment` — Add gear item (`Partner`)
+- `PUT /api/equipment/:id` — Update gear item & daily rates (`Partner`)
+- `DELETE /api/equipment/:id` — Delete gear item (`Partner`)
+
+### 8. Calendar Blackout / Inventory Blocking (`/api/calendar-blocks`)
+- `GET /api/calendar-blocks/business/:businessId` — Get blocked dates for business (`Partner`)
+- `POST /api/calendar-blocks` — Create blackout date range (`Partner`)
+- `DELETE /api/calendar-blocks/:id` — Remove blackout date range (`Partner`)
+
+### 9. Direct Multi-Service Bookings (`/api/business-bookings`)
+- `GET /api/business-bookings/availability` — Check live multi-resource availability (Public)
+- `POST /api/business-bookings` — Create direct booking (`protect`, Atomic transaction)
+- `GET /api/business-bookings/my` — Get tourist's direct bookings (`Tourist`)
+- `GET /api/business-bookings/partner` — Get partner's received bookings (`Partner`)
+- `PATCH /api/business-bookings/:id/cancel` — Cancel direct booking (`protect`)
+
+### 10. Escrow Payouts & Finances (`/api/payouts`)
+- `GET /api/payouts/partner` — Get partner payout transactions & escrow history (`Partner`)
+- `GET /api/payouts/admin/all` — List all platform payouts (`Admin`)
+- `PATCH /api/payouts/admin/:id/settle` — Record settlement and banking UTR (`Admin`)
+
+### 11. Customer Inquiries (`/api/inquiries` & `/api/partner/inquiries`)
+- `POST /api/inquiries` — Submit inquiry to approved business (Public/Tourist)
+- `GET /api/partner/inquiries` — List partner inquiries with SLA status (`Partner`)
+- `GET /api/partner/inquiries/:id` — Get inquiry details (`Partner`)
+- `PATCH /api/partner/inquiries/:id/status` — Update status (`Partner`: `PENDING`, `RESPONDED`, `CLOSED`)
+
+### 12. Curated Resorts (`/api/resorts`)
+- `GET /api/resorts` — List curated resorts (Public)
+- `GET /api/resorts/:id` — Get resort details (Public)
+- `POST /api/resorts` — Create curated resort (`Admin`)
+- `PATCH /api/resorts/:id` — Update resort (`Admin`)
+- `DELETE /api/resorts/:id` — Soft-delete resort (`Admin`)
+
+### 13. Custom Trip Requests (`/api/triprequests` & `/api/trip-requests`)
+- `POST /api/triprequests` — Submit bespoke safari request (`Tourist`)
+- `GET /api/triprequests/my` — Get tourist's trip requests (`Tourist`)
+- `GET /api/triprequests/:id` — Get request details (`Tourist`, `Admin`)
+- `PATCH /api/triprequests/:id/cancel` — Cancel trip request (`Tourist`)
+
+### 14. Admin Proposals (`/api/proposals` & `/api/my/proposals`)
+- `POST /api/proposals` — Create custom travel proposal (`Admin`)
+- `GET /api/proposals` — List all proposals (`Admin`)
+- `GET /api/proposals/:id` — Get proposal details (`Tourist`, `Admin`)
+- `GET /api/proposals/trip-request/:tripRequestId` — Get proposal for a request (`Tourist`, `Admin`)
+- `PATCH /api/proposals/:id` — Update draft proposal (`Admin`)
+- `PATCH /api/proposals/:id/send` — Dispatch proposal to tourist (`Admin`)
+- `PATCH /api/proposals/:id/accept` — Accept proposal and confirm booking (`Tourist`)
+- `PATCH /api/proposals/:id/reject` — Reject proposal (`Tourist`)
+- `PATCH /api/proposals/:id/change-request` — Request itinerary modifications (`Tourist`)
+- `DELETE /api/proposals/:id` — Delete proposal (`Admin`)
+- `GET /api/my/proposals` — Get tourist's proposals (`Tourist`)
+
+### 15. Managed Safari Bookings (`/api/bookings`)
+- `GET /api/bookings/my` — Get tourist's proposal-based bookings (`Tourist`)
+- `GET /api/bookings/:id` — Get booking details (`Tourist`, `Admin`)
+- `GET /api/bookings` — List all bookings (`Admin`)
+- `PATCH /api/bookings/:id/status` — Update booking status (`Admin`)
+- `PATCH /api/bookings/:id/cancel` — Cancel booking (`Tourist`)
+
+### 16. Articles (`/api/articles`)
+- `GET /api/articles` — Get published articles (Public)
+- `GET /api/articles/:slug` — Get article by slug (Public)
+- `POST /api/articles` — Create article (`Admin`)
+- `PATCH /api/articles/:id` — Update article (`Admin`)
+- `PATCH /api/articles/:id/publish` — Publish article (`Admin`)
+- `PATCH /api/articles/:id/archive` — Archive article (`Admin`)
+- `DELETE /api/articles/:id` — Delete article (`Admin`)
+
+### 17. Notifications (`/api/notifications`)
+- `GET /api/notifications` — Get user's notifications (`protect`)
+- `GET /api/notifications/unread` — Get unread notifications (`protect`)
+- `GET /api/notifications/count` — Get unread count (`protect`)
+- `PATCH /api/notifications/:id/read` — Mark notification as read (`protect`)
+- `PATCH /api/notifications/read-all` — Mark all as read (`protect`)
+- `DELETE /api/notifications/:id` — Delete notification (`protect`)
+- `POST /api/notifications` — Send system announcement (`Admin`)
+
+### 18. Media Uploads (`/api/upload`)
+- `POST /api/upload` — Upload up to 10 images (`protect`, Multer storage)
+
+---
+
+# Phase 3 — Project Structure & Navigation
+
+## 12. Monorepo Project Structure
+
+```text
+WildConnect/
+├── backend/                  # Server-side Express application
+│   ├── prisma/               # Schema, migrations & seeds
+│   ├── src/                  # Application source code
+│   ├── uploads/              # Static media uploads directory
+│   ├── package.json
+│   └── tsconfig.json
+├── frontend/                 # Client-side React application
+│   ├── src/                  # React components, pages, styles
+│   ├── public/               # Public assets
+│   ├── package.json
+│   ├── vite.config.ts
+│   └── tsconfig.json
+├── Architecture.md           # System architecture document
+├── DATABASE.md               # Database schema & entity specifications
+├── PRD.md                    # Product requirements document
+├── Rules.md                  # Development rules & coding conventions
+├── Design.md                 # UI/UX design specifications
+├── PlatformTheme.md          # Platform theme & brand token guide
 └── README.md
 ```
 
 ---
 
-### Backend
-
-Contains the complete server-side application including:
-
-- REST APIs
-- Business Logic
-- Authentication
-- Database Access
-- Validation
-- Configuration
-
----
-
-### Frontend
-
-Contains the React application responsible for the user interface.
-
-Includes:
-
-- Pages
-- Components
-- Layouts
-- API Services
-- Hooks
-- Styling
-
----
-
-### Docs
-
-Contains all project documentation.
-
-Example:
+## 13. Backend Directory Architecture
 
 ```text
-docs/
-
-├── PRD.md
-├── ARCHITECTURE.md
-├── DATABASE.md
-├── API.md
-├── UI_GUIDELINES.md
-├── DEVELOPMENT_ROADMAP.md
-├── DEPLOYMENT.md
-├── SETUP.md
-└── CHANGELOG.md
+backend/src/
+├── app.ts                    # Express app initialization, middleware, routes
+├── server.ts                 # Server entry point and port listener
+├── config/                   # Database (Prisma), Env config, Logger
+├── constants/                # Global system constants
+├── controllers/              # 20 Express request controllers
+├── generated/prisma/         # Generated Prisma client output
+├── middleware/               # Auth, role-restriction, error handler, validation, multer
+├── repositories/             # 12 Prisma database repositories
+├── routes/                   # 22 Express route modules
+├── services/                 # 16 Domain business services
+├── types/                    # Shared TypeScript interfaces & types
+├── utils/                    # AppError, ApiResponse, asyncHandler, token helpers
+└── validators/               # 12 Zod validation schemas
 ```
 
 ---
 
-# 20. Backend Folder Structure
+## 14. Frontend Directory Architecture
 
 ```text
-backend/
-│
-├── prisma/
-│   ├── schema.prisma
-│   ├── migrations/
-│   └── seed.ts
-│
-├── src/
-│   │
-│   ├── config/
-│   │
-│   ├── constants/
-│   │
-│   ├── controllers/
-│   │
-│   ├── middleware/
-│   │
-│   ├── repositories/
-│   │
-│   ├── routes/
-│   │
-│   ├── services/
-│   │
-│   ├── validators/
-│   │
-│   ├── types/
-│   │
-│   ├── utils/
-│   │
-│   ├── generated/
-│   │
-│   ├── app.ts
-│   └── server.ts
-│
-├── package.json
-├── tsconfig.json
-└── .env
+frontend/src/
+├── App.tsx                   # Master router, suspense boundaries, layout routes
+├── main.tsx                  # React DOM root entry point
+├── assets/                   # Static images, vectors, branding assets
+├── components/
+│   ├── common/               # ProtectedRoute, Generic ErrorBoundary
+│   ├── layout/               # PublicLayout, TravelerLayout, PartnerLayout, AdminLayout
+│   └── ui/                   # Reusable Buttons, Cards, Modals, Badges, Loaders
+├── config/                   # Frontend environment and API constants
+├── contexts/                 # AuthContext (User state, login, logout)
+├── hooks/                    # Reusable React custom hooks
+├── pages/
+│   ├── admin/                # AdminDashboard, AdminKyc, AdminDestinations, AdminBusinesses, etc.
+│   ├── auth/                 # Login, Register
+│   ├── partner/              # PartnerDashboard, PartnerKyc, MyBusinesses, Rooms, Vehicles, Gear, Calendar, Finances
+│   ├── public/               # Home, Destinations, DestinationDetails, Resorts, Businesses, Articles, Contact
+│   └── tourist/              # Dashboard, MyTripRequests, ProposalDetails, Bookings, Notifications, Profile
+├── routes/                   # AppRoutes.tsx, ProtectedRoute.tsx
+├── services/                 # 16 Axios API communication services
+├── styles/                   # Pure Vanilla CSS stylesheets
+│   ├── admin/                # Admin portal styling
+│   ├── components/           # Component-specific styles
+│   ├── globals/              # variables.css, buttons.css, cards.css, forms.css, etc.
+│   ├── home/                 # Landing page hero & showcase styling
+│   ├── pages/                # Page-level styles
+│   ├── partner/              # Business partner portal styling
+│   ├── public/               # Public explore & destination styles
+│   └── tourist/              # Tourist dashboard styles
+└── utils/                    # Date formatters, price calculators, helper functions
 ```
 
 ---
 
-## Folder Responsibilities
+## 15. Application Navigation & Route Architecture
 
-### prisma/
-
-Contains:
-
-- Database schema
-- Database migrations
-- Seed scripts
-
----
-
-### config/
-
-Application configuration.
-
-Examples:
-
-- Prisma Client
-- Environment Variables
-- JWT Configuration
-
----
-
-### constants/
-
-Application-wide constants.
-
-Examples:
-
-- Roles
-- Status Values
-- Messages
-- API Constants
-
----
-
-### controllers/
-
-Responsible for:
-
-- Receiving HTTP requests
-- Calling services
-- Returning API responses
-
-Example:
-
+### 15.1 Public Navigation Tree
 ```text
-auth.controller.ts
-
-destination.controller.ts
-
-booking.controller.ts
+/ (Home)
+├── /destinations
+│    └── /destinations/:slug
+├── /businesses (Tourism Services Hub - Stays, Vehicles, Camera Gear)
+│    └── /businesses/:slug (Unified Business Details)
+├── /resorts (Redirects to /businesses?type=RESORT)
+│    └── /resorts/:slug (Dynamic Business Details)
+├── /articles
+│    └── /articles/:slug
+├── /contact
+├── /login
+├── /register
+├── /unauthorized
+└── /loading
 ```
 
----
-
-### middleware/
-
-Reusable Express middleware.
-
-Examples:
-
-- Authentication
-- Authorization
-- Validation
-- Error Handling
-- Logging
-
----
-
-### repositories/
-
-Handles database operations.
-
-Example:
-
+### 15.2 Tourist Dashboard Navigation Tree
 ```text
-user.repository.ts
-
-resort.repository.ts
-
-booking.repository.ts
-```
-
----
-
-### routes/
-
-Defines all REST API endpoints.
-
-Example:
-
-```text
-auth.routes.ts
-
-resort.routes.ts
-
-booking.routes.ts
-```
-
----
-
-### services/
-
-Contains business logic.
-
-Example:
-
-```text
-auth.service.ts
-
-proposal.service.ts
-
-tripRequest.service.ts
-```
-
----
-
-### validators/
-
-Contains Zod validation schemas.
-
-Example:
-
-```text
-login.validator.ts
-
-booking.validator.ts
-```
-
----
-
-### types/
-
-Shared TypeScript types and interfaces.
-
----
-
-### utils/
-
-Reusable utility functions.
-
-Examples:
-
-- Date formatting
-- Slug generation
-- Token helpers
-
----
-
-### generated/
-
-Contains Prisma generated client.
-
----
-
-# 21. Frontend Folder Structure
-
-```text
-frontend/
-│
-├── public/
-│
-├── src/
-│   │
-│   ├── assets/
-│   │
-│   ├── components/
-│   │
-│   ├── layouts/
-│   │
-│   ├── pages/
-│   │
-│   ├── routes/
-│   │
-│   ├── services/
-│   │
-│   ├── hooks/
-│   │
-│   ├── context/
-│   │
-│   ├── types/
-│   │
-│   ├── utils/
-│   │
-│   ├── constants/
-│   │
-│   ├── styles/
-│   │
-│   ├── App.tsx
-│   └── main.tsx
-│
-├── package.json
-├── vite.config.ts
-└── tsconfig.json
-```
-
----
-
-## Folder Responsibilities
-
-### assets/
-
-Contains:
-
-- Images
-- Icons
-- Videos
-- Fonts
-
----
-
-### components/
-
-Reusable UI components.
-
-Examples:
-
-```text
-Navbar/
-
-Footer/
-
-Button/
-
-Card/
-
-Modal/
-
-Input/
-
-Loader/
-
-Badge/
-```
-
----
-
-### layouts/
-
-Shared layouts.
-
-Examples:
-
-```text
-PublicLayout
-
-DashboardLayout
-
-AdminLayout
-```
-
----
-
-### pages/
-
-Contains complete application pages.
-
-Examples:
-
-```text
-Home
-
-Login
-
-Register
-
-Destinations
-
-Resorts
-
-Dashboard
-```
-
----
-
-### routes/
-
-Application routing configuration.
-
----
-
-### services/
-
-Axios configuration and API calls.
-
-Example:
-
-```text
-auth.service.ts
-
-booking.service.ts
-```
-
----
-
-### hooks/
-
-Reusable React hooks.
-
-Examples:
-
-```text
-useAuth()
-
-useFetch()
-
-useDebounce()
-```
-
----
-
-### context/
-
-Global application state.
-
-Examples:
-
-- Authentication
-- Theme
-- Notifications
-
----
-
-### types/
-
-Shared frontend interfaces.
-
----
-
-### utils/
-
-Reusable helper functions.
-
----
-
-### constants/
-
-Application constants.
-
----
-
-### styles/
-
-Global styles.
-
-Includes:
-
-- Tailwind
-- Custom CSS
-- Theme Variables
-
----
-
-# 22. File Naming Conventions
-
-Consistency improves readability and maintainability.
-
----
-
-## Backend
-
-Controllers
-
-```text
-auth.controller.ts
-
-booking.controller.ts
-```
-
-Services
-
-```text
-auth.service.ts
-
-proposal.service.ts
-```
-
-Repositories
-
-```text
-user.repository.ts
-```
-
-Validators
-
-```text
-login.validator.ts
-```
-
-Routes
-
-```text
-booking.routes.ts
-```
-
-Middleware
-
-```text
-auth.middleware.ts
-```
-
----
-
-## Frontend
-
-Pages
-
-```text
-HomePage.tsx
-
-LoginPage.tsx
-
-DestinationDetailsPage.tsx
-```
-
-Components
-
-```text
-DestinationCard.tsx
-
-Navbar.tsx
-
-SearchBar.tsx
-```
-
-Hooks
-
-```text
-useAuth.ts
-
-useBooking.ts
-```
-
-Services
-
-```text
-auth.service.ts
-
-resort.service.ts
-```
-
----
-
-# 23. Component Organization
-
-Components are categorized by their purpose.
-
-```text
-components/
-
-├── common/
-├── forms/
-├── cards/
-├── navigation/
-├── dashboard/
-├── modals/
-└── ui/
-```
-
-### Common
-
-Reusable across the application.
-
-Examples:
-
-- Button
-- Input
-- Loader
-
----
-
-### Forms
-
-Reusable form components.
-
----
-
-### Cards
-
-Destination cards
-
-Resort cards
-
-Article cards
-
-Experience cards
-
----
-
-### Navigation
-
-Navbar
-
-Sidebar
-
-Breadcrumb
-
-Footer
-
----
-
-### Dashboard
-
-Dashboard-specific components.
-
----
-
-### UI
-
-Generic interface components.
-
-Examples:
-
-- Modal
-- Tooltip
-- Badge
-- Alert
-
----
-
-# 24. Route Organization
-
-Routes are organized by feature modules.
-
-```text
-/auth
-
-/destinations
-
-/resorts
-
-/articles
-
-/experiences
-
 /dashboard
+├── /dashboard/profile
+├── /dashboard/settings
+├── /dashboard/requests (My Trip Requests)
+├── /trip-request/new (Submit Custom Safari Request)
+├── /dashboard/proposals/:id (View / Accept / Reject / Change Request)
+├── /dashboard/bookings (My Bookings - Custom & Direct)
+└── /dashboard/notifications (In-App Alerts)
+```
 
+### 15.3 Business Partner Navigation Tree
+```text
+/partner
+├── /partner/kyc (Partner Verification Submission)
+├── /partner/businesses (My Businesses Listing)
+├── /partner/businesses/new (Create Business)
+├── /partner/businesses/:id/edit (Edit & Re-verify Business)
+├── /partner/businesses/:id (View Business Details)
+├── /partner/rooms (Room Categories & Inventory)
+├── /partner/vehicles (Safari 4x4 Fleet & Slots)
+├── /partner/equipment (Camera & Gear Rental Inventory)
+├── /partner/calendar (Calendar Blackout Dates Management)
+├── /partner/finances (Escrow & Bank Payouts History)
+├── /partner/bookings (Received Guest Bookings)
+├── /partner/inquiries (Customer Inquiries with SLA)
+├── /partner/inquiries/:id (Inquiry Details)
+├── /partner/notifications (Partner Alerts)
+├── /partner/profile
+└── /partner/settings
+```
+
+### 15.4 Admin Navigation Tree
+```text
 /admin
+├── /admin/kyc (Partner KYC Verification Queue)
+├── /admin/users (User Management & Audit)
+├── /admin/destinations (Destinations CRUD)
+├── /admin/resorts (Curated Resorts Management)
+├── /admin/inquiries (Inquiry SLA Oversight)
+├── /admin/trip-requests (Review Custom Inquiries)
+├── /admin/bookings (Global Booking Overview)
+├── /admin/articles (Article Authoring & Publishing)
+├── /admin/businesses (Business Verification & Approval)
+└── /admin/businesses/:id (Review Business Submissions)
 ```
-
-Protected routes require authentication.
-
-Admin routes require administrator privileges.
 
 ---
 
-# 25. API Organization
+## 16. CSS Styling & Design System Architecture
 
-Each module owns its own API.
+WildConnect enforces strict styling rules:
+- **No Tailwind CSS**: Zero utility classes or `@apply` directives.
+- **Pure CSS Custom Properties**: Defined in `src/styles/globals/variables.css`.
+- **Modular Stylesheets**: Every page and component imports its designated CSS file from `src/styles/`.
+- **Semantic Class Names**: Descriptive names such as `.partner-business-card`, `.booking-status-badge`, `.destination-hero-header`.
+
+---
+
+# Phase 4 — Engineering, Security & Scalability
+
+## 17. Security Architecture
+
+1. **Password Security**: Passwords hashed using `bcrypt` (minimum 10 salt rounds) before database persistence.
+2. **JWT Authorization**: Stateless JSON Web Tokens signed with secret keys, verified on every protected API call.
+3. **Role-Based Guards**: Two-tier verification on both backend (`restrictTo`) and frontend (`ProtectedRoute`).
+4. **Input Sanitization & Validation**: All request bodies, query strings, and URL parameters validated strictly using Zod schemas.
+5. **SQL Injection & Mass Assignment Protection**: Guaranteed by Prisma ORM's parameterized queries and strict schema models.
+6. **File Upload Security**: Multer configured with file size limits (5MB) and strict image MIME type validation (`image/jpeg`, `image/png`, `image/webp`).
+7. **KYC Document Privacy**: Secure route `/api/kyc/document/:filename` restricting access strictly to the document owner or Admins.
+
+---
+
+## 18. State Management Strategy
+
+- **Global Authentication State**: Managed via `AuthContext` using React Context API. Stores authenticated user profile, active token, and authentication status.
+- **Server Cache & API Communication**: Services layer with Axios interceptors automatically injecting JWT tokens and handling 401 Unauthorized redirects.
+- **Local Component State**: Standard React `useState`, `useReducer`, and custom hooks for local UI state, filters, forms, and modal interactions.
+
+---
+
+## 19. Error Handling & Validation Pipeline
+
+### Centralized Backend Error Flow
+```text
+Error Thrown in Service / Controller
+        │
+        ▼
+   asyncHandler (Catches unhandled promise rejections)
+        │
+        ▼
+errorHandler Middleware (`src/middleware/errorHandler.ts`)
+        ├── Checks instance of AppError (NotFoundError, BadRequestError, UnauthorizedError, ForbiddenError)
+        ├── Handles Prisma Known Request Errors (P2002 Unique Constraint, P2025 Not Found)
+        ├── Handles Zod Validation Errors (Formatted error array)
+        └── Returns standardized JSON response:
+            {
+              "success": false,
+              "message": "Meaningful error message",
+              "errors": []
+            }
+```
+
+---
+
+## 20. Cloud Deployment Topology
 
 ```text
-Authentication
-
-↓
-
-Destination
-
-↓
-
-Safari Gate
-
-↓
-
-Resort
-
-↓
-
-Inquiry
-
-↓
-
-Trip Request
-
-↓
-
-Proposal
-
-↓
-
-Booking
-
-↓
-
-Article
-
-↓
-
-Experience
-
-↓
-
-Notification
-```
-
-Every module follows the same architecture:
-
-```text
-Route
-
-↓
-
-Controller
-
-↓
-
-Service
-
-↓
-
-Repository
-```
-
-This ensures consistency throughout the application.
-
----
-
-# 26. Environment Configuration
-
-Sensitive information is stored using environment variables.
-
-Examples include:
-
-Backend
-
-- Database URL
-- JWT Secret
-- Refresh Token Secret
-- Port Number
-- Environment Mode
-
-Frontend
-
-- API Base URL
-
-No secrets are committed to version control.
-
----
-
-# 27. Coding Standards
-
-The project follows these development standards.
-
-### General
-
-- Use TypeScript throughout the project.
-- Keep functions small and focused.
-- Write reusable code.
-- Avoid duplication.
-- Follow consistent naming conventions.
-
----
-
-### Backend
-
-- Business logic belongs in Services.
-- Database queries belong in Repositories.
-- Controllers remain lightweight.
-- Validate all incoming data.
-
----
-
-### Frontend
-
-- Prefer reusable components.
-- Keep pages focused on layout and composition.
-- Separate UI from business logic.
-- Use custom hooks for reusable logic.
-
----
-
-### Git
-
-- Feature-based branches.
-- Meaningful commit messages.
-- Pull requests reviewed before merging.
-
----
-
-# 28. Reusable Component Strategy
-
-WildConnect emphasizes component reusability to reduce duplication and improve consistency.
-
-Examples of reusable components include:
-
-```text
-Button
-
-Input
-
-Textarea
-
-Modal
-
-Badge
-
-Alert
-
-Loader
-
-Pagination
-
-Search Bar
-
-Filter Panel
-
-Data Table
-
-Confirmation Dialog
-```
-
-These components are designed to be configurable through props and reused across multiple pages and modules.
-
----
-
-# Phase 3 Summary
-
-Phase 3 establishes a clear and scalable project organization for WildConnect. The backend follows a layered architecture with separated responsibilities, while the frontend adopts a component-based structure with reusable layouts and services. Consistent folder organization, naming conventions, coding standards, and reusable components ensure the project remains maintainable, collaborative, and ready for future growth.
-
-
-
-# Phase 4 — Development & Scalability
-
-This phase defines the engineering practices, security standards, deployment strategy, and scalability considerations that will guide the long-term development of WildConnect.
-
----
-
-# 29. Security Architecture
-
-Security is a core requirement throughout the application.
-
-The platform follows industry-standard security practices to protect user data and application resources.
-
-## Authentication
-
-- JWT Authentication
-- Protected Routes
-- Role-Based Authorization
-- Secure Logout
-
----
-
-## Password Security
-
-- Passwords are never stored in plain text.
-- All passwords are hashed using **bcrypt** before being stored in the database.
-
----
-
-## Authorization
-
-Every protected endpoint verifies:
-
-- User authentication
-- User role
-- Required permissions
-
-Roles include:
-
-- Visitor
-- Tourist
-- Admin
-
----
-
-## Input Validation
-
-Every incoming request is validated before processing.
-
-Validation includes:
-
-- Required fields
-- Data types
-- String lengths
-- Email format
-- Business rules
-
-Invalid requests return standardized validation errors.
-
----
-
-## Environment Variables
-
-Sensitive configuration is stored in environment variables.
-
-Examples include:
-
-- Database URL
-- JWT Secret
-- Refresh Token Secret
-- API Keys
-- Server Port
-
-No secrets are committed to Git.
-
----
-
-## API Protection
-
-The backend includes:
-
-- Request validation
-- Authentication middleware
-- Authorization middleware
-- Centralized error handling
-
----
-
-# 30. State Management
-
-WildConnect uses lightweight state management suitable for an MVP.
-
-## Global State
-
-Managed using React Context.
-
-Examples:
-
-- Authentication
-- Current User
-- Theme (Future)
-- Notifications
-
----
-
-## Local State
-
-Managed using React Hooks.
-
-Examples:
-
-- Form Inputs
-- Search Filters
-- Modal State
-- Loading States
-
----
-
-## Custom Hooks
-
-Reusable logic is extracted into custom hooks.
-
-Examples:
-
-```text
-useAuth()
-
-useFetch()
-
-usePagination()
-
-useSearch()
-
-useDebounce()
-```
-
-Redux is intentionally not included in Version 1 to keep the application simple and maintainable.
-
----
-
-# 31. Error Handling Strategy
-
-A centralized error handling strategy ensures consistent responses across the application.
-
-## Backend
-
-Errors are handled using a global error middleware.
-
-Categories include:
-
-- Validation Errors
-- Authentication Errors
-- Authorization Errors
-- Database Errors
-- Internal Server Errors
-
----
-
-## Frontend
-
-The UI provides user-friendly feedback using toast notifications and error messages.
-
-Examples:
-
-- Invalid login credentials
-- Network failures
-- Validation errors
-- Unexpected server errors
-
-Users should always receive meaningful and actionable feedback.
-
----
-
-# 32. Logging Strategy
-
-Logging helps monitor the application and simplify debugging.
-
-## Development Logs
-
-Examples:
-
-- Incoming Requests
-- API Responses
-- Database Queries
-- Validation Errors
-
----
-
-## Production Logs
-
-Examples:
-
-- Server Errors
-- Authentication Failures
-- Critical Exceptions
-
-Sensitive information such as passwords and JWT tokens must never be logged.
-
----
-
-# 33. Deployment Architecture
-
-WildConnect follows a cloud-based deployment architecture.
-
-```text
-                 Users
-                   │
-                   ▼
-           React Frontend
-             (Vercel)
-                   │
-            HTTPS Requests
-                   │
-                   ▼
-         Express Backend API
-        (Render / Railway)
-                   │
-                   ▼
-          PostgreSQL Database
-               (Neon)
+                   End Users (Web Browsers)
+                              │
+                              ▼
+                 React Frontend Application
+                     (Hosted on Vercel)
+                              │
+                      HTTPS REST Calls
+                              │
+                              ▼
+                 Express Backend REST API
+               (Hosted on Render / Railway)
+                              │
+                     Prisma Connection
+                              │
+                              ▼
+                PostgreSQL Serverless Database
+                      (Hosted on Neon)
 ```
 
 ---
 
-## Frontend
+## 21. Architecture Summary
 
-Deployment Platform:
-
-- Vercel
-
-Responsibilities:
-
-- Static Asset Hosting
-- React Application
-- Client-side Routing
-
----
-
-## Backend
-
-Deployment Platform:
-
-- Render
-or
-- Railway
-
-Responsibilities:
-
-- REST APIs
-- Authentication
-- Business Logic
-- Database Communication
-
----
-
-## Database
-
-Platform:
-
-- Neon PostgreSQL
-
-Responsibilities:
-
-- Persistent Storage
-- Automated Backups
-- Secure Connections
-
----
-
-# 34. Performance Considerations
-
-The application is designed to provide a fast and responsive experience.
-
-Performance strategies include:
-
-- Lazy Loading
-- Code Splitting
-- Optimized Images
-- Efficient Database Queries
-- Pagination
-- Search Optimization
-- API Response Standardization
-- Reusable Components
-
----
-
-## Backend Optimization
-
-- Indexed database queries
-- Optimized Prisma queries
-- Minimized database calls
-- Modular services
-
----
-
-## Frontend Optimization
-
-- Lazy-loaded pages
-- Memoized components where appropriate
-- Efficient state management
-- Optimized asset loading
-
----
-
-# 35. Scalability Strategy
-
-WildConnect is designed to support future expansion without requiring major architectural changes.
-
-Future scalability includes:
-
-- Additional Wildlife Destinations
-- Multiple Administrators
-- Resort Partner Portal
-- AI Services
-- Online Payments
-- Mobile Applications
-- Analytics Dashboard
-- External API Integrations
-
-The layered backend architecture and modular frontend make future enhancements easier to implement.
-
----
-
-# 36. Future Architecture (V2)
-
-Version 2 may introduce several new architectural components.
-
-Examples:
-
-```text
-React Frontend
-
-↓
-
-API Gateway
-
-↓
-
-Authentication Service
-
-↓
-
-AI Recommendation Service
-
-↓
-
-Booking Service
-
-↓
-
-Payment Service
-
-↓
-
-Notification Service
-
-↓
-
-PostgreSQL
-```
-
-Possible additions:
-
-- AI Itinerary Generation
-- AI Chat Assistant
-- Payment Gateway
-- Resort Owner Dashboard
-- Safari Booking Integration
-- Email & SMS Notifications
-- Recommendation Engine
-- Mobile Application
-- Partner APIs
-
-The current architecture is intentionally designed to accommodate these future services.
-
----
-
-# 37. Development Workflow
-
-Development follows a structured, module-based workflow.
-
-```text
-Planning
-
-↓
-
-Database Design
-
-↓
-
-Backend Development
-
-↓
-
-API Testing
-
-↓
-
-Frontend Development
-
-↓
-
-Integration
-
-↓
-
-Testing
-
-↓
-
-Deployment
-```
-
-Each module follows the same implementation sequence:
-
-```text
-Database Model
-
-↓
-
-Migration
-
-↓
-
-Repository
-
-↓
-
-Service
-
-↓
-
-Controller
-
-↓
-
-Routes
-
-↓
-
-API Testing
-
-↓
-
-Frontend UI
-
-↓
-
-Integration
-
-↓
-
-Module Testing
-```
-
-This workflow ensures consistency and minimizes integration issues.
-
----
-
-# 38. Architecture Summary
-
-WildConnect follows a modern, modular architecture designed for maintainability, scalability, and long-term growth.
-
-### Key Architectural Highlights
-
-- Layered Backend Architecture
-- Component-Based Frontend
-- RESTful APIs
-- PostgreSQL with Prisma ORM
-- JWT Authentication
-- Role-Based Authorization
-- Modular Project Structure
-- Reusable Components
-- Cloud-Based Deployment
-- Scalable Foundation for Future Features
-
-The architecture prioritizes clean code, clear separation of responsibilities, and flexibility for future enhancements while keeping Version 1 focused, stable, and production-ready.
-
----
-
-# Final Conclusion
-
-This architecture document serves as the technical foundation of the WildConnect platform.
-
-Together with the PRD, Database Design, API Documentation, and UI Guidelines, it provides a complete blueprint for building, maintaining, and scaling the application.
-
-All future development should align with the principles, standards, and architectural decisions defined in this document to ensure consistency, reliability, and long-term maintainability.
+The WildConnect architecture provides a robust, type-safe, and modular foundation. By maintaining clean separation across controllers, services, repositories, and UI components, the system seamlessly powers both the multi-service partner marketplace (stays, safari gypsies, gear rentals) and custom safari planning workflows while remaining scalable for future enhancements.

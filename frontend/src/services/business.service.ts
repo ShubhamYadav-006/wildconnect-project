@@ -1,10 +1,54 @@
 import api from './api';
 
+export interface BusinessQuickStat {
+  label: string;
+  value: string;
+}
+
+export interface BusinessMetadata {
+  experienceType?: string;
+  quickStats?: BusinessQuickStat[];
+  highlights?: string[];
+  badgeLabel?: string;
+  badgeIcon?: string;
+  fallbackDescription?: string;
+  farmType?: string;
+  nearestGate?: string;
+  nearbyGates?: Array<{ name: string; distance: string }>;
+  services?: string[];
+  roomFeatures?: string[];
+  foodAndDining?: string;
+  wildlifeAndNature?: string;
+  bestSuitedFor?: string[];
+  policies?: {
+    checkIn?: string;
+    checkOut?: string;
+    pets?: string;
+    cancellation?: string;
+  };
+  gettingThere?: {
+    railwayStation?: string;
+    airport?: string;
+  };
+  social?: {
+    phoneSecondary?: string;
+    whatsapp?: string;
+    website?: string;
+    instagram?: string;
+  };
+  pricing?: {
+    pricePerNight?: number;
+  };
+  pricingNote?: string;
+  [key: string]: any;
+}
+
 export interface Business {
   id: string;
   name: string;
   slug: string;
   type: string;
+  category?: string;
   description: string;
   coverImage?: string;
   images: string[];
@@ -13,7 +57,19 @@ export interface Business {
   address?: string;
   starRating?: number;
   amenities?: string[];
-  metadata?: any;
+  experienceType?: string;
+  shortDescription?: string;
+  quickStats?: BusinessQuickStat[];
+  highlights?: string[];
+  experiences?: string[];
+  hasRooms?: boolean;
+  nearestGate?: string;
+  distanceFromGate?: string;
+  verified?: boolean;
+  badgeLabel?: string;
+  badgeIcon?: string;
+  fallbackDescription?: string;
+  metadata?: BusinessMetadata;
   destinationId?: string;
   destination?: {
     id: string;
@@ -33,6 +89,7 @@ export interface Business {
   }>;
   status: 'DRAFT' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'SUSPENDED';
   rejectionReason?: string;
+  deletedAt?: string | null;
   userId: string;
   user?: {
     id: string;
@@ -49,12 +106,14 @@ class BusinessService {
   async getPublicBusinesses(filters?: { 
     type?: string; 
     category?: string; 
+    destination?: string;
     destinationId?: string; 
     destinationSlug?: string; 
   }) {
     const params = new URLSearchParams();
     if (filters?.type) params.append('type', filters.type);
     if (filters?.category) params.append('category', filters.category);
+    if (filters?.destination) params.append('destination', filters.destination);
     if (filters?.destinationId) params.append('destinationId', filters.destinationId);
     if (filters?.destinationSlug) params.append('destinationSlug', filters.destinationSlug);
     
@@ -70,6 +129,11 @@ class BusinessService {
   // Protected (User)
   async getMyBusinesses() {
     const response = await api.get('/businesses/user/my');
+    return response.data.data;
+  }
+
+  async getMyBusinessById(id: string) {
+    const response = await api.get(`/businesses/user/my/${id}`);
     return response.data.data;
   }
 
@@ -101,6 +165,11 @@ class BusinessService {
 
   async updateBusinessStatus(id: string, status: 'APPROVED' | 'REJECTED' | 'SUSPENDED', rejectionReason?: string) {
     const response = await api.patch(`/businesses/${id}/status`, { status, rejectionReason });
+    return response.data.data;
+  }
+
+  async deleteBusiness(id: string) {
+    const response = await api.delete(`/businesses/${id}`);
     return response.data.data;
   }
 }

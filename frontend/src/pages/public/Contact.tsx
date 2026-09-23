@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import toast from 'react-hot-toast';
-import '../../styles/pages/Contact.css';
+import '../../styles/public/Contact.css';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name is required'),
@@ -25,7 +25,7 @@ const Contact = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       toast.success('Your message has been sent successfully! We will get back to you soon.');
       reset();
-    } catch (error) {
+    } catch {
       toast.error('Failed to send message. Please try again.');
     }
   };

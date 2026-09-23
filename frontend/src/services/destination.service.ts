@@ -6,7 +6,6 @@ export interface Destination {
   slug: string;
   state: string;
   country?: string;
-  bestSeason?: string;
   description: string;
   images?: string[];
   coverImage?: string;

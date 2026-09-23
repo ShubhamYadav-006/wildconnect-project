@@ -30,7 +30,10 @@ export class BusinessRepository {
 
   async findByUserId(userId: string) {
     return prisma.business.findMany({ 
-      where: { userId }, 
+      where: { 
+        userId,
+        deletedAt: null,
+      }, 
       orderBy: { createdAt: 'desc' } 
     });
   }
@@ -51,8 +54,15 @@ export class BusinessRepository {
     return prisma.business.update({ where: { id }, data });
   }
 
+  async softDelete(id: string) {
+    return prisma.business.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+  }
+
   async delete(id: string) {
-    return prisma.business.delete({ where: { id } });
+    return this.softDelete(id);
   }
 }
 

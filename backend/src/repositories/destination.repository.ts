@@ -5,7 +5,7 @@ export class DestinationRepository {
   async findAll() {
     return prisma.destination.findMany({
       where: { deletedAt: null },
-      orderBy: { name: 'asc' },
+      orderBy: { createdAt: 'asc' },
     });
   }
 

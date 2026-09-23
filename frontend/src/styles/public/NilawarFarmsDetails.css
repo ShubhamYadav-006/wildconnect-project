@@ -1,0 +1,712 @@
+/* ==========================================================
+   NilawarFarmsDetails Styles
+   WildConnect Agritourism & Nature Farmstay Theme
+   ========================================================== */
+
+.nilawar-details-page {
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem 1.5rem;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   1. Header & Breadcrumbs
+   ========================================== */
+.nilawar-header-container {
+  margin-bottom: 2rem;
+}
+
+.nilawar-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted, #6F7B73);
+  margin-bottom: 0.875rem;
+}
+
+.nilawar-breadcrumb-link {
+  color: var(--color-text-muted, #6F7B73);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nilawar-breadcrumb-link:hover {
+  color: var(--color-primary, #1F4D3A);
+}
+
+.nilawar-breadcrumb-sep {
+  color: #B2BCB5;
+  font-size: 0.75rem;
+}
+
+.nilawar-breadcrumb-current {
+  color: var(--color-primary, #1F4D3A);
+  font-weight: 600;
+}
+
+.nilawar-header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+}
+
+.nilawar-header-info {
+  flex: 1;
+}
+
+.nilawar-badge-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.nilawar-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: rgba(107, 142, 90, 0.12);
+  color: #3B6B38;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(107, 142, 90, 0.25);
+}
+
+.nilawar-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2F6B4F;
+  background-color: #EBF4F0;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+}
+
+.nilawar-stars-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #D99A3D;
+}
+
+.nilawar-star-filled {
+  color: #D99A3D;
+  fill: #D99A3D;
+}
+
+.nilawar-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: clamp(1.85rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0.25rem 0 0.6rem 0;
+  line-height: 1.2;
+}
+
+.nilawar-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.nilawar-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.9375rem;
+  color: var(--color-text-muted, #6F7B73);
+}
+
+.nilawar-meta-icon {
+  color: var(--color-secondary, #6B8E5A);
+  flex-shrink: 0;
+}
+
+.nilawar-dest-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-secondary, #6B8E5A);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nilawar-dest-link:hover {
+  color: var(--color-primary, #1F4D3A);
+}
+
+.nilawar-btn-enquire {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primary, #1F4D3A);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(31, 77, 58, 0.18);
+}
+
+.nilawar-btn-enquire:hover {
+  background-color: #16382B;
+  transform: translateY(-1px);
+}
+
+/* ==========================================
+   2. Gallery Grid (Equal-Sized Photo Grid)
+   ========================================== */
+.nilawar-gallery-section {
+  margin-bottom: 2.25rem;
+}
+
+.nilawar-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.nilawar-gallery-item {
+  position: relative;
+  height: 230px;
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #E8E5DD;
+  box-shadow: 0 4px 14px rgba(23, 77, 59, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nilawar-gallery-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(23, 77, 59, 0.12);
+}
+
+.nilawar-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.nilawar-gallery-item:hover .nilawar-gallery-img {
+  transform: scale(1.05);
+}
+
+.nilawar-gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 43, 33, 0.45);
+  backdrop-filter: blur(2px);
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.nilawar-gallery-item:hover .nilawar-gallery-overlay {
+  opacity: 1;
+}
+
+/* ==========================================
+   3. Quick Strip
+   ========================================== */
+.nilawar-quick-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: 1rem;
+  padding: 1.125rem 1.75rem;
+  box-shadow: 0 3px 12px rgba(38, 51, 45, 0.03);
+  margin-bottom: 2.25rem;
+}
+
+.nilawar-quick-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.nilawar-quick-label {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-secondary, #6B8E5A);
+}
+
+.nilawar-quick-value {
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+}
+
+.nilawar-quick-divider {
+  width: 1px;
+  height: 2rem;
+  background-color: #E2E8E3;
+}
+
+/* ==========================================
+   4. Content Layout Grid
+   ========================================== */
+.nilawar-layout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) 360px;
+  gap: 2.25rem;
+  align-items: flex-start;
+}
+
+.nilawar-main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.nilawar-rooms-wrapper {
+  margin-bottom: 0.5rem;
+}
+
+.nilawar-card {
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: 1.125rem;
+  padding: 1.875rem;
+  box-shadow: 0 3px 14px rgba(38, 51, 45, 0.03);
+}
+
+.nilawar-card-header {
+  margin-bottom: 1.25rem;
+}
+
+.nilawar-card-eyebrow {
+  display: inline-block;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-secondary, #6B8E5A);
+  margin-bottom: 0.25rem;
+}
+
+.nilawar-card-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.nilawar-description {
+  color: #3C4A42;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.nilawar-description p {
+  margin: 0 0 1rem 0;
+}
+
+.nilawar-description p:last-child {
+  margin-bottom: 0;
+}
+
+/* Highlights */
+.nilawar-highlights-box {
+  background-color: #F8F6F0;
+  border: 1px solid #E5E0D5;
+  border-radius: 0.875rem;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.nilawar-highlights-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0 0 0.875rem 0;
+}
+
+.nilawar-highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.nilawar-highlight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #4B5B52;
+  line-height: 1.45;
+}
+
+.nilawar-highlight-check {
+  color: var(--color-secondary, #6B8E5A);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+/* Amenities */
+.nilawar-amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.nilawar-amenity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.75rem 1rem;
+  background-color: #FBF9F4;
+  border: 1px solid #EBE7DD;
+  border-radius: 0.75rem;
+}
+
+.nilawar-amenity-icon-wrap {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  background-color: rgba(31, 77, 58, 0.08);
+  color: var(--color-primary, #1F4D3A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nilawar-amenity-label {
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #27362E;
+}
+
+/* Location */
+.nilawar-location-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.nilawar-location-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+}
+
+.nilawar-loc-pin {
+  color: var(--color-secondary, #6B8E5A);
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.nilawar-location-row h4 {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0 0 0.25rem 0;
+}
+
+.nilawar-location-row p {
+  font-size: 0.875rem;
+  color: #4A5B51;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.nilawar-gate-note {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #F2F6F3;
+  border: 1px solid #D7E4DA;
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.8125rem;
+  color: #2D4C3A;
+  line-height: 1.45;
+}
+
+/* ==========================================
+   5. Sidebar: Host Card
+   ========================================== */
+.nilawar-sidebar {
+  position: relative;
+}
+
+.nilawar-host-card {
+  position: sticky;
+  top: 5.5rem;
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  box-shadow: 0 6px 24px rgba(31, 77, 58, 0.06);
+}
+
+.nilawar-host-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0 0 0.5rem 0;
+}
+
+.nilawar-host-desc {
+  font-size: 0.84375rem;
+  color: var(--color-text-muted, #6F7B73);
+  line-height: 1.55;
+  margin: 0 0 1.25rem 0;
+}
+
+.nilawar-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #FBF9F4;
+  border: 1px solid #EBE7DD;
+  border-radius: 0.75rem;
+}
+
+.nilawar-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--color-primary, #1F4D3A);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nilawar-contact-item:hover {
+  color: var(--color-secondary, #6B8E5A);
+}
+
+.nilawar-sidebar-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem;
+  background-color: var(--color-primary, #1F4D3A);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(31, 77, 58, 0.2);
+}
+
+.nilawar-sidebar-btn:hover {
+  background-color: #16382B;
+  transform: translateY(-1px);
+}
+
+.nilawar-guarantee-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--color-secondary, #6B8E5A);
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+/* ==========================================
+   6. Lightbox
+   ========================================== */
+.nilawar-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(12, 28, 22, 0.92);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.nilawar-lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nilawar-lightbox-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nilawar-lightbox-img {
+  max-width: 82vw;
+  max-height: 78vh;
+  object-fit: contain;
+  border-radius: 0.75rem;
+}
+
+.nilawar-lightbox-counter {
+  margin-top: 0.75rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.nilawar-lightbox-close {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.nilawar-lightbox-nav {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0 1rem;
+}
+
+/* ==========================================
+   7. Responsive Breakpoints
+   ========================================== */
+@media (max-width: 1024px) {
+  .nilawar-layout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nilawar-host-card {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .nilawar-header-main {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nilawar-btn-enquire {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nilawar-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .nilawar-gallery-item {
+    height: 190px;
+  }
+
+  .nilawar-quick-strip {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .nilawar-quick-divider {
+    display: none;
+  }
+
+  .nilawar-amenities-grid,
+  .nilawar-highlights-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .nilawar-gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .nilawar-gallery-item {
+    height: 200px;
+  }
+}

@@ -1,176 +1,205 @@
+/* ==========================================================
+   CTASection Styles
+   WildConnect Luxury Safari Design System
+   Full Responsive Layout with Relative Units
+   ========================================================== */
+
 /* ==========================================
-   CTA Section Layout
-   ========================================== */
+   Section Container
+========================================== */
 .cta-section {
-  max-width: var(--max-width-7xl);
-  margin: 0 auto;
-  padding: 3rem 1rem;
-}
-
-@media (min-width: 640px) {
-  .cta-section {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .cta-section {
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
+  padding: 0 0 3rem 0;
+  background-color: var(--color-background, #F7F5EF);
 }
 
 .cta-container {
-  background-color: var(--color-primary);
-  border-radius: var(--radius-3xl);
-  padding: 3rem 2rem;
-  box-shadow: var(--shadow-md);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  text-align: center;
-}
-
-@media (min-width: 768px) {
-  .cta-container {
-    padding: 3.5rem 4rem;
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
-    gap: 3rem;
-  }
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 /* ==========================================
-   CTA Content
-   ========================================== */
-.cta-content {
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  .cta-content {
-    max-width: 38rem;
-  }
+   CTA Banner Card
+========================================== */
+.cta-banner {
+  background-color: var(--color-primary, #1F4D3A);
+  border-radius: 1.5rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(22, 56, 43, 0.18);
 }
 
 .cta-badge {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: rgb(var(--text-light) / 0.9);
-  font-size: 0.7rem;
+  display: inline-block;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 0.35rem 0.875rem;
-  border-radius: var(--radius-full);
-  display: inline-block;
+  letter-spacing: 0.14em;
+  color: var(--color-accent, #D99A3D);
   margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.375rem 1rem;
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .cta-title {
-  font-family: var(--font-editorial);
-  font-size: 1.875rem;
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: clamp(1.875rem, 3.8vw, 2.625rem);
   font-weight: 700;
-  color: #ffffff;
-  line-height: 1.25;
-  margin: 0;
-}
-
-@media (min-width: 640px) {
-  .cta-title {
-    font-size: 2.25rem;
-  }
+  line-height: 1.2;
+  margin-bottom: 1.125rem;
+  color: #FFFFFF;
 }
 
 .cta-description {
-  color: rgba(255, 255, 255, 0.8);
-  font-family: var(--font-family);
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  margin: 1rem 0 0 0;
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.9375rem, 1.3vw, 1.0625rem);
+  max-width: 41.25rem;
+  margin: 0 auto 2.25rem auto;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.65;
 }
 
 /* ==========================================
-   CTA Actions & Buttons
-   ========================================== */
+   Action Buttons
+========================================== */
 .cta-actions {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.125rem;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  flex-shrink: 0;
-  width: 100%;
 }
 
-@media (min-width: 768px) {
-  .cta-actions {
-    width: auto;
-  }
-}
-
-.cta-btn-primary {
-  background-color: var(--color-accent);
-  color: #ffffff;
-  padding: 0.9rem 2.25rem;
-  border-radius: var(--radius-full);
-  font-weight: 700;
-  font-family: var(--font-family);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-default);
-  text-decoration: none;
+.cta-btn-accent {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
   justify-content: center;
-  width: 100%;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  min-width: 44px;
+  padding: 0.875rem 1.875rem;
+  border-radius: 9999px;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  background-color: var(--color-accent, #D99A3D);
+  color: #FFFFFF;
+  text-decoration: none;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 14px rgba(217, 154, 61, 0.25);
+  transition: all 0.25s ease;
+  cursor: pointer;
 }
 
-@media (min-width: 480px) {
-  .cta-btn-primary {
-    width: auto;
-  }
-}
-
-.cta-btn-primary:hover {
-  background-color: rgb(var(--accent) / 0.95);
-  box-shadow: 0 8px 25px rgba(217, 107, 39, 0.4);
+.cta-btn-accent:hover {
+  background-color: #C4872D;
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(217, 154, 61, 0.35);
+  color: #FFFFFF;
 }
 
-.cta-btn-secondary {
-  border: 2px solid rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  padding: 0.8rem 2.25rem;
-  border-radius: var(--radius-full);
-  font-weight: 700;
-  font-family: var(--font-family);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: var(--transition-default);
-  text-decoration: none;
+.cta-btn-outline {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
   justify-content: center;
-  width: 100%;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  min-width: 44px;
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
 }
 
-@media (min-width: 480px) {
-  .cta-btn-secondary {
-    width: auto;
+.cta-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #FFFFFF;
+  transform: translateY(-2px);
+  color: #FFFFFF;
+}
+
+/* ==========================================
+   Responsive Breakpoints
+   - 1200px (Desktop)
+   - 992px (Laptop)
+   - 768px (Tablet)
+   - 480px (Mobile)
+========================================== */
+
+/* 1200px - Desktop */
+@media (max-width: 1200px) {
+  .cta-container {
+    padding: 0 1.5rem;
   }
 }
 
-.cta-btn-secondary:hover {
-  border-color: rgba(255, 255, 255, 0.6);
-  background-color: rgba(255, 255, 255, 0.06);
-  transform: translateY(-1px);
+/* 992px - Laptop */
+@media (max-width: 992px) {
+  .cta-section {
+    padding-bottom: 5rem;
+  }
+
+  .cta-banner {
+    padding: 3.5rem 2.5rem;
+  }
+}
+
+/* 768px - Tablet */
+@media (max-width: 768px) {
+  .cta-section {
+    padding-bottom: 4rem;
+  }
+
+  .cta-banner {
+    padding: 2.75rem 1.5rem;
+    border-radius: 1.25rem;
+  }
+
+  .cta-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cta-btn-accent,
+  .cta-btn-outline {
+    width: 100%;
+    max-width: 18.75rem;
+  }
+}
+
+/* 480px - Mobile */
+@media (max-width: 480px) {
+  .cta-section {
+    padding-bottom: 3.5rem;
+  }
+
+  .cta-container {
+    padding: 0 1rem;
+  }
+
+  .cta-banner {
+    padding: 2.25rem 1.25rem;
+  }
+
+  .cta-btn-accent,
+  .cta-btn-outline {
+    max-width: 100%;
+  }
 }

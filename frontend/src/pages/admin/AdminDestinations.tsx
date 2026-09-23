@@ -20,7 +20,6 @@ const AdminDestinations = () => {
     description: '',
     state: '',
     country: 'India',
-    bestSeason: '',
     coverImage: ''
   });
 
@@ -28,7 +27,12 @@ const AdminDestinations = () => {
     try {
       const response = await destinationService.getAll();
       if (response.success) {
-        setDestinations(response.data);
+        const sorted = [...response.data].sort((a, b) => {
+          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return dateA - dateB;
+        });
+        setDestinations(sorted);
       }
     } catch (error) {
       console.error('Failed to fetch destinations', error);
@@ -49,7 +53,6 @@ const AdminDestinations = () => {
       description: '',
       state: '',
       country: 'India',
-      bestSeason: '',
       coverImage: ''
     });
     setIsModalOpen(true);
@@ -62,7 +65,6 @@ const AdminDestinations = () => {
       description: destination.description,
       state: destination.state,
       country: (destination as any).country || 'India',
-      bestSeason: destination.bestSeason || '',
       coverImage: destination.coverImage || ''
     });
     setIsModalOpen(true);
@@ -100,7 +102,6 @@ const AdminDestinations = () => {
         description: formData.description,
         state: formData.state,
         country: formData.country,
-        bestSeason: formData.bestSeason || undefined,
         coverImage: formData.coverImage || undefined
       };
 
@@ -153,29 +154,32 @@ const AdminDestinations = () => {
         </div>
       ) : (
         <div className="admin-destinations-grid">
-          {destinations.map((destination) => (
-            <div key={destination.id} className="admin-card admin-destination-card">
-              <div>
-                {destination.coverImage ? (
-                  <img src={destination.coverImage} alt={destination.name} className="admin-destination-img" />
-                ) : (
-                  <div className="admin-destination-placeholder">
-                    <Map size={48} />
+          {destinations.map((destination, index) => {
+            const seqNumber = index + 1;
+            const formattedSeq = String(seqNumber).padStart(2, '0');
+            return (
+              <div key={destination.id} className="admin-card admin-destination-card">
+                <div>
+                  <div className="admin-destination-img-container">
+                    <span className="admin-destination-index-badge">#{formattedSeq}</span>
+                    {destination.coverImage ? (
+                      <img src={destination.coverImage} alt={destination.name} className="admin-destination-img" />
+                    ) : (
+                      <div className="admin-destination-placeholder">
+                        <Map size={48} />
+                      </div>
+                    )}
                   </div>
-                )}
-                <div className="admin-destination-body">
-                  <h3 className="admin-destination-title">{destination.name}</h3>
-                  <p className="admin-destination-meta">
-                    {destination.state}, {(destination as any).country || 'India'}
-                  </p>
-                  <p className="admin-destination-desc">{destination.description}</p>
-                  {destination.bestSeason && (
-                    <p className="admin-destination-season">
-                      <strong>Best Season:</strong> {destination.bestSeason}
+                  <div className="admin-destination-body">
+                    <h3 className="admin-destination-title">
+                      {seqNumber}. {destination.name}
+                    </h3>
+                    <p className="admin-destination-meta">
+                      {destination.state}, {(destination as any).country || 'India'}
                     </p>
-                  )}
+                    <p className="admin-destination-desc">{destination.description}</p>
+                  </div>
                 </div>
-              </div>
 
               <div className="admin-destination-actions">
                 <Link
@@ -201,7 +205,8 @@ const AdminDestinations = () => {
                 </button>
               </div>
             </div>
-          ))}
+          );
+        })}
         </div>
       )}
 
@@ -243,9 +248,9 @@ const AdminDestinations = () => {
                 ></textarea>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">State *</label>
+              <div className="admin-modal-row-grid">
+                <div className="form-group">
+                  <label className="form-label">State *</label>
                   <input
                     type="text"
                     value={formData.state}
@@ -266,17 +271,6 @@ const AdminDestinations = () => {
                     required
                   />
                 </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Best Season to Visit (Optional)</label>
-                <input
-                  type="text"
-                  value={formData.bestSeason}
-                  onChange={(e) => setFormData({ ...formData, bestSeason: e.target.value })}
-                  placeholder="e.g. October to June"
-                  className="form-input"
-                />
               </div>
 
               <div className="form-group">

@@ -10,7 +10,6 @@ import proposalRoutes from './proposal.routes.js';
 import myRoutes from './my.routes.js';
 import bookingRoutes from './booking.routes.js';
 import articleRoutes from './article.routes.js';
-import experienceRoutes from './experience.routes.js';
 import notificationRoutes from './notification.routes.js';
 import businessRoutes from './business.routes.js';
 import uploadRoutes from './upload.routes.js';
@@ -18,7 +17,12 @@ import businessInquiryRoutes from './businessInquiry.routes.js';
 import partnerInquiryRoutes from './partnerInquiry.routes.js';
 import roomRoutes from './room.routes.js';
 import businessBookingRoutes from './businessBooking.routes.js';
-import businessReviewRoutes from './businessReview.routes.js';
+import partnerKycRoutes from './partnerKyc.routes.js';
+import vehicleRoutes from './vehicle.routes.js';
+import equipmentRoutes from './equipment.routes.js';
+import calendarBlockRoutes from './calendarBlock.routes.js';
+import payoutRoutes from './payout.routes.js';
+
 const router = Router();
 
 // Health check endpoint
@@ -32,7 +36,6 @@ router.use('/my', myRoutes);
 router.use('/admin', adminRoutes);
 router.use('/destinations', destinationRoutes);
 router.use('/resorts', resortRoutes);
-router.use('/experiences', experienceRoutes);
 router.use('/articles', articleRoutes);
 router.use('/proposals', proposalRoutes);
 router.use('/triprequests', tripRequestRoutes);
@@ -43,8 +46,12 @@ router.use('/businesses', businessRoutes);
 router.use('/upload', uploadRoutes);
 router.use('/inquiries', businessInquiryRoutes);
 router.use('/partner/inquiries', partnerInquiryRoutes);
+router.use('/kyc', partnerKycRoutes);
 router.use('/rooms', roomRoutes);
+router.use('/vehicles', vehicleRoutes);
+router.use('/equipment', equipmentRoutes);
+router.use('/calendar-blocks', calendarBlockRoutes);
 router.use('/business-bookings', businessBookingRoutes);
-router.use('/business-reviews', businessReviewRoutes);
+router.use('/payouts', payoutRoutes);
 
 export default router;

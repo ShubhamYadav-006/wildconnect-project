@@ -3,14 +3,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Mail, Lock, Trees } from "lucide-react";
+import { Mail, Lock } from "lucide-react";
 import toast from "react-hot-toast";
 import { GoogleLogin } from '@react-oauth/google';
 
 import { useAuth } from "../../hooks/useAuth";
 import { authService } from "../../services/auth.service";
 
-import "../../styles/pages/Login.css";
+import "../../styles/auth/Login.css";
 
 /* ==========================================================
    Validation Schema
@@ -95,13 +95,7 @@ const Login = () => {
     <main className="login-page">
       {/* Centered Login Card */}
       <section className="login-card">
-        {/* Brand Logo */}
-        <div className="login-logo-container">
-          <Link to="/" className="login-logo-link">
-            <Trees size={36} className="login-logo-icon" />
-            <span>WildConnect</span>
-          </Link>
-        </div>
+
 
         {/* Header */}
         <div className="login-header">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { businessService, type Business } from '../../../services/business.service';
 import { destinationService, type Destination } from '../../../services/destination.service';
@@ -15,7 +15,7 @@ export const BusinessDetails = () => {
   const [destination, setDestination] = useState<Destination | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchBusiness = async () => {
+  const fetchBusiness = useCallback(async () => {
     try {
       setIsLoading(true);
       const myBusinesses = await businessService.getMyBusinesses();
@@ -34,18 +34,17 @@ export const BusinessDetails = () => {
         toast.error('Business not found or access denied.');
         navigate('/partner/businesses');
       }
-    } catch (error) {
-      console.error('Error fetching business details:', error);
+    } catch {
       toast.error('Failed to load business details');
       navigate('/partner/businesses');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id, navigate]);
 
   useEffect(() => {
     fetchBusiness();
-  }, [id, navigate]);
+  }, [fetchBusiness]);
 
   const handleSubmitForReview = async () => {
     if (!business) return;
@@ -204,7 +203,13 @@ export const BusinessDetails = () => {
             {business.metadata?.pricing && (
               <div className="side-card">
                 <h3>Pricing Information</h3>
-                <p className="pricing-text">{business.metadata.pricing}</p>
+                <p className="pricing-text">
+                  {typeof business.metadata.pricing === 'object'
+                    ? (business.metadata.pricing.pricePerNight
+                      ? `₹${business.metadata.pricing.pricePerNight} / night`
+                      : JSON.stringify(business.metadata.pricing))
+                    : String(business.metadata.pricing)}
+                </p>
               </div>
             )}
           </div>

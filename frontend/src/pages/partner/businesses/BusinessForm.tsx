@@ -10,8 +10,7 @@ import ImageUpload from '../../../components/ui/ImageUpload';
 import '../../../styles/partner/BusinessForm.css';
 
 const BUSINESS_TYPES = [
-  'RESORT', 'HOTEL', 'HOMESTAY', 'TAXI', 'GUIDE', 
-  'CAMERA_RENTAL', 'RESTAURANT', 'WILDLIFE_EXPERIENCE', 'OTHER'
+  'RESORT', 'TAXI', 'CAMERA_RENTAL'
 ];
 
 export const BusinessForm = () => {
@@ -115,7 +114,7 @@ export const BusinessForm = () => {
         }
       };
 
-      if (['RESORT', 'HOTEL', 'HOMESTAY'].includes(formData.type)) {
+      if (formData.type === 'RESORT') {
         payload.starRating = Number(formData.starRating);
         payload.amenities = formData.amenities.split(',').map(s => s.trim()).filter(Boolean);
       }
@@ -243,7 +242,7 @@ export const BusinessForm = () => {
           <fieldset disabled={!isEditable}>
             <legend>Offerings & Amenities</legend>
             
-            {['RESORT', 'HOTEL', 'HOMESTAY'].includes(formData.type) && (
+            {formData.type === 'RESORT' && (
               <div className="form-grid">
                 <div className="form-group">
                   <label>Star Rating (1-5)</label>

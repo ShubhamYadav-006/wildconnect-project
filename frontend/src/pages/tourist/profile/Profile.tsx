@@ -10,8 +10,8 @@ import api from '../../../services/api';
 import Input from '../../../components/forms/Input';
 import PrimaryButton from '../../../components/buttons/PrimaryButton';
 import SecondaryButton from '../../../components/buttons/SecondaryButton';
-import '../../../styles/pages/DashboardSubpages.css';
-import '../../../styles/pages/Dashboard.css';
+import '../../../styles/tourist/DashboardSubpages.css';
+import '../../../styles/tourist/Dashboard.css';
 
 const profileSchema = z.object({
   firstName: z.string().min(2, 'First name is required'),
@@ -57,7 +57,7 @@ export const Profile = () => {
       } else {
         toast.error(response.data.message || 'Failed to update profile');
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to update profile');
     }
   };

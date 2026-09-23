@@ -12,7 +12,7 @@ export const getPublicRoomsByBusiness = asyncHandler(async (req: Request, res: R
     where: { id: businessId },
   });
 
-  if (!business || business.status !== 'APPROVED') {
+  if (!business || business.status !== 'APPROVED' || business.deletedAt !== null) {
     throw new NotFoundError('Business not found or not approved');
   }
 
@@ -30,7 +30,7 @@ export const getMyBusinessRooms = asyncHandler(async (req: Request, res: Respons
   const userId = req.user.id;
 
   const business = await prisma.business.findFirst({
-    where: { id: businessId, userId },
+    where: { id: businessId, userId, deletedAt: null },
   });
 
   if (!business) {
@@ -51,7 +51,7 @@ export const createRoom = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user.id;
 
   const business = await prisma.business.findFirst({
-    where: { id: businessId, userId },
+    where: { id: businessId, userId, deletedAt: null },
   });
 
   if (!business) {

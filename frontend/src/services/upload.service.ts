@@ -13,7 +13,14 @@ export const uploadService = {
           'Content-Type': 'multipart/form-data',
         },
       });
-      return response.data;
+      // Handle standard backend ApiResponse { success: true, data: string[] }
+      if (response.data && Array.isArray(response.data.data)) {
+        return response.data.data as string[];
+      }
+      if (Array.isArray(response.data)) {
+        return response.data as string[];
+      }
+      return [];
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Failed to upload images');
     }

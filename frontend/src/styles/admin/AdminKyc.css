@@ -1,0 +1,84 @@
+/* ==========================================================
+   Admin KYC Verification Desk Stylesheet
+   ========================================================== */
+
+.admin-kyc-container {
+  padding: 1.5rem 0;
+}
+
+.admin-kyc-header {
+  margin-bottom: 2rem;
+}
+
+.admin-kyc-title {
+  font-family: var(--font-editorial, 'Playfair Display', serif);
+  font-size: 1.875rem;
+  color: var(--color-text-primary, #26332D);
+  margin-bottom: 0.5rem;
+}
+
+.admin-kyc-subtitle {
+  color: var(--color-text-muted, #6F7B73);
+  font-size: 0.95rem;
+}
+
+.admin-kyc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1.5rem;
+}
+
+.admin-kyc-card {
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.admin-kyc-user {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text-primary, #26332D);
+  margin-bottom: 0.5rem;
+}
+
+.admin-kyc-field {
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-primary, #26332D);
+}
+
+.admin-kyc-field strong {
+  color: var(--color-text-muted, #6F7B73);
+}
+
+.admin-kyc-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border, #DCE2DC);
+}
+
+.admin-btn-approve {
+  flex: 1;
+  padding: 0.6rem;
+  background-color: var(--color-primary, #1F4D3A);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-md, 0.5rem);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-btn-reject {
+  flex: 1;
+  padding: 0.6rem;
+  background-color: #FDF2F2;
+  color: #9B1C1C;
+  border: 1px solid #F8B4B4;
+  border-radius: var(--radius-md, 0.5rem);
+  font-weight: 600;
+  cursor: pointer;
+}

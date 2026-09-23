@@ -14,6 +14,8 @@ export interface Resort {
   images: string[];
   coverImage?: string;
   address?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export const resortService = {

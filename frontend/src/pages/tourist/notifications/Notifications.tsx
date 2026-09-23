@@ -18,8 +18,8 @@ import EmptyState from '../../../components/ui/EmptyState';
 import Card from '../../../components/cards/Card';
 import SecondaryButton from '../../../components/buttons/SecondaryButton';
 
-import '../../../styles/pages/DashboardSubpages.css';
-import '../../../styles/pages/Dashboard.css';
+import '../../../styles/tourist/DashboardSubpages.css';
+import '../../../styles/tourist/Dashboard.css';
 
 export const Notifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);

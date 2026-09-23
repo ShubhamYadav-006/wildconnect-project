@@ -1,0 +1,826 @@
+/* ==========================================================
+   WILDCONNECT — TOURIST / USER DASHBOARD
+   Design System & Layout
+   ========================================================== */
+
+/* ==========================================================
+   1. PAGE ROOT & CONTAINER
+   ========================================================== */
+
+.tourist-dashboard-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f6f8f6;
+  color: #0e1f18;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-sizing: border-box;
+}
+
+.tourist-dashboard-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ==========================================================
+   2. ADMIN BANNER
+   ========================================================== */
+
+.tourist-admin-banner {
+  background-color: #fff8e1;
+  border: 1px solid #fde68a;
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: #b45309;
+  box-shadow: 0 1px 4px rgba(180, 83, 9, 0.04);
+}
+
+.tourist-admin-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.tourist-admin-banner-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: #f59e0b;
+  flex-shrink: 0;
+  animation: pulse 2s infinite;
+}
+
+.tourist-admin-banner-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #b45309;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.tourist-admin-banner-link:hover {
+  color: #78350f;
+  text-decoration: underline;
+}
+
+/* ==========================================================
+   3. PAGE HEADER
+   ========================================================== */
+
+.tourist-dashboard-header {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e2e8e5;
+  border-radius: 14px;
+  padding: 1.75rem 2rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: 0 2px 8px rgba(27, 48, 34, 0.03);
+}
+
+.tourist-dashboard-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tourist-dashboard-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #1b6d24;
+  text-transform: uppercase;
+}
+
+.tourist-dashboard-title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #061b0e;
+}
+
+.tourist-dashboard-subtitle {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #434843;
+}
+
+.tourist-dashboard-header-action {
+  flex-shrink: 0;
+}
+
+.tourist-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 10px;
+  background-color: #1b3022;
+  border: 1px solid #1b3022;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(27, 48, 34, 0.12);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.tourist-primary-btn:hover {
+  background-color: #061b0e;
+  border-color: #061b0e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(27, 48, 34, 0.2);
+}
+
+/* ==========================================================
+   4. STATISTICS GRID (4 CARDS)
+   ========================================================== */
+
+.tourist-stats-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.tourist-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8e5;
+  border-radius: 14px;
+  padding: 1.35rem 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 140px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(27, 48, 34, 0.03);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tourist-stat-card:hover {
+  border-color: rgba(27, 109, 36, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(27, 48, 34, 0.06);
+}
+
+.tourist-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.tourist-stat-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #85968c;
+}
+
+.tourist-stat-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tourist-stat-icon-box.icon-amber {
+  background-color: #fff8e1;
+  color: #dc790a;
+}
+
+.tourist-stat-icon-box.icon-green {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+}
+
+.tourist-stat-icon-box.icon-blue {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.tourist-stat-icon-box.icon-purple {
+  background-color: #ede9fe;
+  color: #6d28d9;
+}
+
+.tourist-stat-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.tourist-stat-label {
+  font-size: 13px;
+  line-height: 18px;
+  color: #85968c;
+  font-weight: 500;
+}
+
+.tourist-stat-value {
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #061b0e;
+}
+
+.tourist-stat-subtext {
+  font-size: 12px;
+  line-height: 16px;
+  color: #85968c;
+  font-weight: 500;
+}
+
+/* ==========================================================
+   5. UPCOMING EXPEDITION CARD
+   ========================================================== */
+
+.tourist-upcoming-card {
+  width: 100%;
+  background: linear-gradient(135deg, #eafef2 0%, #ffffff 100%);
+  border: 1px solid #c8e6c9;
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: 0 2px 8px rgba(27, 48, 34, 0.04);
+}
+
+.tourist-upcoming-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.tourist-upcoming-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1b5e20;
+}
+
+.tourist-upcoming-title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+  color: #061b0e;
+}
+
+.tourist-upcoming-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  font-size: 13px;
+  color: #434843;
+}
+
+.tourist-upcoming-status-text {
+  font-weight: 600;
+  color: #1b5e20;
+}
+
+.tourist-upcoming-action {
+  flex-shrink: 0;
+}
+
+.tourist-upcoming-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: 1px solid #c8e6c9;
+  color: #1b5e20;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tourist-upcoming-btn:hover {
+  background-color: #1b5e20;
+  border-color: #1b5e20;
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+/* ==========================================================
+   6. LOWER DASHBOARD CONTENT GRID (2 COLUMNS)
+   ========================================================== */
+
+.tourist-dashboard-content-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 7.5fr) minmax(280px, 4.5fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.tourist-card {
+  background: #ffffff;
+  border: 1px solid #e2e8e5;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(27, 48, 34, 0.03);
+  box-sizing: border-box;
+}
+
+/* ==========================================================
+   7. RECENT REQUESTS (LEFT COLUMN)
+   ========================================================== */
+
+.tourist-requests-card {
+  padding: 1.5rem;
+}
+
+.tourist-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8e5;
+  gap: 1rem;
+}
+
+.tourist-section-kicker {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1b6d24;
+  margin-bottom: 0.25rem;
+}
+
+.tourist-card-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 700;
+  color: #061b0e;
+}
+
+.tourist-view-all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #1b6d24;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tourist-view-all-link:hover {
+  color: #061b0e;
+  transform: translateX(2px);
+}
+
+.tourist-requests-list {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.75rem;
+}
+
+.tourist-request-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.95rem 0.6rem;
+  border-bottom: 1px solid #e2e8e5;
+  border-radius: 8px;
+  gap: 1rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.tourist-request-item:last-child {
+  border-bottom: none;
+}
+
+.tourist-request-item:hover {
+  background-color: rgba(234, 254, 242, 0.4);
+}
+
+.tourist-request-main {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.tourist-request-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: #dff3e7;
+  color: #1b6d24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tourist-request-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.tourist-request-title {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #061b0e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tourist-request-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  font-size: 12px;
+  line-height: 16px;
+  color: #85968c;
+}
+
+.tourist-meta-dot {
+  color: #c3c8c1;
+}
+
+.tourist-request-status-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.tourist-item-arrow {
+  color: #85968c;
+  transition: all 0.2s ease;
+}
+
+.tourist-request-item:hover .tourist-item-arrow {
+  color: #061b0e;
+  transform: translateX(3px);
+}
+
+/* ==========================================================
+   8. STATUS BADGES
+   ========================================================== */
+
+.tourist-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.badge-warning {
+  background-color: #fff8e1;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.badge-info {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.badge-success {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+  border: 1px solid #c8e6c9;
+}
+
+.badge-danger {
+  background-color: #ffebee;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.badge-neutral {
+  background-color: #f6f8f6;
+  color: #434843;
+  border: 1px solid #e2e8e5;
+}
+
+/* ==========================================================
+   9. QUICK ACTIONS (RIGHT COLUMN)
+   ========================================================== */
+
+.tourist-quick-card {
+  padding: 1.5rem;
+}
+
+.tourist-quick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.75rem;
+}
+
+.tourist-quick-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.tourist-quick-item:hover {
+  background-color: #e4f8ed;
+  border-color: #e2e8e5;
+  transform: translateX(2px);
+}
+
+.tourist-quick-item-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.tourist-quick-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.box-amber {
+  background-color: #fff8e1;
+  color: #dc790a;
+}
+
+.tourist-quick-item:hover .box-amber {
+  background-color: #dc790a;
+  color: #ffffff;
+}
+
+.box-green {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+}
+
+.tourist-quick-item:hover .box-green {
+  background-color: #1b5e20;
+  color: #ffffff;
+}
+
+.box-forest {
+  background-color: #dff3e7;
+  color: #1b6d24;
+}
+
+.tourist-quick-item:hover .box-forest {
+  background-color: #1b3022;
+  color: #ffffff;
+}
+
+.box-blue {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.tourist-quick-item:hover .box-blue {
+  background-color: #0284c7;
+  color: #ffffff;
+}
+
+.box-neutral {
+  background-color: #f1f5f3;
+  color: #434843;
+}
+
+.tourist-quick-item:hover .box-neutral {
+  background-color: #1b3022;
+  color: #ffffff;
+}
+
+.tourist-quick-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.tourist-quick-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #061b0e;
+  transition: color 0.2s ease;
+}
+
+.tourist-quick-item:hover .tourist-quick-item-title {
+  color: #1b6d24;
+}
+
+.tourist-quick-item-subtitle {
+  font-size: 12px;
+  line-height: 16px;
+  color: #85968c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tourist-quick-arrow {
+  color: #85968c;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.tourist-quick-item:hover .tourist-quick-arrow {
+  color: #061b0e;
+  transform: translateX(3px);
+}
+
+/* ==========================================================
+   10. EMPTY STATES
+   ========================================================== */
+
+.tourist-empty-state {
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.tourist-empty-icon {
+  color: #85968c;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+.tourist-empty-title {
+  margin: 0 0 0.35rem 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #061b0e;
+}
+
+.tourist-empty-subtitle {
+  margin: 0 0 1.25rem 0;
+  font-size: 13px;
+  color: #85968c;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.tourist-empty-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: 8px;
+  background-color: #1b3022;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.tourist-empty-action-btn:hover {
+  background-color: #061b0e;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================
+   11. RESPONSIVE MEDIA QUERIES
+   ========================================================== */
+
+@media (max-width: 1024px) {
+  .tourist-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tourist-dashboard-content-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .tourist-dashboard-container {
+    padding: 1.25rem 1rem 2.5rem;
+  }
+
+  .tourist-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .tourist-dashboard-header-action {
+    width: 100%;
+  }
+
+  .tourist-primary-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tourist-dashboard-title {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .tourist-upcoming-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+
+  .tourist-upcoming-action {
+    width: 100%;
+  }
+
+  .tourist-upcoming-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 540px) {
+  .tourist-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tourist-request-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 0.5rem;
+  }
+
+  .tourist-request-status-wrap {
+    width: 100%;
+    justify-content: space-between;
+    padding-left: 2.85rem;
+  }
+}

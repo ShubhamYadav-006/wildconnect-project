@@ -5,8 +5,15 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  phone?: string;
   phoneNumber?: string;
   role: 'TOURIST' | 'ADMIN' | 'BUSINESS_PARTNER';
+  createdAt?: string;
+  partnerKyc?: {
+    id: string;
+    status: string;
+    createdAt: string;
+  };
 }
 
 export interface AuthResponse {
@@ -15,6 +22,7 @@ export interface AuthResponse {
   data: {
     token: string;
     user: User;
+    isPendingPartnerApproval?: boolean;
   };
 }
 
@@ -62,7 +70,7 @@ export const authService = {
     if (token && userStr) {
       try {
         return JSON.parse(userStr) as User;
-      } catch (e) {
+      } catch {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         return null;
@@ -78,6 +86,11 @@ export const authService = {
 
   getAllUsers: async () => {
     const response = await api.get('/admin/users');
+    return response.data;
+  },
+
+  updateUserRole: async (userId: string, role: 'TOURIST' | 'BUSINESS_PARTNER' | 'ADMIN') => {
+    const response = await api.patch(`/admin/users/${userId}/role`, { role });
     return response.data;
   }
 };

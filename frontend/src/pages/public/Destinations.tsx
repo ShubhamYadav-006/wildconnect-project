@@ -4,10 +4,10 @@ import { MapPin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Component styling
-import "../../styles/pages/Destinations.css";
+import "../../styles/public/Destinations.css";
 
 // Fallback asset import
-import tadobaImg from "../../assets/images/tadoba.jpg";
+import tadobaImg from "../../assets/Tiger&Logo Image/Tadoba.jpg";
 
 const Destinations = () => {
   const [destinations, setDestinations] = useState<Destination[]>([]);
@@ -18,7 +18,12 @@ const Destinations = () => {
       try {
         const response = await destinationService.getAll();
         if (response && response.success && Array.isArray(response.data)) {
-          setDestinations(response.data);
+          const sorted = [...response.data].sort((a, b) => {
+            const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+            const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+            return dateA - dateB;
+          });
+          setDestinations(sorted);
         }
       } catch (error) {
         console.error('Failed to fetch destinations:', error);
@@ -77,13 +82,10 @@ const Destinations = () => {
                       <MapPin size={14} style={{ display: 'inline', marginRight: '4px' }} />
                       <span>{dest.state}, {(dest as any).country || 'India'}</span>
                     </div>
-                    <h3 className="other-dest-name">{dest.name}</h3>
+                    <h3 className="other-dest-name">
+                      {dest.name}
+                    </h3>
                     <p className="other-dest-desc">{dest.description}</p>
-                    {dest.bestSeason && (
-                      <p style={{ fontSize: '0.82rem', color: '#5c6e65', marginBottom: '0.75rem' }}>
-                        <strong>Best Season:</strong> {dest.bestSeason}
-                      </p>
-                    )}
                     <Link to={`/destinations/${dest.slug}`} className="other-dest-btn">
                       EXPLORE DESTINATION <ArrowRight size={14} />
                     </Link>

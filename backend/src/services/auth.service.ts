@@ -4,6 +4,8 @@ import { userRepository } from '../repositories/user.repository.js';
 import { ConflictError, UnauthorizedError, NotFoundError } from '../utils/AppError.js';
 import { signToken } from '../utils/jwt.js';
 import { Prisma } from '../generated/prisma/index.js';
+import { prisma } from '../config/db.js';
+import { notificationService } from './notification.service.js';
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -17,13 +19,49 @@ export class AuthService {
 
     // Hash password
     const hashedPassword = data.password ? await bcrypt.hash(data.password, 10) : undefined;
+    const requestedRole = data.role;
 
-    // Create user with the selected role (defaults to TOURIST)
+    // Partner accounts start as TOURIST with pending partner approval
+    const initialRole = requestedRole === 'BUSINESS_PARTNER' ? 'TOURIST' : (data.role || 'TOURIST');
+
+    // Create user
     const newUser = await userRepository.create({
       ...data,
       password: hashedPassword,
-      role: data.role || 'TOURIST',
+      role: initialRole,
     });
+
+    if (requestedRole === 'BUSINESS_PARTNER') {
+      // Find admin users to notify
+      const admins = await prisma.user.findMany({
+        where: { role: 'ADMIN', deletedAt: null },
+      });
+
+      for (const admin of admins) {
+        await notificationService.createNotification({
+          userId: admin.id,
+          title: 'New Partner Registration Request',
+          message: `${newUser.firstName} ${newUser.lastName} (${newUser.email}) has requested to register as a Business Partner.`,
+          type: 'BUSINESS_PENDING' as any,
+          referenceId: newUser.id,
+        }).catch(() => {});
+      }
+
+      // Create a pending KYC entry for partner moderation
+      await prisma.partnerKyc.create({
+        data: {
+          userId: newUser.id,
+          businessPan: 'PENDING_ADMIN_REVIEW',
+          idProofUrl: '',
+          businessProofUrl: '',
+          bankAccountName: `${newUser.firstName} ${newUser.lastName}`,
+          bankAccountNumber: 'PENDING',
+          bankIfsc: 'PENDING',
+          bankName: 'PENDING',
+          status: 'KYC_PENDING',
+        },
+      }).catch(() => {});
+    }
 
     // Generate token
     const token = signToken({ id: newUser.id, role: newUser.role });
@@ -34,6 +72,7 @@ export class AuthService {
     return {
       user: userWithoutPassword,
       token,
+      isPendingPartnerApproval: requestedRole === 'BUSINESS_PARTNER',
     };
   }
 
@@ -91,6 +130,10 @@ export class AuthService {
       throw new UnauthorizedError('Invalid Google token payload');
     }
 
+    if (!payload.email_verified) {
+      throw new UnauthorizedError('Google email is not verified');
+    }
+
     const email = payload.email;
     let user = await userRepository.findByEmail(email);
 
@@ -99,13 +142,14 @@ export class AuthService {
     }
 
     if (!user) {
+      const assignedRole = role === 'BUSINESS_PARTNER' ? 'BUSINESS_PARTNER' : 'TOURIST';
       user = await userRepository.create({
         firstName: payload.given_name || 'User',
         lastName: payload.family_name || '',
         email: email,
         googleId: payload.sub,
         avatar: payload.picture,
-        role: role || 'TOURIST',
+        role: assignedRole,
       });
     } else {
       // Check role consistency if an existing non-admin user chose a different role portal

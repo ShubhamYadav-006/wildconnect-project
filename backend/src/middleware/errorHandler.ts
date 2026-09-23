@@ -20,11 +20,12 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
   
   if (!isOperational) {
     logger.error('💥 UNEXPECTED ERROR 💥', err);
+  } else if (env.NODE_ENV === 'development') {
+    logger.debug('App Error:', err);
   }
 
   res.status(statusCode).json({
     success: false,
     message,
-    ...(env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };

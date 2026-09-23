@@ -7,8 +7,8 @@ import LoadingSpinner from '../../../components/ui/LoadingSpinner';
 import EmptyState from '../../../components/ui/EmptyState';
 import StatusBadge from '../../../components/badges/StatusBadge';
 import DataTable, { Column } from '../../../components/tables/DataTable';
-import '../../../styles/pages/TripRequests.css';
-import '../../../styles/pages/Dashboard.css';
+import '../../../styles/tourist/TripRequests.css';
+import '../../../styles/tourist/Dashboard.css';
 
 export const MyTripRequests = () => {
   const [requests, setRequests] = useState<TripRequest[]>([]);

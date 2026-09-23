@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
-import { Map, Tent, Calendar, Bell, MapPin, Plus } from 'lucide-react';
+import { Map, Tent, Calendar, Bell, MapPin, Plus, ArrowRight, Clock, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   tripRequestService,
@@ -15,7 +15,7 @@ import {
   type Notification,
 } from '../../../services/notification.service';
 import LoadingSpinner from '../../../components/ui/LoadingSpinner';
-import '../../../styles/pages/Dashboard.css';
+import '../../../styles/tourist/Dashboard.css';
 
 export const Dashboard = () => {
   const { user } = useAuth();
@@ -34,26 +34,12 @@ export const Dashboard = () => {
           notificationService.getMyNotifications(),
         ]);
 
-        /*
-         * API responses are expected to follow:
-         *
-         * {
-         *   success: true,
-         *   message: "...",
-         *   data: [...]
-         * }
-         *
-         * However, normalize the data here so the dashboard
-         * always works with arrays.
-         */
-
         if (reqRes.success) {
           const requestData = Array.isArray(reqRes.data)
             ? reqRes.data
             : Array.isArray(reqRes.data?.requests)
               ? reqRes.data.requests
               : [];
-
           setRequests(requestData);
         }
 
@@ -63,7 +49,6 @@ export const Dashboard = () => {
             : Array.isArray(bookRes.data?.bookings)
               ? bookRes.data.bookings
               : [];
-
           setBookings(bookingData);
         }
 
@@ -73,13 +58,10 @@ export const Dashboard = () => {
             : Array.isArray(notifRes.data?.notifications)
               ? notifRes.data.notifications
               : [];
-
           setNotifications(notificationData);
         }
       } catch (error) {
-        console.error('Failed to fetch dashboard data', error);
-
-        // Keep dashboard state safe even when the API fails.
+        console.error('Failed to fetch tourist dashboard data', error);
         setRequests([]);
         setBookings([]);
         setNotifications([]);
@@ -92,13 +74,10 @@ export const Dashboard = () => {
   }, []);
 
   if (isLoading) {
-    return <LoadingSpinner message="Loading your dashboard..." />;
+    return <LoadingSpinner message="Loading your wildlife dashboard..." />;
   }
 
-  // ============================================================
   // Calculated Stats
-  // ============================================================
-
   const pendingRequests = requests.filter(
     (request) => request.status === 'PENDING'
   ).length;
@@ -115,15 +94,7 @@ export const Dashboard = () => {
     (request) => request.status === 'PROPOSAL_READY'
   ).length;
 
-  const proposalsSubtext =
-    proposalsCount > 0
-      ? `${proposalsCount} await review`
-      : 'No proposals';
-
-  // ============================================================
   // Find Upcoming Trip
-  // ============================================================
-
   const confirmedBookings = [...bookings]
     .filter((booking) => booking.status === 'CONFIRMED')
     .sort(
@@ -134,13 +105,8 @@ export const Dashboard = () => {
 
   const upcomingTrip = confirmedBookings[0] || null;
 
-  // ============================================================
-  // Format Dates
-  // ============================================================
-
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-
     return date.toLocaleDateString('en-GB', {
       day: '2-digit',
       month: 'short',
@@ -148,408 +114,341 @@ export const Dashboard = () => {
     });
   };
 
+  const getRequestStatusBadge = (status: string) => {
+    switch (status) {
+      case 'PENDING':
+        return (
+          <span className="tourist-status-badge badge-warning">
+            <Clock size={12} /> Pending Review
+          </span>
+        );
+      case 'PROPOSAL_READY':
+        return (
+          <span className="tourist-status-badge badge-info">
+            <CheckCircle size={12} /> Proposal Ready
+          </span>
+        );
+      case 'ACCEPTED':
+      case 'BOOKED':
+        return (
+          <span className="tourist-status-badge badge-success">
+            <CheckCircle size={12} /> Confirmed
+          </span>
+        );
+      case 'REJECTED':
+        return (
+          <span className="tourist-status-badge badge-danger">
+            Declined
+          </span>
+        );
+      default:
+        return <span className="tourist-status-badge badge-neutral">{status}</span>;
+    }
+  };
+
   return (
-    <div className="dashboard-container fade-in">
+    <div className="tourist-dashboard-page">
+      <div className="tourist-dashboard-container">
 
-      {/* Admin Banner */}
-      {user?.role === 'ADMIN' && (
-        <div className="dashboard-admin-banner">
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span className="dashboard-admin-banner-indicator"></span>
-
-            You are logged in as an Administrator
-          </div>
-
-          <Link
-            to="/admin"
-            className="text-link"
-            style={{
-              color: '#8c6a34',
-              fontWeight: 700,
-            }}
-          >
-            Go to Admin Panel &rarr;
-          </Link>
-        </div>
-      )}
-
-      {/* Header */}
-      <div className="dashboard-header-row">
-        <div>
-          <h1 className="dashboard-header-title">
-            Good morning, {user?.firstName} 👋
-          </h1>
-
-          <p className="dashboard-header-subtitle">
-            Here's what's happening with your wildlife trips.
-          </p>
-        </div>
-
-        <Link
-          to="/trip-request/new"
-          className="quick-action-btn primary-action"
-          style={{
-            padding: '0.875rem 1.5rem',
-            margin: 0,
-          }}
-        >
-          <Plus size={18} />
-          New Trip Request
-        </Link>
-      </div>
-
-      {/* Stats Grid */}
-      <div className="dashboard-stats-grid">
-
-        {/* Trip Requests */}
-        <Link
-          to="/dashboard/requests"
-          className="dashboard-stat-card dashboard-stat-card-trip"
-        >
-          <div className="dashboard-stat-icon-container dashboard-stat-icon-trip">
-            <Calendar size={24} />
-          </div>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <div className="dashboard-stat-label">
-              Trip Requests
+        {/* Admin Switch Banner */}
+        {user?.role === 'ADMIN' && (
+          <div className="tourist-admin-banner">
+            <div className="tourist-admin-banner-content">
+              <span className="tourist-admin-banner-indicator"></span>
+              <span>You are logged in as an Administrator (Viewing Traveler Mode)</span>
             </div>
-
-            <div className="dashboard-stat-value">
-              {requests.length}
-            </div>
-
-            <div className="dashboard-stat-subtext">
-              {pendingRequests} pending review
-            </div>
-          </div>
-        </Link>
-
-        {/* Bookings */}
-        <Link
-          to="/dashboard/bookings"
-          className="dashboard-stat-card dashboard-stat-card-booking"
-        >
-          <div className="dashboard-stat-icon-container dashboard-stat-icon-booking">
-            <Tent size={24} />
-          </div>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <div className="dashboard-stat-label">
-              Bookings
-            </div>
-
-            <div className="dashboard-stat-value">
-              {bookings.length}
-            </div>
-
-            <div className="dashboard-stat-subtext">
-              {upcomingBookingsCount} upcoming
-            </div>
-          </div>
-        </Link>
-
-        {/* Proposals */}
-        <Link
-          to="/dashboard/requests"
-          className="dashboard-stat-card dashboard-stat-card-proposal"
-        >
-          <div className="dashboard-stat-icon-container dashboard-stat-icon-proposal">
-            <Map size={24} />
-          </div>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <div className="dashboard-stat-label">
-              Proposals
-            </div>
-
-            <div className="dashboard-stat-value">
-              {proposalsCount}
-            </div>
-
-            <div className="dashboard-stat-subtext">
-              {proposalsSubtext}
-            </div>
-          </div>
-        </Link>
-
-        {/* Notifications */}
-        <Link
-          to="/dashboard/notifications"
-          className="dashboard-stat-card dashboard-stat-card-notif"
-        >
-          <div className="dashboard-stat-icon-container dashboard-stat-icon-notif">
-            <Bell size={24} />
-          </div>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <div className="dashboard-stat-label">
-              Updates
-            </div>
-
-            <div className="dashboard-stat-value">
-              {unreadNotificationsCount}
-            </div>
-
-            <div className="dashboard-stat-subtext">
-              {unreadNotificationsCount} unread
-            </div>
-          </div>
-        </Link>
-      </div>
-
-      {/* Main Content Layout */}
-      <div className="dashboard-main-layout">
-
-        {/* Left Column */}
-        <div>
-          <div className="dashboard-section-header">
-            <h2 className="dashboard-section-title">
-              Your Trip Requests
-            </h2>
-
-            <Link
-              to="/dashboard/requests"
-              className="dashboard-section-link"
-            >
-              View all &rarr;
+            <Link to="/admin" className="tourist-admin-banner-link">
+              <span>Go to Admin Dashboard</span>
+              <ArrowRight size={14} />
             </Link>
           </div>
+        )}
 
-          <div className="dashboard-list-card">
-            {requests.length === 0 ? (
-              <div
-                style={{
-                  padding: '2rem',
-                  textAlign: 'center',
-                  color: 'var(--color-text-muted)',
-                }}
-              >
-                <p>
-                  No trip requests found. Start planning your adventure!
-                </p>
-              </div>
-            ) : (
-              requests.slice(0, 3).map((req) => {
-                const proposalId =
-                  (req as any).proposals?.[0]?.id;
-
-                const isProposalAvailable =
-                  req.status === 'PROPOSAL_READY' && proposalId;
-
-                const itemLink = isProposalAvailable
-                  ? `/dashboard/proposals/${proposalId}`
-                  : `/dashboard/requests`;
-
-                return (
-                  <Link
-                    to={itemLink}
-                    key={req.id}
-                    className="dashboard-list-item"
-                  >
-                    <div>
-                      <h3 className="dashboard-item-title">
-                        {req.destination?.name ||
-                          'WildConnect Destination'}
-                      </h3>
-
-                      <div className="dashboard-item-meta">
-                        <span>
-                          {formatDate(req.startDate)} -{' '}
-                          {formatDate(req.endDate)}
-                        </span>
-
-                        <span className="dashboard-item-meta-dot"></span>
-
-                        <span
-                          style={{
-                            color:
-                              req.status === 'BOOKED' ||
-                                req.status === 'ACCEPTED'
-                                ? '#2E7559'
-                                : req.status === 'PENDING' ||
-                                  req.status === 'REVIEWING'
-                                  ? '#D96B27'
-                                  : req.status === 'PROPOSAL_READY'
-                                    ? '#1e40af'
-                                    : 'inherit',
-                            fontWeight: 600,
-                          }}
-                        >
-                          {req.status === 'PROPOSAL_READY'
-                            ? 'Proposal Available'
-                            : req.status === 'PENDING'
-                              ? 'Reviewing'
-                              : req.status}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="dashboard-item-action">
-                      {isProposalAvailable ? (
-                        <span
-                          className="view-proposal-btn-inline"
-                          style={{
-                            padding: '0.35rem 0.75rem',
-                            backgroundColor:
-                              'rgba(var(--primary), 0.08)',
-                            color: 'var(--color-primary)',
-                            borderRadius: '6px',
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            border:
-                              '1px solid rgba(var(--primary), 0.2)',
-                          }}
-                        >
-                          View Proposal
-                        </span>
-                      ) : (
-                        <>View &rarr;</>
-                      )}
-                    </div>
-                  </Link>
-                );
-              })
-            )}
-          </div>
-        </div>
-
-        {/* Right Column */}
-        <div>
-          <div className="dashboard-section-header">
-            <h2 className="dashboard-section-title">
-              Quick Actions
-            </h2>
+        {/* =========================================
+            1. PAGE HEADER
+        ========================================= */}
+        <header className="tourist-dashboard-header">
+          <div className="tourist-dashboard-header-text">
+            <span className="tourist-dashboard-eyebrow">
+              TRAVELER MISSION CONTROL
+            </span>
+            <h1 className="tourist-dashboard-title">
+              Good day, {user?.firstName || 'Traveler'} 👋
+            </h1>
+            <p className="tourist-dashboard-subtitle">
+              Manage your wildlife safaris, incoming proposals, and reserve bookings.
+            </p>
           </div>
 
-          <div className="dashboard-quick-actions">
-
+          <div className="tourist-dashboard-header-action">
             <Link
               to="/trip-request/new"
-              className="quick-action-btn primary-action"
+              className="tourist-primary-btn"
             >
               <Plus size={18} />
-              New Trip Request
+              <span>Plan New Safari</span>
             </Link>
-
-            <Link
-              to="/dashboard/bookings"
-              className="quick-action-btn"
-            >
-              <MapPin size={18} />
-              View My Bookings
-            </Link>
-
-            <Link
-              to="/destinations"
-              className="quick-action-btn"
-            >
-              <Map size={18} />
-              Explore Destinations
-            </Link>
-
           </div>
+        </header>
+
+        {/* =========================================
+            2. STATISTICS GRID (4 STAT CARDS)
+        ========================================= */}
+        <div className="tourist-stats-grid">
+
+          {/* Card 1: Trip Requests */}
+          <Link to="/dashboard/requests" className="tourist-stat-card">
+            <div className="tourist-stat-top">
+              <div className="tourist-stat-icon-box icon-amber">
+                <Calendar size={20} />
+              </div>
+              <span className="tourist-stat-eyebrow">SAFARIS</span>
+            </div>
+            <div className="tourist-stat-bottom">
+              <span className="tourist-stat-label">Trip Requests</span>
+              <span className="tourist-stat-value">{requests.length}</span>
+              <span className="tourist-stat-subtext">
+                {pendingRequests > 0 ? `${pendingRequests} under review` : 'All requests up to date'}
+              </span>
+            </div>
+          </Link>
+
+          {/* Card 2: Confirmed Bookings */}
+          <Link to="/dashboard/bookings" className="tourist-stat-card">
+            <div className="tourist-stat-top">
+              <div className="tourist-stat-icon-box icon-green">
+                <Tent size={20} />
+              </div>
+              <span className="tourist-stat-eyebrow">RESERVATIONS</span>
+            </div>
+            <div className="tourist-stat-bottom">
+              <span className="tourist-stat-label">Bookings</span>
+              <span className="tourist-stat-value">{bookings.length}</span>
+              <span className="tourist-stat-subtext">
+                {upcomingBookingsCount > 0 ? `${upcomingBookingsCount} upcoming stay(s)` : 'No active bookings'}
+              </span>
+            </div>
+          </Link>
+
+          {/* Card 3: Ready Proposals */}
+          <Link to="/dashboard/requests" className="tourist-stat-card">
+            <div className="tourist-stat-top">
+              <div className="tourist-stat-icon-box icon-blue">
+                <Map size={20} />
+              </div>
+              <span className="tourist-stat-eyebrow">PROPOSALS</span>
+            </div>
+            <div className="tourist-stat-bottom">
+              <span className="tourist-stat-label">Curated Proposals</span>
+              <span className="tourist-stat-value">{proposalsCount}</span>
+              <span className="tourist-stat-subtext">
+                {proposalsCount > 0 ? `${proposalsCount} ready for review` : 'No pending proposals'}
+              </span>
+            </div>
+          </Link>
+
+          {/* Card 4: Updates & Notifications */}
+          <Link to="/dashboard/notifications" className="tourist-stat-card">
+            <div className="tourist-stat-top">
+              <div className="tourist-stat-icon-box icon-purple">
+                <Bell size={20} />
+              </div>
+              <span className="tourist-stat-eyebrow">ALERTS</span>
+            </div>
+            <div className="tourist-stat-bottom">
+              <span className="tourist-stat-label">Notifications</span>
+              <span className="tourist-stat-value">{unreadNotificationsCount}</span>
+              <span className="tourist-stat-subtext">
+                {unreadNotificationsCount > 0 ? `${unreadNotificationsCount} unread updates` : 'All caught up'}
+              </span>
+            </div>
+          </Link>
+
         </div>
-      </div>
 
-      {/* Upcoming Trip */}
-      <div className="dashboard-section-header">
-        <h2 className="dashboard-section-title">
-          Upcoming Trip
-        </h2>
-      </div>
+        {/* =========================================
+            3. UPCOMING TRIP HIGHLIGHT (IF AVAILABLE)
+        ========================================= */}
+        {upcomingTrip ? (
+          <div className="tourist-upcoming-card">
+            <div className="tourist-upcoming-left">
+              <div className="tourist-upcoming-badge">
+                <Tent size={14} />
+                <span>NEXT EXPEDITION</span>
+              </div>
+              <h3 className="tourist-upcoming-title">
+                {upcomingTrip.destination?.name || 'WildConnect Destination Reserve'}
+              </h3>
+              <div className="tourist-upcoming-meta">
+                <span>{formatDate(upcomingTrip.startDate)} - {formatDate(upcomingTrip.endDate)}</span>
+                <span className="tourist-meta-dot">•</span>
+                <span>{upcomingTrip.travelerCount || 1} Traveler(s)</span>
+                <span className="tourist-meta-dot">•</span>
+                <span className="tourist-upcoming-status-text">Confirmed Booking</span>
+              </div>
+            </div>
 
-      {upcomingTrip ? (
-        <div className="upcoming-trip-card">
-          <div>
-            <h3 className="upcoming-trip-title">
-              {upcomingTrip.destination?.name ||
-                'WildConnect Destination'}
-            </h3>
+            <div className="tourist-upcoming-action">
+              <Link to="/dashboard/bookings" className="tourist-upcoming-btn">
+                <span>View Booking Voucher</span>
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        ) : null}
 
-            <div className="upcoming-trip-details">
-              <span>
-                {formatDate(upcomingTrip.startDate)} -{' '}
-                {formatDate(upcomingTrip.endDate)}
-              </span>
+        {/* =========================================
+            4. LOWER CONTENT GRID (2 COLUMNS)
+        ========================================= */}
+        <div className="tourist-dashboard-content-grid">
 
-              <span className="dashboard-item-meta-dot"></span>
+          {/* Left Column: Recent Trip Requests */}
+          <div className="tourist-card tourist-requests-card">
+            <div className="tourist-card-header">
+              <div>
+                <span className="tourist-section-kicker">SAFARI PLANNING</span>
+                <h2 className="tourist-card-title">Recent Trip Requests</h2>
+              </div>
+              <Link to="/dashboard/requests" className="tourist-view-all-link">
+                <span>View All</span>
+                <ArrowRight size={15} />
+              </Link>
+            </div>
 
-              <span>
-                {upcomingTrip.travelerCount} Travelers
-              </span>
+            <div className="tourist-requests-list">
+              {requests.length === 0 ? (
+                <div className="tourist-empty-state">
+                  <MapPin size={32} className="tourist-empty-icon" />
+                  <p className="tourist-empty-title">No Safari Requests Yet</p>
+                  <p className="tourist-empty-subtitle">
+                    Ready to explore India's tiger reserves? Create your first custom itinerary request.
+                  </p>
+                  <Link to="/trip-request/new" className="tourist-empty-action-btn">
+                    <Plus size={16} />
+                    <span>Plan a Trip</span>
+                  </Link>
+                </div>
+              ) : (
+                requests.slice(0, 4).map((req) => {
+                  const proposalId = (req as any).proposals?.[0]?.id;
+                  const isProposalAvailable = req.status === 'PROPOSAL_READY' && proposalId;
+                  const itemLink = isProposalAvailable
+                    ? `/dashboard/proposals/${proposalId}`
+                    : `/dashboard/requests`;
 
-              <span className="dashboard-item-meta-dot"></span>
+                  return (
+                    <Link
+                      to={itemLink}
+                      key={req.id}
+                      className="tourist-request-item"
+                    >
+                      <div className="tourist-request-main">
+                        <div className="tourist-request-icon-wrap">
+                          <MapPin size={18} />
+                        </div>
+                        <div className="tourist-request-info">
+                          <h4 className="tourist-request-title">
+                            {req.destination?.name || 'Custom Wildlife Safari'}
+                          </h4>
+                          <div className="tourist-request-meta">
+                            <span>{formatDate(req.startDate)} - {formatDate(req.endDate)}</span>
+                            <span className="tourist-meta-dot">•</span>
+                            <span>{req.travelerCount || 1} Travelers</span>
+                          </div>
+                        </div>
+                      </div>
 
-              <span className="upcoming-trip-status">
-                {upcomingTrip.status}
-              </span>
+                      <div className="tourist-request-status-wrap">
+                        {getRequestStatusBadge(req.status)}
+                        <ArrowRight size={16} className="tourist-item-arrow" />
+                      </div>
+                    </Link>
+                  );
+                })
+              )}
             </div>
           </div>
 
-          <Link
-            to="/dashboard/bookings"
-            className="dashboard-section-link"
-            style={{
-              fontSize: '1rem',
-              padding: '0.75rem 1.25rem',
-              border: '1px solid #C19A5B',
-              borderRadius: 'var(--radius-lg)',
-            }}
-          >
-            View Booking &rarr;
-          </Link>
-        </div>
-      ) : (
-        <div
-          className="upcoming-trip-card"
-          style={{
-            justifyContent: 'center',
-          }}
-        >
-          <div
-            style={{
-              textAlign: 'center',
-            }}
-          >
-            <p
-              style={{
-                margin: '0 0 1rem 0',
-                color: 'var(--color-text-muted)',
-              }}
-            >
-              No upcoming trips yet.
-            </p>
+          {/* Right Column: Quick Access & Discover */}
+          <div className="tourist-card tourist-quick-card">
+            <div className="tourist-card-header">
+              <div>
+                <span className="tourist-section-kicker">EXPLORATION</span>
+                <h2 className="tourist-card-title">Quick Actions</h2>
+              </div>
+            </div>
 
-            <Link
-              to="/destinations"
-              className="dashboard-section-link"
-            >
-              Plan a Trip &rarr;
-            </Link>
+            <div className="tourist-quick-list">
+              <Link to="/trip-request/new" className="tourist-quick-item group-highlight">
+                <div className="tourist-quick-item-left">
+                  <div className="tourist-quick-icon-box box-amber">
+                    <Plus size={19} />
+                  </div>
+                  <div className="tourist-quick-info">
+                    <span className="tourist-quick-item-title">Plan New Safari</span>
+                    <span className="tourist-quick-item-subtitle">Request tailored itinerary & quotes</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="tourist-quick-arrow" />
+              </Link>
+
+              <Link to="/dashboard/bookings" className="tourist-quick-item">
+                <div className="tourist-quick-item-left">
+                  <div className="tourist-quick-icon-box box-green">
+                    <Tent size={19} />
+                  </div>
+                  <div className="tourist-quick-info">
+                    <span className="tourist-quick-item-title">My Bookings</span>
+                    <span className="tourist-quick-item-subtitle">View stay vouchers & schedules</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="tourist-quick-arrow" />
+              </Link>
+
+              <Link to="/destinations" className="tourist-quick-item">
+                <div className="tourist-quick-item-left">
+                  <div className="tourist-quick-icon-box box-forest">
+                    <Map size={19} />
+                  </div>
+                  <div className="tourist-quick-info">
+                    <span className="tourist-quick-item-title">Explore Reserves</span>
+                    <span className="tourist-quick-item-subtitle">Browse top tiger reserves & parks</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="tourist-quick-arrow" />
+              </Link>
+
+              <Link to="/resorts" className="tourist-quick-item">
+                <div className="tourist-quick-item-left">
+                  <div className="tourist-quick-icon-box box-blue">
+                    <Tent size={19} />
+                  </div>
+                  <div className="tourist-quick-info">
+                    <span className="tourist-quick-item-title">Jungle Resorts</span>
+                    <span className="tourist-quick-item-subtitle">Eco-lodges and luxury stays</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="tourist-quick-arrow" />
+              </Link>
+
+              <Link to="/articles" className="tourist-quick-item">
+                <div className="tourist-quick-item-left">
+                  <div className="tourist-quick-icon-box box-neutral">
+                    <Calendar size={19} />
+                  </div>
+                  <div className="tourist-quick-info">
+                    <span className="tourist-quick-item-title">Safari Guides & Tips</span>
+                    <span className="tourist-quick-item-subtitle">Best sighting seasons & advice</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="tourist-quick-arrow" />
+              </Link>
+            </div>
           </div>
+
         </div>
-      )}
+
+      </div>
     </div>
   );
 };

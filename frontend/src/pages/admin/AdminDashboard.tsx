@@ -54,459 +54,356 @@ const AdminDashboard = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'PENDING':
-        return <span className="admin-badge warning"><Clock size={12} /> Pending</span>;
+        return (
+          <span className="admin-badge status-warning">
+            <Clock size={12} /> Pending
+          </span>
+        );
       case 'PROPOSAL_READY':
-        return <span className="admin-badge info"><CheckCircle size={12} /> Proposal Ready</span>;
+        return (
+          <span className="admin-badge status-info">
+            <CheckCircle size={12} /> Proposal Ready
+          </span>
+        );
       case 'ACCEPTED':
       case 'BOOKED':
-        return <span className="admin-badge success"><CheckCircle size={12} /> Confirmed</span>;
+        return (
+          <span className="admin-badge status-success">
+            <CheckCircle size={12} /> Confirmed
+          </span>
+        );
       case 'REJECTED':
-        return <span className="admin-badge danger"><XCircle size={12} /> Rejected</span>;
+        return (
+          <span className="admin-badge status-danger">
+            <XCircle size={12} /> Rejected
+          </span>
+        );
       default:
-        return <span className="admin-badge neutral">{status}</span>;
+        return <span className="admin-badge status-neutral">{status}</span>;
+    }
+  };
+
+  const getUserInitials = (requestUser: any) => {
+    if (!requestUser) return 'U';
+    const first = requestUser.firstName?.trim()?.charAt(0) || '';
+    const last = requestUser.lastName?.trim()?.charAt(0) || '';
+    return (first + last).toUpperCase() || 'U';
+  };
+
+  const getAvatarStatusClass = (status: string) => {
+    switch (status) {
+      case 'PENDING':
+        return 'avatar-warning';
+      case 'PROPOSAL_READY':
+        return 'avatar-info';
+      case 'ACCEPTED':
+      case 'BOOKED':
+        return 'avatar-success';
+      case 'REJECTED':
+        return 'avatar-danger';
+      default:
+        return 'avatar-default';
     }
   };
 
   return (
     <div className="admin-dashboard-page">
+      <div className="admin-dashboard-container">
 
-      {/* =========================================
-          DASHBOARD HEADER
-      ========================================= */}
-
-      <div className="admin-dashboard-page-header">
-
-        <div>
-          <p className="admin-dashboard-eyebrow">
-            WILDCONNECT ADMIN
-          </p>
-
-          <h1 className="admin-dashboard-page-title">
-            Admin Dashboard
-          </h1>
-
-          <p className="admin-dashboard-page-subtitle">
-            Welcome back, {user?.firstName || 'Admin'}.
-            Here's what's happening across WildConnect.
-          </p>
-        </div>
-
-        <Link
-          to="/"
-          className="admin-dashboard-user-button"
-        >
-          <Users size={17} />
-          Visit User Dashboard
-        </Link>
-
-      </div>
-
-
-      {/* =========================================
-          STATISTICS
-      ========================================= */}
-
-      <div className="admin-grid-stats">
-
-        {/* USERS */}
-
-        <div className="admin-stat-card admin-stat-users">
-
-          <div className="admin-stat-card-top">
-
-            <div className="admin-stat-icon-wrapper blue">
-              <Users size={21} />
-            </div>
-
-            <span className="admin-stat-card-label">
-              USERS
+        {/* =========================================
+            1. PAGE HEADER
+        ========================================= */}
+        <header className="admin-dashboard-page-header">
+          <div className="admin-dashboard-header-text">
+            <span className="admin-dashboard-eyebrow">
+              WILDCONNECT ADMIN
             </span>
-
+            <h1 className="admin-dashboard-page-title">
+              Admin Dashboard
+            </h1>
+            <p className="admin-dashboard-page-subtitle">
+              Welcome back, {user?.firstName || 'Admin'}. Here's what's happening across WildConnect.
+            </p>
           </div>
 
-          <div className="admin-stat-card-bottom">
+          <div className="admin-dashboard-header-action">
+            <Link
+              to="/"
+              className="admin-dashboard-user-button"
+            >
+              <Users size={18} className="admin-dashboard-user-btn-icon" />
+              <span>Visit User Dashboard</span>
+            </Link>
+          </div>
+        </header>
 
-            <div>
-              <p className="admin-stat-label">
-                Total Users
-              </p>
+        {/* =========================================
+            2. STATISTICS GRID (4 STAT CARDS)
+        ========================================= */}
+        <div className="admin-grid-stats">
 
-              <p className="admin-stat-value">
-                {isLoading ? '...' : usersCount}
-              </p>
+          {/* Card 1: Users */}
+          <div className="admin-stat-card admin-stat-users">
+            <div className="admin-stat-card-top">
+              <div className="admin-stat-icon-wrapper icon-blue">
+                <Users size={20} />
+              </div>
+              <span className="admin-stat-card-eyebrow">
+                USERS
+              </span>
             </div>
+            <div className="admin-stat-card-bottom">
+              <span className="admin-stat-label">Total Users</span>
+              <span className="admin-stat-value">
+                {isLoading ? '...' : usersCount.toLocaleString()}
+              </span>
+            </div>
+          </div>
 
+          {/* Card 2: Destinations */}
+          <div className="admin-stat-card admin-stat-destinations">
+            <div className="admin-stat-card-top">
+              <div className="admin-stat-icon-wrapper icon-primary">
+                <Map size={20} />
+              </div>
+              <span className="admin-stat-card-eyebrow">
+                DESTINATIONS
+              </span>
+            </div>
+            <div className="admin-stat-card-bottom">
+              <span className="admin-stat-label">Destinations</span>
+              <span className="admin-stat-value">
+                {isLoading ? '...' : destinationsCount.toLocaleString()}
+              </span>
+            </div>
+          </div>
+
+          {/* Card 3: Resorts */}
+          <div className="admin-stat-card admin-stat-resorts">
+            <div className="admin-stat-card-top">
+              <div className="admin-stat-icon-wrapper icon-green">
+                <Tent size={20} />
+              </div>
+              <span className="admin-stat-card-eyebrow">
+                STAYS
+              </span>
+            </div>
+            <div className="admin-stat-card-bottom">
+              <span className="admin-stat-label">Resorts</span>
+              <span className="admin-stat-value">
+                {isLoading ? '...' : resortsCount.toLocaleString()}
+              </span>
+            </div>
+          </div>
+
+          {/* Card 4: Trip Requests */}
+          <div className="admin-stat-card admin-stat-requests">
+            <div className="admin-stat-card-top">
+              <div className="admin-stat-icon-wrapper icon-amber">
+                <Activity size={20} />
+              </div>
+              <span className="admin-stat-card-eyebrow">
+                ACTIVITY
+              </span>
+            </div>
+            <div className="admin-stat-card-bottom">
+              <span className="admin-stat-label">Trip Requests</span>
+              <span className="admin-stat-value">
+                {isLoading ? '...' : requests.length.toLocaleString()}
+              </span>
+            </div>
           </div>
 
         </div>
 
+        {/* =========================================
+            3. LOWER DASHBOARD CONTENT GRID (2 COLUMNS)
+        ========================================= */}
+        <div className="admin-dashboard-content-grid">
 
-        {/* DESTINATIONS */}
-
-        <div className="admin-stat-card admin-stat-destinations">
-
-          <div className="admin-stat-card-top">
-
-            <div className="admin-stat-icon-wrapper primary">
-              <Map size={21} />
-            </div>
-
-            <span className="admin-stat-card-label">
-              DESTINATIONS
-            </span>
-
-          </div>
-
-          <div className="admin-stat-card-bottom">
-
-            <div>
-              <p className="admin-stat-label">
-                Destinations
-              </p>
-
-              <p className="admin-stat-value">
-                {isLoading ? '...' : destinationsCount}
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-
-
-        {/* RESORTS */}
-
-        <div className="admin-stat-card admin-stat-resorts">
-
-          <div className="admin-stat-card-top">
-
-            <div className="admin-stat-icon-wrapper green">
-              <Tent size={21} />
-            </div>
-
-            <span className="admin-stat-card-label">
-              STAYS
-            </span>
-
-          </div>
-
-          <div className="admin-stat-card-bottom">
-
-            <div>
-              <p className="admin-stat-label">
-                Resorts
-              </p>
-
-              <p className="admin-stat-value">
-                {isLoading ? '...' : resortsCount}
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-
-
-        {/* TRIP REQUESTS */}
-
-        <div className="admin-stat-card admin-stat-requests">
-
-          <div className="admin-stat-card-top">
-
-            <div className="admin-stat-icon-wrapper orange">
-              <Activity size={21} />
-            </div>
-
-            <span className="admin-stat-card-label">
-              ACTIVITY
-            </span>
-
-          </div>
-
-          <div className="admin-stat-card-bottom">
-
-            <div>
-              <p className="admin-stat-label">
-                Trip Requests
-              </p>
-
-              <p className="admin-stat-value">
-                {isLoading ? '...' : requests.length}
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      {/* =========================================
-          LOWER DASHBOARD
-      ========================================= */}
-
-      <div className="admin-dashboard-content-grid">
-
-
-        {/* =====================================
-            MANAGEMENT
-        ===================================== */}
-
-        <div className="admin-card admin-dashboard-management-card">
-
-          <div className="admin-dashboard-section-heading">
-
-            <div>
-              <p className="admin-section-kicker">
+          {/* Left Column: Management (Quick Access) */}
+          <div className="admin-card admin-dashboard-management-card">
+            <div className="admin-dashboard-section-header">
+              <span className="admin-section-kicker">
                 QUICK ACCESS
-              </p>
-
+              </span>
               <h2 className="admin-dashboard-menu-title">
                 Management
               </h2>
             </div>
 
+            <div className="admin-dashboard-menu-list">
+              {/* Item 1: Destinations */}
+              <Link
+                to="/admin/destinations"
+                className="admin-dashboard-menu-link group-destinations"
+              >
+                <div className="admin-menu-item-left">
+                  <div className="admin-menu-icon-box box-destinations">
+                    <Map size={19} />
+                  </div>
+                  <div className="admin-menu-item-info">
+                    <span className="admin-menu-item-title">Destinations</span>
+                    <span className="admin-menu-item-subtitle">Manage wildlife destinations</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="admin-menu-item-arrow" />
+              </Link>
+
+              {/* Item 2: Resorts */}
+              <Link
+                to="/admin/resorts"
+                className="admin-dashboard-menu-link group-resorts"
+              >
+                <div className="admin-menu-item-left">
+                  <div className="admin-menu-icon-box box-resorts">
+                    <Tent size={19} />
+                  </div>
+                  <div className="admin-menu-item-info">
+                    <span className="admin-menu-item-title">Resorts</span>
+                    <span className="admin-menu-item-subtitle">Manage accommodations</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="admin-menu-item-arrow" />
+              </Link>
+
+              {/* Item 3: Articles */}
+              <Link
+                to="/admin/articles"
+                className="admin-dashboard-menu-link group-articles"
+              >
+                <div className="admin-menu-item-left">
+                  <div className="admin-menu-icon-box box-articles">
+                    <FileText size={19} />
+                  </div>
+                  <div className="admin-menu-item-info">
+                    <span className="admin-menu-item-title">Articles</span>
+                    <span className="admin-menu-item-subtitle">Manage wildlife content</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="admin-menu-item-arrow" />
+              </Link>
+
+              {/* Item 4: Businesses */}
+              <Link
+                to="/admin/businesses"
+                className="admin-dashboard-menu-link group-businesses"
+              >
+                <div className="admin-menu-item-left">
+                  <div className="admin-menu-icon-box box-businesses">
+                    <Briefcase size={19} />
+                  </div>
+                  <div className="admin-menu-item-info">
+                    <span className="admin-menu-item-title">Businesses</span>
+                    <span className="admin-menu-item-subtitle">Review partner applications</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="admin-menu-item-arrow" />
+              </Link>
+
+              {/* Item 5: Users */}
+              <Link
+                to="/admin/users"
+                className="admin-dashboard-menu-link group-users"
+              >
+                <div className="admin-menu-item-left">
+                  <div className="admin-menu-icon-box box-users">
+                    <Users size={19} />
+                  </div>
+                  <div className="admin-menu-item-info">
+                    <span className="admin-menu-item-title">Users</span>
+                    <span className="admin-menu-item-subtitle">Manage registered users</span>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="admin-menu-item-arrow" />
+              </Link>
+            </div>
           </div>
 
+          {/* Right Column: Recent Activity (Trip Requests) */}
+          <div className="admin-card admin-dashboard-requests-card">
+            <div className="admin-dashboard-requests-header">
+              <div>
+                <span className="admin-section-kicker">
+                  RECENT ACTIVITY
+                </span>
+                <h2 className="admin-dashboard-requests-title">
+                  Trip Requests
+                </h2>
+              </div>
 
-          <div className="admin-dashboard-menu-list">
-
-            <Link
-              to="/admin/destinations"
-              className="admin-dashboard-menu-link"
-            >
-              <span className="admin-menu-icon">
-                <Map size={17} />
-              </span>
-
-              <span className="admin-menu-text">
-                <strong>Destinations</strong>
-                <small>Manage wildlife destinations</small>
-              </span>
-
-              <ArrowRight
-                size={16}
-                className="admin-menu-arrow"
-              />
-            </Link>
-
-
-            <Link
-              to="/admin/resorts"
-              className="admin-dashboard-menu-link"
-            >
-              <span className="admin-menu-icon">
-                <Tent size={17} />
-              </span>
-
-              <span className="admin-menu-text">
-                <strong>Resorts</strong>
-                <small>Manage accommodations</small>
-              </span>
-
-              <ArrowRight
-                size={16}
-                className="admin-menu-arrow"
-              />
-            </Link>
-
-
-            <Link
-              to="/admin/articles"
-              className="admin-dashboard-menu-link"
-            >
-              <span className="admin-menu-icon">
-                <FileText size={17} />
-              </span>
-
-              <span className="admin-menu-text">
-                <strong>Articles</strong>
-                <small>Manage wildlife content</small>
-              </span>
-
-              <ArrowRight
-                size={16}
-                className="admin-menu-arrow"
-              />
-            </Link>
-
-
-            <Link
-              to="/admin/businesses"
-              className="admin-dashboard-menu-link"
-            >
-              <span className="admin-menu-icon">
-                <Briefcase size={17} />
-              </span>
-
-              <span className="admin-menu-text">
-                <strong>Businesses</strong>
-                <small>Review partner applications</small>
-              </span>
-
-              <ArrowRight
-                size={16}
-                className="admin-menu-arrow"
-              />
-            </Link>
-
-            <Link
-              to="/admin/users"
-              className="admin-dashboard-menu-link"
-            >
-              <span className="admin-menu-icon">
-                <Users size={17} />
-              </span>
-
-              <span className="admin-menu-text">
-                <strong>Users</strong>
-                <small>Manage registered users</small>
-              </span>
-
-              <ArrowRight
-                size={16}
-                className="admin-menu-arrow"
-              />
-            </Link>
-
-          </div>
-
-        </div>
-
-
-        {/* =====================================
-            RECENT REQUESTS
-        ===================================== */}
-
-        <div className="admin-card admin-dashboard-requests-card">
-
-          <div className="admin-dashboard-requests-header">
-
-            <div>
-
-              <p className="admin-section-kicker">
-                RECENT ACTIVITY
-              </p>
-
-              <h2 className="admin-dashboard-requests-title">
-                Trip Requests
-              </h2>
-
+              {requests.length > 0 && (
+                <Link
+                  to="/admin/trip-requests"
+                  className="admin-dashboard-view-all-link"
+                >
+                  <span>View All</span>
+                  <ArrowRight size={16} />
+                </Link>
+              )}
             </div>
 
-
-            {requests.length > 0 && (
-              <Link
-                to="/admin/trip-requests"
-                className="admin-dashboard-view-all-link"
-              >
-                View All
-                <ArrowRight size={15} />
-              </Link>
-            )}
-
-          </div>
-
-
-          <div className="admin-dashboard-requests-content">
-
-            {isLoading ? (
-
-              <div className="admin-dashboard-loading">
-                Loading requests...
-              </div>
-
-            ) : requests.length === 0 ? (
-
-              <div className="admin-dashboard-no-data">
-
-                <Activity size={28} />
-
-                <p>
-                  No recent requests to review.
-                </p>
-
-              </div>
-
-            ) : (
-
-              <div className="admin-dashboard-requests-list">
-
-                {requests.slice(0, 5).map((request) => (
-
-                  <div
-                    key={request.id}
-                    className="admin-dashboard-request-item"
-                  >
-
-                    <div className="admin-request-main">
-
-                      <div className="admin-request-avatar">
-                        {request.user?.firstName?.charAt(0) || 'U'}
-                      </div>
-
-
-                      <div>
-
-                        <h4 className="admin-dashboard-request-user">
-                          {request.user
-                            ? `${request.user.firstName} ${request.user.lastName}`
-                            : 'Unknown User'}
-                        </h4>
-
-                        <div className="admin-dashboard-request-meta">
-
-                          <span>
-                            Trip to{' '}
-                            <strong>
-                              {request.destination?.name || 'Destination'}
-                            </strong>
-                          </span>
-
-                          <span className="admin-meta-dot">
-                            •
-                          </span>
-
-                          <span>
-                            {request.travelerCount} travelers
-                          </span>
-
-                          <span className="admin-meta-dot">
-                            •
-                          </span>
-
-                          <span>
-                            {new Date(
-                              request.startDate
-                            ).toLocaleDateString()}
-                          </span>
-
+            <div className="admin-dashboard-requests-content">
+              {isLoading ? (
+                <div className="admin-dashboard-loading">
+                  Loading requests...
+                </div>
+              ) : requests.length === 0 ? (
+                <div className="admin-dashboard-no-data">
+                  <Activity size={32} className="admin-dashboard-no-data-icon" />
+                  <p className="admin-dashboard-no-data-text">
+                    No recent trip requests found.
+                  </p>
+                </div>
+              ) : (
+                <div className="admin-dashboard-requests-list">
+                  {requests.slice(0, 5).map((request) => (
+                    <div
+                      key={request.id}
+                      className="admin-dashboard-request-item"
+                    >
+                      <div className="admin-request-main">
+                        <div className={`admin-request-avatar ${getAvatarStatusClass(request.status)}`}>
+                          {getUserInitials(request.user)}
                         </div>
 
+                        <div className="admin-request-info">
+                          <h4 className="admin-dashboard-request-user">
+                            {request.user
+                              ? `${request.user.firstName || ''} ${request.user.lastName || ''}`.trim() || 'Unknown User'
+                              : 'Unknown User'}
+                          </h4>
+
+                          <div className="admin-dashboard-request-meta">
+                            <span>
+                              Trip to{' '}
+                              <strong>
+                                {request.destination?.name || 'Destination'}
+                              </strong>
+                            </span>
+                            <span className="admin-meta-dot">•</span>
+                            <span>{request.travelerCount || 1} travelers</span>
+                            <span className="admin-meta-dot">•</span>
+                            <span>
+                              {request.startDate ? new Date(request.startDate).toLocaleDateString() : 'Date TBA'}
+                            </span>
+                          </div>
+                        </div>
                       </div>
 
+                      <div className="admin-request-status-wrap">
+                        {getStatusBadge(request.status)}
+                      </div>
                     </div>
-
-
-                    <div>
-                      {getStatusBadge(request.status)}
-                    </div>
-
-                  </div>
-
-                ))}
-
-              </div>
-
-            )}
-
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
         </div>
 
       </div>
-
     </div>
   );
 };

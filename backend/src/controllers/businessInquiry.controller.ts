@@ -20,9 +20,11 @@ export const submitInquiry = asyncHandler(async (req: Request, res: Response) =>
     where: { id: businessId }
   });
 
-  if (!business || business.status !== 'APPROVED') {
+  if (!business || business.status !== 'APPROVED' || business.deletedAt !== null) {
     throw new NotFoundError('Business not found or not available for inquiries');
   }
+
+  const slaDeadlineAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24-hour response clock
 
   const inquiry = await prisma.businessInquiry.create({
     data: {
@@ -33,15 +35,16 @@ export const submitInquiry = asyncHandler(async (req: Request, res: Response) =>
       customerPhone,
       message,
       dateRequested: dateRequested ? new Date(dateRequested) : null,
-      status: 'PENDING'
+      status: 'PENDING',
+      slaDeadlineAt,
     }
   });
 
   // Notify the business partner
   await notificationService.createNotification({
     userId: business.userId,
-    title: 'New Business Inquiry',
-    message: `You have received a new inquiry from ${customerName} for ${business.name}.`,
+    title: 'New Business Inquiry (24h SLA)',
+    message: `You have received a new inquiry from ${customerName} for ${business.name}. Please respond within 24 hours.`,
     type: NotificationType.BUSINESS_INQUIRY_RECEIVED,
     referenceId: inquiry.id
   });
@@ -109,7 +112,7 @@ export const updateInquiryStatus = asyncHandler(async (req: Request, res: Respon
   const { status } = req.body;
   const userId = req.user?.id;
 
-  if (!['PENDING', 'RESPONDED', 'CLOSED'].includes(status)) {
+  if (!['PENDING', 'RESPONDED', 'CLOSED', 'ESCALATED', 'EXPIRED'].includes(status)) {
     throw new BadRequestError('Invalid status');
   }
 
@@ -132,3 +135,19 @@ export const updateInquiryStatus = asyncHandler(async (req: Request, res: Respon
   res.status(200).json(ApiResponse.success('Inquiry status updated', inquiry));
 });
 
+// Admin: Get all escalated inquiries
+export const getEscalatedInquiries = asyncHandler(async (req: Request, res: Response) => {
+  const inquiries = await prisma.businessInquiry.findMany({
+    where: {
+      status: 'ESCALATED',
+    },
+    include: {
+      business: {
+        select: { id: true, name: true, contactPhone: true, contactEmail: true }
+      }
+    },
+    orderBy: { createdAt: 'desc' }
+  });
+
+  res.status(200).json(ApiResponse.success('Escalated inquiries fetched', inquiries));
+});

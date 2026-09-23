@@ -26,7 +26,22 @@ export class UserRepository {
         phone: true,
         role: true,
         createdAt: true,
-      }
+        partnerKyc: {
+          select: {
+            id: true,
+            status: true,
+            createdAt: true,
+          },
+        },
+        businesses: {
+          select: {
+            id: true,
+            name: true,
+            status: true,
+            type: true,
+          },
+        },
+      },
     });
   }
 
@@ -47,6 +62,12 @@ export class UserRepository {
     return prisma.user.update({
       where: { id },
       data,
+    });
+  }
+
+  async delete(id: string): Promise<User> {
+    return prisma.user.delete({
+      where: { id },
     });
   }
 }

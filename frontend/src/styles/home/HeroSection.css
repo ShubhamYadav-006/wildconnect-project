@@ -1,320 +1,423 @@
+/* ==========================================================
+   HeroSection Styles
+   WildConnect Luxury Safari Design System
+   Exact Match to Reference Design with Full Viewport Height
+   ========================================================== */
+
 /* ==========================================
-   Hero Section Layout
-   ========================================== */
+   Hero Section Container & Layout
+========================================== */
 .hero-section {
-    max-width: var(--max-width-7xl);
-    margin: 0 auto;
-    padding: 0.75rem 1rem 2rem 1rem;
-    /* reduced top padding to minimize empty space above hero */
-}
-
-@media (min-width: 640px) {
-    .hero-section {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .hero-section {
-        padding-left: 2rem;
-        padding-right: 2rem;
-        padding-top: 0.75rem;
-        /* reduced top padding */
-        padding-bottom: 3rem;
-    }
+  position: relative;
+  height: calc(100vh - 4.5rem);
+  min-height: calc(100vh - 4.5rem);
+  height: calc(100dvh - 4.5rem);
+  min-height: calc(100dvh - 4.5rem);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 0;
+  background-color: #111814;
+  box-sizing: border-box;
 }
 
 /* ==========================================
-   Hero Card & Background Image
-   ========================================== */
-.hero-card {
-    position: relative;
-    width: 100vw;
-    min-height: 620px;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-
-    border-radius: 0;
-    border: none;
-    overflow: hidden;
-
-    background-color: rgb(var(--bg-dark));
-    box-shadow: none;
-
-    display: flex;
-    align-items: center;
+   Background Image Carousel & Fade Effects
+========================================= */
+.hero-background-carousel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
-@media (min-width: 768px) {
-    .hero-card {
-        min-height: 600px;
-    }
+.hero-carousel-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  opacity: 0;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 6s ease-out;
+  transform: scale(1.05);
 }
 
-.hero-background {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.hero-image {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center right;
-    filter: brightness(0.9) contrast(1.02);
-    /* Keep image clearly visible with a cinematic feel */
-    opacity: 0;
-    transition: opacity 800ms ease-in-out, transform 800ms ease-in-out;
-}
-
-.hero-image.active {
-    opacity: 1;
-}
-
-.hero-card:hover .hero-image {
-    transform: scale(1.02);
-}
-
-@media (min-width: 768px) {
-    .hero-image {
-        object-position: 85% center;
-        /* Keep tiger visually prominent on the right */
-    }
+.hero-carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* ==========================================
-   Hero Content & Overlay
-   ========================================== */
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-    /* Directional dark gradient, mainly from the left toward the center, tiger remains visually prominent */
-    background: linear-gradient(to bottom,
-            rgba(11, 14, 13, 0.9) 0%,
-            rgba(11, 14, 13, 0.6) 60%,
-            rgba(11, 14, 13, 0.3) 100%);
-    pointer-events: none;
+   Natural Vignette Overlay
+========================================== */
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg,
+      rgba(10, 16, 12, 0.84) 0%,
+      rgba(10, 16, 12, 0.68) 36%,
+      rgba(10, 16, 12, 0.28) 56%,
+      rgba(10, 16, 12, 0.05) 75%,
+      transparent 100%),
+    linear-gradient(180deg,
+      rgba(0, 0, 0, 0.25) 0%,
+      transparent 25%,
+      transparent 70%,
+      rgba(0, 0, 0, 0.55) 100%);
+  z-index: 2;
+  pointer-events: none;
 }
 
-@media (min-width: 768px) {
-    .hero-overlay {
-        background: linear-gradient(90deg,
-                rgba(11, 14, 13, 0.95) 0%,
-                rgba(11, 14, 13, 0.8) 35%,
-                rgba(11, 14, 13, 0.2) 65%,
-                rgba(11, 14, 13, 0) 100%);
-    }
-}
-
+/* ==========================================
+   Main Content Container
+========================================== */
 .hero-container {
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    padding: 3rem 1.5rem;
-}
-
-@media (min-width: 640px) {
-    .hero-container {
-        padding: 4rem 3rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .hero-container {
-        padding: 5rem;
-    }
+  position: relative;
+  z-index: 10;
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
 }
 
 .hero-content {
-    max-width: 32rem;
-    /* Keep text occupies the left side */
-    text-align: left;
-    animation: fadeRise 1s var(--transition-default);
-}
-
-@keyframes fadeRise {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  max-width: 37.5rem;
+  width: 100%;
+  text-align: left;
 }
 
 /* ==========================================
-   Hero Typography & Highlighting
-   ========================================== */
+   Hero Main Heading
+========================================== */
 .hero-title {
-    font-family: var(--font-editorial);
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ffffff;
-    /* white text */
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    margin: 0;
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+  line-height: 1.12;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.015em;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
 }
 
-@media (min-width: 640px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .hero-title {
-        font-size: 3rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .hero-title {
-        font-size: 3.25rem;
-        /* elegant rather than overwhelming size */
-    }
-}
-
-.hero-description {
-    color: rgba(255, 255, 255, 0.85);
-    font-family: var(--font-family);
-    font-size: 0.9375rem;
-    line-height: 1.65;
-    margin-top: 1.25rem;
-    max-width: 30rem;
-}
-
-@media (min-width: 768px) {
-    .hero-description {
-        font-size: 1rem;
-        margin-top: 1.5rem;
-    }
+.hero-title-accent {
+  color: #E59537;
+  font-style: italic;
+  font-weight: 700;
 }
 
 /* ==========================================
-   Hero Actions & Buttons
-   ========================================== */
+   Hero Description
+========================================== */
+.hero-description {
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.9375rem, 1.1vw, 1.0625rem);
+  line-height: 1.65;
+  max-width: 32rem;
+  margin: 0 0 2rem 0;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================
+   Action Buttons
+========================================== */
 .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.25rem;
 }
 
 .hero-btn-primary {
-    background-color: #D96B27;
-    /* Terracotta Sunset */
-    color: #ffffff;
-    padding: 0.875rem 2rem;
-    border-radius: var(--radius-full);
-    font-weight: 700;
-    font-family: var(--font-family);
-    box-shadow: var(--shadow-sm);
-    transition: var(--transition-default);
-    text-decoration: none;
-    display: inline-block;
-    letter-spacing: 0.02em;
-    font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.875rem;
+  padding: 0.75rem 1.875rem;
+  background-color: #E59537;
+  color: #FFFFFF;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  box-shadow: 0 6px 20px rgba(229, 149, 55, 0.4);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s ease;
 }
 
 .hero-btn-primary:hover {
-    background-color: #c45b1c;
-    /* deeper sunset terracotta */
-    box-shadow: 0 8px 20px rgba(217, 107, 39, 0.35);
-    transform: translateY(-2px);
+  background-color: #D48427;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(229, 149, 55, 0.5);
+  color: #FFFFFF;
 }
 
 .hero-btn-secondary {
-    border: 2px solid #C19A5B;
-    /* Safari Gold */
-    color: #C19A5B;
-    background-color: transparent;
-    padding: 0.75rem 2rem;
-    border-radius: var(--radius-full);
-    font-weight: 700;
-    font-family: var(--font-family);
-    transition: var(--transition-default);
-    text-decoration: none;
-    display: inline-block;
-    letter-spacing: 0.02em;
-    font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.875rem;
+  padding: 0.75rem 1.75rem;
+  background: rgba(15, 23, 18, 0.45);
+  color: #FFFFFF;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s ease;
 }
 
 .hero-btn-secondary:hover {
-    background-color: rgba(193, 154, 91, 0.1);
-    /* subtle hover background */
-    transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #FFFFFF;
+  transform: translateY(-2px);
+  color: #FFFFFF;
 }
 
 /* ==========================================
-   Trust Highlights & Features
-   ========================================== */
-.hero-features {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 1.75rem;
-    row-gap: 0.75rem;
-    margin-top: 3.5rem;
-    /* breathing room below CTA buttons */
-    color: rgba(255, 255, 255, 0.85);
-    font-weight: 600;
-    font-family: var(--font-family);
-    font-size: 0.8rem;
+   Trust Highlights Row with Dividers
+========================================== */
+.hero-trust-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.25rem;
+  flex-wrap: wrap;
 }
 
-@media (min-width: 640px) {
-    .hero-features {
-        font-size: 0.875rem;
-    }
+.hero-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
 }
 
-.hero-feature {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+.hero-trust-icon {
+  color: #E59537;
+  flex-shrink: 0;
 }
 
-.hero-feature-icon {
-    color: #C19A5B;
-    /* Safari Gold icon accent */
+.hero-trust-label {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  line-height: 1.25;
+}
+
+.hero-trust-divider {
+  width: 1px;
+  height: 1.75rem;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* ==========================================
-   Carousel Indicators
-   ========================================== */
-.hero-indicators {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0.75rem;
-    z-index: 20;
+   Bottom Bar: Slider Controls & Pagination
+========================================== */
+.hero-bottom-bar {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 10;
+  pointer-events: none;
 }
 
-.hero-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.3);
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: var(--transition-snappy);
+.hero-bottom-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  pointer-events: auto;
 }
 
-.hero-indicator:hover {
-    background-color: rgba(255, 255, 255, 0.6);
+/* Dots Centered at Bottom */
+.hero-dots {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
-.hero-indicator.active {
-    background-color: #C19A5B; /* Safari Gold active color */
-    transform: scale(1.2);
+.hero-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+}
+
+.hero-dot.active {
+  width: 0.55rem;
+  height: 0.55rem;
+  background: #FFFFFF;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+/* Navigation Arrows on Bottom Right */
+.hero-nav-arrows {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-left: auto;
+}
+
+.hero-arrow-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hero-arrow-btn:hover {
+  border-color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* ==========================================
+   Media Query Breakpoints
+   - 1200px (Desktop)
+   - 992px (Laptop)
+   - 768px (Tablet)
+   - 480px (Mobile)
+========================================== */
+
+/* 1200px - Desktop */
+@media (max-width: 1200px) {
+  .hero-container,
+  .hero-bottom-container {
+    padding: 0 1.75rem;
+  }
+}
+
+/* 992px - Laptop */
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.75rem;
+  }
+}
+
+/* 768px - Tablet */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: calc(100vh - 4.5rem);
+    height: auto;
+    padding: 3.5rem 0;
+  }
+
+  .hero-container,
+  .hero-bottom-container {
+    padding: 0 1.25rem;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero-title {
+    font-size: 2.35rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.625rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    width: 100%;
+    min-height: 44px;
+    text-align: center;
+  }
+
+  .hero-trust-bar {
+    gap: 0.875rem;
+  }
+
+  .hero-trust-divider {
+    display: none;
+  }
+
+  .hero-bottom-bar {
+    position: relative;
+    bottom: auto;
+    margin-top: 2rem;
+  }
+
+  .hero-bottom-container {
+    justify-content: space-between;
+  }
+
+  .hero-dots {
+    position: static;
+    transform: none;
+  }
+}
+
+/* 480px - Mobile */
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 3rem 0;
+  }
+
+  .hero-container,
+  .hero-bottom-container {
+    padding: 0 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.875rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-description {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-trust-label {
+    font-size: 0.75rem;
+  }
 }

@@ -1,860 +1,679 @@
 /* ==========================================================
    WILDCONNECT — ADMIN DASHBOARD
-   DESIGN ONLY
-   No API / backend / routing changes
+   Design System & Layout
    ========================================================== */
 
-
 /* ==========================================================
-   1. MAIN PAGE
+   1. PAGE ROOT & CONTAINER
    ========================================================== */
 
 .admin-dashboard-page {
   width: 100%;
-  max-width: none;
-  margin: 0;
-
-  padding: 2.25rem 2rem 3rem;
-
+  min-height: 100vh;
+  background-color: #f6f8f6;
+  color: #0e1f18;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   box-sizing: border-box;
 }
 
+.admin-dashboard-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 
 /* ==========================================================
-   2. HEADER
+   2. PAGE HEADER
    ========================================================== */
 
 .admin-dashboard-page-header {
   width: 100%;
-
+  background: #ffffff;
+  border: 1px solid #e2e8e5;
+  border-radius: 14px;
+  padding: 1.75rem 2rem;
+  box-sizing: border-box;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-
-  gap: 2rem;
-
-  margin-bottom: 2rem;
+  gap: 1.5rem;
+  box-shadow: 0 2px 8px rgba(27, 48, 34, 0.03);
 }
 
-.admin-dashboard-page-header>div:first-child {
-  min-width: 0;
+.admin-dashboard-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .admin-dashboard-eyebrow {
-  margin: 0 0 0.45rem;
-
-  font-size: 0.67rem;
-  font-weight: 750;
-
-  letter-spacing: 0.14em;
-
-  color: #3d8066;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #1b6d24;
+  text-transform: uppercase;
 }
 
 .admin-dashboard-page-title {
   margin: 0;
-
-  color: #13271e;
-
-  font-size: clamp(1.8rem, 2.7vw, 2.35rem);
-
-  line-height: 1.1;
-
-  font-weight: 750;
-
-  letter-spacing: -0.035em;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #061b0e;
 }
 
 .admin-dashboard-page-subtitle {
-  margin: 0.55rem 0 0;
-
-  color: #748079;
-
-  font-size: 0.92rem;
-
-  line-height: 1.5;
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #434843;
 }
 
-
-/* ==========================================================
-   3. USER DASHBOARD BUTTON
-   ========================================================== */
+.admin-dashboard-header-action {
+  flex-shrink: 0;
+}
 
 .admin-dashboard-user-button {
   display: inline-flex;
-
   align-items: center;
-  justify-content: center;
-
-  gap: 0.55rem;
-
-  min-height: 44px;
-
-  padding: 0.7rem 1.15rem;
-
+  gap: 0.5rem;
+  padding: 0.65rem 1.15rem;
   border-radius: 10px;
-
-  background: #123326;
-  color: #ffffff;
-
+  background-color: #ffffff;
+  border: 1px solid #e2e8e5;
+  color: #061b0e;
   text-decoration: none;
-
-  font-size: 0.84rem;
-  font-weight: 650;
-
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
-
-  flex-shrink: 0;
-
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
 .admin-dashboard-user-button:hover {
-  background: #1c4938;
-
+  background-color: #e4f8ed;
+  border-color: #c3c8c1;
+  color: #1b6d24;
   transform: translateY(-1px);
-
-  box-shadow:
-    0 8px 20px rgba(18, 51, 38, 0.16);
+  box-shadow: 0 4px 12px rgba(27, 48, 34, 0.06);
 }
 
+.admin-dashboard-user-btn-icon {
+  color: #1b6d24;
+}
 
 /* ==========================================================
-   4. STATISTICS GRID
+   3. STATISTICS GRID (4 CARDS)
    ========================================================== */
 
 .admin-grid-stats {
   width: 100%;
-
   display: grid;
-
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
-
-  gap: 1rem;
-
-  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
 }
 
-
-/* ==========================================================
-   5. STAT CARD
-   ========================================================== */
-
 .admin-stat-card {
-  position: relative;
-
-  min-width: 0;
-  min-height: 142px;
-
-  padding: 1.15rem 1.2rem;
-
-  box-sizing: border-box;
-
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: space-between;
-
   background: #ffffff;
-
-  border: 1px solid #e6e4dc;
-
-  border-radius: 16px;
-
-  overflow: hidden;
-
-  box-shadow:
-    0 3px 12px rgba(25, 40, 31, 0.035);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  border: 1px solid #e2e8e5;
+  border-radius: 14px;
+  padding: 1.35rem 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 140px;
+  box-shadow: 0 2px 8px rgba(27, 48, 34, 0.03);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .admin-stat-card:hover {
+  border-color: rgba(27, 109, 36, 0.4);
   transform: translateY(-2px);
-
-  box-shadow:
-    0 10px 25px rgba(25, 40, 31, 0.075);
+  box-shadow: 0 6px 16px rgba(27, 48, 34, 0.06);
 }
-
-
-/* Top colored line */
-
-.admin-stat-card::after {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  left: 0;
-  right: 0;
-
-  height: 3px;
-
-  background: #1d6b4f;
-}
-
-.admin-stat-users::after {
-  background: #377dff;
-}
-
-.admin-stat-destinations::after {
-  background: #183b2c;
-}
-
-.admin-stat-resorts::after {
-  background: #2c8b68;
-}
-
-.admin-stat-requests::after {
-  background: #e97918;
-}
-
-
-/* ==========================================================
-   6. STAT CARD TOP
-   ========================================================== */
 
 .admin-stat-card-top {
-  width: 100%;
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
-  gap: 0.75rem;
-
-  margin-bottom: 0;
+  margin-bottom: 1rem;
 }
 
-
-/* Small category text */
-
-.admin-stat-card-label {
-  min-width: 0;
-
-  font-size: 0.62rem;
-
-  font-weight: 750;
-
-  letter-spacing: 0.1em;
-
-  color: #a0a7a2;
-
-  white-space: nowrap;
+.admin-stat-card-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #85968c;
 }
-
-
-/* ==========================================================
-   7. STAT ICONS
-   ========================================================== */
 
 .admin-stat-icon-wrapper {
-  width: 43px;
-  height: 43px;
-
-  flex-shrink: 0;
-
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   display: flex;
-
   align-items: center;
   justify-content: center;
-
-  border-radius: 12px;
+  flex-shrink: 0;
 }
 
-.admin-stat-icon-wrapper.blue {
-  color: #377dff;
-  background: #edf3ff;
+.admin-stat-icon-wrapper.icon-blue {
+  background-color: #e0f2fe;
+  color: #0284c7;
 }
 
-.admin-stat-icon-wrapper.primary {
-  color: #183b2c;
-  background: #edf2ee;
+.admin-stat-icon-wrapper.icon-primary {
+  background-color: #dff3e7;
+  color: #1b6d24;
 }
 
-.admin-stat-icon-wrapper.green {
-  color: #27825f;
-  background: #eaf7f1;
+.admin-stat-icon-wrapper.icon-green {
+  background-color: #e8f5e9;
+  color: #1b5e20;
 }
 
-.admin-stat-icon-wrapper.orange {
-  color: #e87518;
-  background: #fff3e8;
+.admin-stat-icon-wrapper.icon-amber {
+  background-color: #fff8e1;
+  color: #dc790a;
 }
-
-
-/* ==========================================================
-   8. STAT BOTTOM
-   ========================================================== */
 
 .admin-stat-card-bottom {
-  width: 100%;
-
   display: flex;
-
-  align-items: flex-end;
-
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.2rem;
 }
-
-.admin-stat-card-bottom>div {
-  min-width: 0;
-}
-
-
-/* ==========================================================
-   9. STAT LABEL + VALUE
-   ========================================================== */
 
 .admin-stat-label {
-  display: block;
-
-  margin: 0 0 0.2rem;
-
-  font-size: 0.78rem;
-
-  line-height: 1.2;
-
-  color: #78827d;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
+  font-size: 13px;
+  line-height: 18px;
+  color: #85968c;
+  font-weight: 500;
 }
 
 .admin-stat-value {
-  display: block;
-
-  margin: 0;
-
-  font-size: 1.85rem;
-
-  line-height: 1;
-
-  font-weight: 750;
-
-  letter-spacing: -0.035em;
-
-  color: #14271f;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #061b0e;
 }
 
-
 /* ==========================================================
-   10. LOWER CONTENT
+   4. LOWER DASHBOARD CONTENT GRID (2 COLUMNS)
    ========================================================== */
 
 .admin-dashboard-content-grid {
   width: 100%;
-
   display: grid;
-
-  grid-template-columns:
-    minmax(270px, 0.72fr) minmax(0, 1.8fr);
-
-  gap: 1.25rem;
-
+  grid-template-columns: minmax(280px, 3.8fr) minmax(0, 8.2fr);
+  gap: 1.5rem;
   align-items: start;
 }
 
-
-/* ==========================================================
-   11. GENERIC CARD
-   ========================================================== */
-
 .admin-card {
   background: #ffffff;
-
-  border: 1px solid #e6e4dc;
-
-  border-radius: 16px;
-
-  box-shadow:
-    0 3px 12px rgba(25, 40, 31, 0.035);
+  border: 1px solid #e2e8e5;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(27, 48, 34, 0.03);
+  box-sizing: border-box;
 }
 
-
 /* ==========================================================
-   12. MANAGEMENT CARD
+   5. MANAGEMENT CARD (LEFT COLUMN)
    ========================================================== */
 
 .admin-dashboard-management-card {
-  padding: 1.25rem;
+  padding: 1.5rem;
 }
 
-.admin-dashboard-section-heading {
+.admin-dashboard-section-header {
   margin-bottom: 1rem;
 }
 
 .admin-section-kicker {
-  margin: 0 0 0.3rem;
-
-  font-size: 0.62rem;
-
-  font-weight: 750;
-
-  letter-spacing: 0.12em;
-
-  color: #8a958f;
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1b6d24;
+  margin-bottom: 0.25rem;
 }
 
 .admin-dashboard-menu-title {
   margin: 0;
-
-  color: #162920;
-
-  font-size: 1.05rem;
-
+  font-size: 22px;
+  line-height: 30px;
   font-weight: 700;
+  color: #061b0e;
 }
-
-
-/* ==========================================================
-   13. MANAGEMENT LINKS
-   ========================================================== */
 
 .admin-dashboard-menu-list {
   display: flex;
-
   flex-direction: column;
-
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
 .admin-dashboard-menu-link {
   display: flex;
-
   align-items: center;
-
-  gap: 0.7rem;
-
-  min-height: 58px;
-
-  padding: 0.6rem 0.65rem;
-
-  box-sizing: border-box;
-
-  border-radius: 11px;
-
-  color: #5e6963;
-
+  justify-content: space-between;
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
   text-decoration: none;
-
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .admin-dashboard-menu-link:hover {
-  background: #f4f7f4;
-
+  background-color: #e4f8ed;
+  border-color: #e2e8e5;
   transform: translateX(2px);
 }
 
-
-/* Menu icon */
-
-.admin-menu-icon {
-  width: 36px;
-  height: 36px;
-
-  flex-shrink: 0;
-
+.admin-menu-item-left {
   display: flex;
-
   align-items: center;
-  justify-content: center;
-
-  border-radius: 9px;
-
-  color: #2b7356;
-
-  background: #edf4ef;
+  gap: 0.85rem;
+  min-width: 0;
 }
 
-
-/* Menu text */
-
-.admin-menu-text {
+.admin-menu-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
 
+.box-destinations {
+  background-color: #dff3e7;
+  color: #1b6d24;
+}
+
+.admin-dashboard-menu-link:hover .box-destinations {
+  background-color: #1b3022;
+  color: #ffffff;
+}
+
+.box-resorts {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+}
+
+.admin-dashboard-menu-link:hover .box-resorts {
+  background-color: #1b6d24;
+  color: #ffffff;
+}
+
+.box-articles {
+  background-color: #d9ede1;
+  color: #061b0e;
+}
+
+.admin-dashboard-menu-link:hover .box-articles {
+  background-color: #1b3022;
+  color: #ffffff;
+}
+
+.box-businesses {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.admin-dashboard-menu-link:hover .box-businesses {
+  background-color: #0284c7;
+  color: #ffffff;
+}
+
+.box-users {
+  background-color: #dff3e7;
+  color: #1b6d24;
+}
+
+.admin-dashboard-menu-link:hover .box-users {
+  background-color: #1b3022;
+  color: #ffffff;
+}
+
+.admin-menu-item-info {
+  display: flex;
   flex-direction: column;
-
   min-width: 0;
-
-  flex: 1;
-
   gap: 0.15rem;
 }
 
-.admin-menu-text strong {
-  font-size: 0.83rem;
-
-  font-weight: 650;
-
-  color: #27362f;
+.admin-menu-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #061b0e;
+  transition: color 0.2s ease;
 }
 
-.admin-menu-text small {
-  font-size: 0.69rem;
+.admin-dashboard-menu-link:hover .admin-menu-item-title {
+  color: #1b6d24;
+}
 
-  color: #909993;
-
+.admin-menu-item-subtitle {
+  font-size: 12px;
+  line-height: 16px;
+  color: #85968c;
   white-space: nowrap;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
 }
 
-
-/* Arrow */
-
-.admin-menu-arrow {
+.admin-menu-item-arrow {
+  color: #85968c;
   flex-shrink: 0;
-
-  color: #adb5b0;
-
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.admin-dashboard-menu-link:hover .admin-menu-arrow {
-  color: #2b7356;
-
-  transform: translateX(2px);
+.admin-dashboard-menu-link:hover .admin-menu-item-arrow {
+  color: #061b0e;
+  transform: translateX(3px);
 }
-
 
 /* ==========================================================
-   14. TRIP REQUESTS CARD
+   6. RECENT ACTIVITY CARD (RIGHT COLUMN)
    ========================================================== */
 
 .admin-dashboard-requests-card {
-  min-width: 0;
-
-  overflow: hidden;
+  padding: 1.5rem;
 }
 
 .admin-dashboard-requests-header {
-  min-height: 72px;
-
-  padding: 1rem 1.3rem;
-
-  box-sizing: border-box;
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8e5;
   gap: 1rem;
-
-  border-bottom: 1px solid #ecebe5;
 }
 
 .admin-dashboard-requests-title {
   margin: 0;
-
-  font-size: 1.05rem;
-
+  font-size: 22px;
+  line-height: 30px;
   font-weight: 700;
-
-  color: #162920;
+  color: #061b0e;
 }
-
-
-/* ==========================================================
-   15. VIEW ALL
-   ========================================================== */
 
 .admin-dashboard-view-all-link {
   display: inline-flex;
-
   align-items: center;
-
-  gap: 0.3rem;
-
-  color: #287356;
-
+  gap: 0.35rem;
+  color: #1b6d24;
+  font-size: 13px;
+  font-weight: 600;
   text-decoration: none;
-
-  font-size: 0.78rem;
-
-  font-weight: 650;
-
+  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .admin-dashboard-view-all-link:hover {
-  color: #174c38;
+  color: #061b0e;
+  transform: translateX(2px);
 }
 
-
-/* ==========================================================
-   16. REQUEST CONTENT
-   ========================================================== */
-
 .admin-dashboard-requests-content {
-  padding: 0 1.3rem;
+  padding-top: 0.75rem;
 }
 
 .admin-dashboard-requests-list {
   display: flex;
-
   flex-direction: column;
 }
 
-
-/* ==========================================================
-   17. REQUEST ITEM
-   ========================================================== */
-
 .admin-dashboard-request-item {
-  min-height: 78px;
-
-  padding: 0.9rem 0;
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
+  padding: 0.95rem 0.6rem;
+  border-bottom: 1px solid #e2e8e5;
+  border-radius: 8px;
   gap: 1rem;
-
-  border-bottom: 1px solid #efeee9;
+  transition: background-color 0.2s ease;
 }
 
 .admin-dashboard-request-item:last-child {
   border-bottom: none;
 }
 
-
-/* Request user */
+.admin-dashboard-request-item:hover {
+  background-color: rgba(234, 254, 242, 0.4);
+}
 
 .admin-request-main {
   display: flex;
-
   align-items: center;
-
+  gap: 0.85rem;
   min-width: 0;
-
-  gap: 0.75rem;
 }
 
-
-/* Avatar */
-
+/* Avatar Initials */
 .admin-request-avatar {
-  width: 36px;
-  height: 36px;
-
-  flex-shrink: 0;
-
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
   display: flex;
-
   align-items: center;
   justify-content: center;
-
-  border-radius: 50%;
-
-  background: #eaf2ed;
-
-  color: #287356;
-
-  font-size: 0.78rem;
-
-  font-weight: 750;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
+.avatar-warning {
+  background-color: #dff3e7;
+  color: #061b0e;
+  border: 1px solid #c3c8c1;
+}
 
-/* User name */
+.avatar-info {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.avatar-success {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+  border: 1px solid #c8e6c9;
+}
+
+.avatar-danger {
+  background-color: #ffebee;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.avatar-default {
+  background-color: #dff3e7;
+  color: #061b0e;
+  border: 1px solid #c3c8c1;
+}
+
+.admin-request-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
 
 .admin-dashboard-request-user {
   margin: 0;
-
-  font-size: 0.83rem;
-
-  font-weight: 650;
-
-  color: #27352f;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #061b0e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
-
-/* Metadata */
 
 .admin-dashboard-request-meta {
   display: flex;
-
   align-items: center;
-
   flex-wrap: wrap;
-
   gap: 0.45rem;
-
-  margin-top: 0.3rem;
-
-  color: #89928d;
-
-  font-size: 0.7rem;
+  font-size: 12px;
+  line-height: 16px;
+  color: #85968c;
 }
 
 .admin-dashboard-request-meta strong {
-  color: #53615a;
-
-  font-weight: 650;
+  color: #0e1f18;
+  font-weight: 600;
 }
 
 .admin-meta-dot {
-  color: #c3c8c4;
+  color: #c3c8c1;
 }
 
+.admin-request-status-wrap {
+  flex-shrink: 0;
+}
 
 /* ==========================================================
-   18. LOADING / EMPTY
+   7. STATUS BADGES
+   ========================================================== */
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.admin-badge.status-warning {
+  background-color: #fff8e1;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.admin-badge.status-info {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.admin-badge.status-success {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+  border: 1px solid #c8e6c9;
+}
+
+.admin-badge.status-danger {
+  background-color: #ffebee;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.admin-badge.status-neutral {
+  background-color: #f6f8f6;
+  color: #434843;
+  border: 1px solid #e2e8e5;
+}
+
+/* ==========================================================
+   8. LOADING & EMPTY STATES
    ========================================================== */
 
 .admin-dashboard-loading,
 .admin-dashboard-no-data {
-  min-height: 170px;
-
+  min-height: 180px;
   display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
   flex-direction: column;
-
-  gap: 0.6rem;
-
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
   text-align: center;
-
-  color: #89928d;
-
-  font-size: 0.82rem;
+  color: #85968c;
+  font-size: 14px;
 }
 
-.admin-dashboard-no-data p {
+.admin-dashboard-no-data-icon {
+  color: #85968c;
+  opacity: 0.7;
+}
+
+.admin-dashboard-no-data-text {
   margin: 0;
+  color: #85968c;
 }
 
-
 /* ==========================================================
-   19. LARGE SCREEN
+   9. RESPONSIVE MEDIA QUERIES
    ========================================================== */
 
-@media (min-width: 1500px) {
-
-  .admin-dashboard-page {
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
-
-}
-
-
-/* ==========================================================
-   20. TABLET
-   ========================================================== */
-
-@media (max-width: 1200px) {
-
-  .admin-dashboard-page {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-
+@media (max-width: 1024px) {
   .admin-grid-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-}
-
-
-/* ==========================================================
-   21. SMALL LAPTOP / TABLET
-   ========================================================== */
-
-@media (max-width: 900px) {
-
   .admin-dashboard-content-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-
 }
 
-
-/* ==========================================================
-   22. MOBILE
-   ========================================================== */
-
-@media (max-width: 700px) {
-
-  .admin-dashboard-page {
-    padding: 1.25rem;
+@media (max-width: 768px) {
+  .admin-dashboard-container {
+    padding: 1.25rem 1rem 2.5rem;
   }
 
   .admin-dashboard-page-header {
-    align-items: flex-start;
-
     flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+    gap: 1.25rem;
+  }
 
-    gap: 1rem;
+  .admin-dashboard-header-action {
+    width: 100%;
   }
 
   .admin-dashboard-user-button {
     width: 100%;
+    justify-content: center;
   }
 
-  .admin-grid-stats {
-    grid-template-columns: 1fr 1fr;
+  .admin-dashboard-page-title {
+    font-size: 24px;
+    line-height: 32px;
   }
-
 }
 
-
-/* ==========================================================
-   23. SMALL MOBILE
-   ========================================================== */
-
-@media (max-width: 500px) {
-
+@media (max-width: 540px) {
   .admin-grid-stats {
     grid-template-columns: 1fr;
   }
 
-  .admin-dashboard-page-title {
-    font-size: 1.65rem;
-  }
-
-  .admin-dashboard-requests-header {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .admin-dashboard-requests-content {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
   .admin-dashboard-request-item {
-    align-items: flex-start;
-
     flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 0.5rem;
   }
 
+  .admin-request-status-wrap {
+    padding-left: 3.1rem;
+  }
 }

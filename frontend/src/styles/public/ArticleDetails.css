@@ -1,0 +1,165 @@
+/* ==========================================
+   Article Details Page Styles
+   WildConnect Wildlife Tourism Platform
+   ========================================== */
+
+.article-details-container {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+/* ==========================================
+   Back Navigation Link
+   ========================================== */
+.article-details-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-primary);
+  font-weight: 500;
+  text-decoration: none;
+  margin-bottom: 2rem;
+  transition: transform var(--transition-fast), color var(--transition-normal);
+}
+
+.article-details-back-link:hover {
+  text-decoration: underline;
+  transform: translateX(-3px);
+}
+
+/* ==========================================
+   Header & Meta
+   ========================================== */
+.article-details-header {
+  margin-bottom: 2.5rem;
+}
+
+.article-details-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.article-details-tag {
+  font-size: 0.825rem;
+  font-weight: 500;
+  background-color: rgba(78, 110, 78, 0.12);
+  color: var(--color-primary);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+}
+
+.article-details-title {
+  font-family: var(--font-heading);
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.5rem 0;
+}
+
+.article-details-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1.5rem;
+}
+
+.article-details-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.article-details-meta-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--color-primary);
+}
+
+/* ==========================================
+   Featured Hero Image
+   ========================================== */
+.article-details-hero-image {
+  width: 100%;
+  height: 24rem;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-md);
+  background-color: var(--color-surface);
+}
+
+.article-details-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================
+   Article Body / Prose
+   ========================================== */
+.article-details-body {
+  color: var(--color-text-primary);
+  font-size: 1.125rem;
+  line-height: 1.85;
+}
+
+.article-details-paragraph {
+  margin: 0 0 1.5rem 0;
+}
+
+.article-details-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================
+   Responsive Breakpoints
+   ========================================== */
+@media (max-width: 1024px) {
+  .article-details-container {
+    padding: 2.5rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .article-details-container {
+    padding: 2rem 1rem;
+  }
+
+  .article-details-title {
+    font-size: 2rem;
+  }
+
+  .article-details-hero-image {
+    height: 16rem;
+    margin-bottom: 2rem;
+  }
+
+  .article-details-body {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .article-details-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .article-details-title {
+    font-size: 1.65rem;
+  }
+
+  .article-details-hero-image {
+    height: 13rem;
+  }
+}

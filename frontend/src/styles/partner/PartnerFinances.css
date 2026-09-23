@@ -1,0 +1,110 @@
+/* ==========================================================
+   Partner Finances & Payouts Stylesheet
+   ========================================================== */
+
+.partner-finances-container {
+  padding: 1.5rem 0;
+}
+
+.finances-header {
+  margin-bottom: 2rem;
+}
+
+.finances-title {
+  font-family: var(--font-editorial, 'Playfair Display', serif);
+  font-size: 1.875rem;
+  color: var(--color-text-primary, #26332D);
+  margin-bottom: 0.5rem;
+}
+
+.finances-subtitle {
+  color: var(--color-text-muted, #6F7B73);
+  font-size: 0.95rem;
+}
+
+/* Metric Cards */
+.finances-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.finance-kpi-card {
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.finance-kpi-label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #6F7B73);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.finance-kpi-value {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+}
+
+.finance-kpi-value.escrow {
+  color: #D99A3D;
+}
+
+.finance-kpi-value.paid {
+  color: #3F7D4A;
+}
+
+/* Table */
+.finances-table-card {
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  overflow-x: auto;
+}
+
+.finances-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.finances-table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #6F7B73);
+  border-bottom: 1px solid var(--color-border, #DCE2DC);
+  font-weight: 600;
+}
+
+.finances-table td {
+  padding: 1rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #F7F5EF;
+  color: var(--color-text-primary, #26332D);
+}
+
+.payout-status-tag {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.payout-status-tag.escrow {
+  background: #FFF9EB;
+  color: #8C5E00;
+}
+
+.payout-status-tag.paid {
+  background: #EBF5EE;
+  color: #1F4D3A;
+}
