@@ -11,9 +11,8 @@ export const uploadImages = asyncHandler(async (req: Request, res: Response) => 
 
   const files = req.files as Express.Multer.File[];
   
-  // Construct absolute URLs using the server URL or relative paths
-  // Using relative path /uploads/... because in production they would be served from the same domain
-  const fileUrls = files.map(file => `/uploads/${file.filename}`);
+  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  const fileUrls = files.map(file => `${baseUrl}/uploads/${file.filename}`);
 
   res.status(200).json(ApiResponse.success('Files uploaded successfully', fileUrls));
 });
