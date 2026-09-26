@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { destinationService, Destination } from '../../services/destination.service';
 import { resortService, Resort } from '../../services/resort.service';
 import TadobaDetails from './TadobaInformation';
+import PenchInformation from './PenchInformation';
 import {
   MapPin,
   Compass,
@@ -28,6 +29,21 @@ const DEFAULT_TADOBA_DESTINATION: Destination = {
   bufferGates: 16
 };
 
+const DEFAULT_PENCH_DESTINATION: Destination = {
+  id: 'pench-tiger-reserve',
+  name: 'Pench Tiger Reserve',
+  slug: 'pench-tiger-reserve',
+  state: 'Madhya Pradesh & Maharashtra',
+  country: 'India',
+  description: "Pench Tiger Reserve is the legendary wilderness that inspired Rudyard Kipling's The Jungle Book. Spanning the border of Madhya Pradesh and Maharashtra along the scenic Pench river.",
+  establishedYear: 1983,
+  totalArea: 1179.63,
+  coreArea: 411.33,
+  coreGates: 6,
+  bufferArea: 768.30,
+  bufferGates: 7
+};
+
 const DestinationDetails = () => {
   const { slug } = useParams<{ slug: string }>();
   const [destination, setDestination] = useState<Destination | null>(null);
@@ -37,6 +53,7 @@ const DestinationDetails = () => {
   useEffect(() => {
     const fetchDetails = async () => {
       if (!slug) return;
+      const lowerSlug = slug.toLowerCase();
       try {
         const destResponse = await destinationService.getBySlug(slug);
         if (destResponse && destResponse.success && destResponse.data) {
@@ -54,13 +71,17 @@ const DestinationDetails = () => {
           } catch (resortErr) {
             console.error('Failed to fetch resorts:', resortErr);
           }
-        } else if (slug === 'tadoba-andhari-tiger-reserve' || slug.toLowerCase().includes('tadoba')) {
+        } else if (lowerSlug.includes('tadoba')) {
           setDestination(DEFAULT_TADOBA_DESTINATION);
+        } else if (lowerSlug.includes('pench')) {
+          setDestination(DEFAULT_PENCH_DESTINATION);
         }
       } catch (error) {
         console.error('Failed to fetch destination details:', error);
-        if (slug === 'tadoba-andhari-tiger-reserve' || (slug && slug.toLowerCase().includes('tadoba'))) {
+        if (lowerSlug.includes('tadoba')) {
           setDestination(DEFAULT_TADOBA_DESTINATION);
+        } else if (lowerSlug.includes('pench')) {
+          setDestination(DEFAULT_PENCH_DESTINATION);
         }
       } finally {
         setIsLoading(false);
@@ -79,9 +100,18 @@ const DestinationDetails = () => {
     );
   }
 
-  // Route specifically to Tadoba custom details component if the slug matches or contains 'tadoba'
+  // Route specifically to Tadoba custom details component
   if (slug === 'tadoba-andhari-tiger-reserve' || (slug && slug.toLowerCase().includes('tadoba'))) {
     return <TadobaDetails destination={destination || DEFAULT_TADOBA_DESTINATION} resorts={resorts} />;
+  }
+
+  // Route specifically to Pench custom details component
+  if (
+    slug === 'pench-tiger-reserve' ||
+    slug === 'pench-national-park' ||
+    (slug && slug.toLowerCase().includes('pench'))
+  ) {
+    return <PenchInformation destination={destination || DEFAULT_PENCH_DESTINATION} resorts={resorts} />;
   }
 
   if (!destination) {

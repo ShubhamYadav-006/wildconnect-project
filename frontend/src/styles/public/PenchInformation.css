@@ -1,0 +1,1229 @@
+/* ==========================================================
+   PENCH TIGER RESERVE INFORMATION PAGE STYLES
+   ========================================================== */
+
+/* =========================================================
+   PAGE CONTAINER & CSS VARIABLES
+   ========================================================= */
+.dest-details-page {
+  --forest: #174d3b;
+  --forest-dark: #0d3025;
+  --forest-soft: #e8f0eb;
+  --cream: #f7f5ef;
+  --white: #ffffff;
+  --text: #20332b;
+  --muted: #718078;
+  --border: #dfe5e1;
+  --accent: #e87524;
+  --accent-dark: #c95e15;
+
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* =========================================================
+   1. HERO SECTION
+   ========================================================= */
+.dest-details-hero {
+  position: relative;
+  height: 72vh;
+  min-height: 560px;
+  overflow: hidden;
+  background: #10241d;
+}
+
+.dest-details-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 1.2s ease, transform 6s ease;
+  filter: saturate(0.92);
+}
+
+.dest-details-hero-img.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.dest-details-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(13, 48, 37, 0.4) 0%,
+    rgba(13, 48, 37, 0.75) 60%,
+    rgba(13, 48, 37, 0.95) 100%
+  );
+}
+
+.dest-details-hero-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 4rem;
+}
+
+.dest-details-hero-wrapper {
+  max-width: 780px;
+}
+
+.dest-details-hero-title {
+  margin: 0 0 0.75rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.dest-details-hero-subtitle {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.02rem, 1.4vw, 1.2rem);
+  line-height: 1.6;
+  color: #e2ede7;
+  max-width: 680px;
+}
+
+.dest-details-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.dest-details-hero-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #d1e4db;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.dest-details-hero-meta-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.dest-details-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.dest-details-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.95rem 2rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 20px rgba(232, 117, 36, 0.35);
+}
+
+.dest-details-hero-cta:hover {
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(232, 117, 36, 0.45);
+}
+
+.dest-details-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.95rem 1.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.dest-details-hero-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.dest-details-hero-counter {
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(13, 48, 37, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* =========================================================
+   2. MAIN LAYOUT & TWO-COLUMN STRUCTURE
+   ========================================================= */
+.dest-details-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
+}
+
+.dest-details-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.dest-details-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  min-width: 0;
+}
+
+/* =========================================================
+   3. GENERAL CARD STYLES
+   ========================================================= */
+.dest-details-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(23, 77, 59, 0.04);
+}
+
+.dest-details-card-title {
+  margin: 0 0 0.5rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+  letter-spacing: -0.01em;
+}
+
+.dest-details-section-info {
+  margin: 0 0 1.75rem;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* =========================================================
+   4. ABOUT SECTION & STATS
+   ========================================================= */
+.dest-details-about-header {
+  margin-bottom: 1.5rem;
+}
+
+.dest-details-about-eyebrow {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+.dest-details-about-title {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+}
+
+.dest-details-about-intro p {
+  margin: 0 0 1rem;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: #3b4e45;
+}
+
+.dest-details-about-intro p:last-child {
+  margin-bottom: 0;
+}
+
+.dest-details-about-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.dest-details-about-stats-grid.pench-stats-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.dest-details-about-stat-card {
+  background: var(--forest-soft);
+  border: 1px solid #d2e3d9;
+  border-radius: 16px;
+  padding: 1.25rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.dest-details-about-stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.dest-details-about-stat-value {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+  line-height: 1.1;
+}
+
+.dest-details-about-stat-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  margin: 0.25rem 0 0.15rem;
+}
+
+.dest-details-about-stat-sub {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.dest-details-about-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+
+.dest-details-about-subtitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--forest-dark);
+  margin: 0 0 0.75rem;
+}
+
+.dest-details-about-story-content p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: #3b4e45;
+}
+
+/* =========================================================
+   5. HISTORY & TIMELINE SECTION
+   ========================================================= */
+.dest-details-history-header {
+  margin-bottom: 2.25rem;
+}
+
+.dest-details-history-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.dest-details-card-icon {
+  color: var(--accent);
+}
+
+.dest-details-history-title {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+}
+
+.dest-details-history-subtitle {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.dest-details-history-timeline-container {
+  position: relative;
+  padding-top: 1rem;
+}
+
+.dest-details-history-timeline-track {
+  position: absolute;
+  top: 2rem;
+  left: 5%;
+  right: 5%;
+  height: 3px;
+  background: #dfe8e2;
+  z-index: 1;
+}
+
+.dest-details-history-timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.dest-details-history-timeline-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.dest-details-history-year {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+  margin-bottom: 0.5rem;
+}
+
+.dest-details-history-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 4px solid var(--white);
+  box-shadow: 0 0 0 2px var(--accent);
+  margin-bottom: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.dest-details-history-timeline-item:hover .dest-details-history-dot {
+  transform: scale(1.25);
+}
+
+.dest-details-history-event-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--forest-dark);
+}
+
+.dest-details-history-event-desc {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* =========================================================
+   6. SAFARI EXPERIENCES & TIMINGS
+   ========================================================= */
+.dest-details-safari-subtitle {
+  margin: 0 0 0.85rem;
+  font-size: 0.98rem;
+  color: var(--muted);
+}
+
+.dest-details-disclaimer-note {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  background: #fff8eb;
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: #9a3412;
+  margin-bottom: 2rem;
+}
+
+.dest-details-disclaimer-icon {
+  flex-shrink: 0;
+  color: #ea580c;
+}
+
+.dest-details-safari-vehicles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dest-details-safari-vehicle-card {
+  background: var(--forest-soft);
+  border: 1px solid #d2e3d9;
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.dest-details-vehicle-title {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--forest-dark);
+}
+
+.dest-details-vehicle-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.dest-details-vehicle-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  color: #2c4238;
+}
+
+.dest-details-vehicle-check {
+  width: 17px;
+  height: 17px;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Ceiling box */
+.pench-vehicle-ceiling-box {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.pench-ceiling-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pench-ceiling-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  color: #3b4e45;
+}
+
+/* Timings Box */
+.dest-details-timings-box {
+  background: #fbfbf9;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.dest-details-timings-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.4rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+}
+
+.dest-details-timings-desc {
+  margin: 0 0 1.25rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.dest-details-timings-table-container {
+  overflow-x: auto;
+}
+
+.dest-details-timings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  text-align: left;
+}
+
+.dest-details-timings-table th,
+.dest-details-timings-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e7ece9;
+}
+
+.dest-details-timings-table th {
+  background: var(--forest-soft);
+  color: var(--forest-dark);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dest-details-timings-table tr:last-child td {
+  border-bottom: none;
+}
+
+.pench-table-closed-row td {
+  background: #fdf2f2;
+  color: #b91c1c;
+  text-align: center;
+}
+
+.pench-timing-notes {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e7ece9;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: #4a5d53;
+}
+
+/* Proposal Banner */
+.dest-details-proposal-banner {
+  background: linear-gradient(135deg, #174d3b 0%, #0d3025 100%);
+  border-radius: 16px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  color: #ffffff;
+}
+
+.dest-details-proposal-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dest-details-proposal-banner-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dest-details-proposal-banner-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--accent);
+}
+
+.dest-details-proposal-banner-text {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.5;
+  color: #e2ede7;
+}
+
+.dest-details-proposal-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.dest-details-proposal-banner-btn:hover {
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   7. SEASONS & BEST TIME
+   ========================================================= */
+.dest-details-seasons-headline {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--forest-dark);
+}
+
+.dest-details-seasons-subline {
+  margin: 0 0 1.5rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.pench-seasons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.pench-season-card {
+  background: #fcfcfb;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.pench-season-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  background: var(--forest-soft);
+  color: var(--forest);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.pench-season-badge.closed {
+  background: #fdf2f2;
+  color: #b91c1c;
+}
+
+.pench-season-title {
+  margin: 0 0 0.5rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+}
+
+.pench-season-desc {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #4a5d53;
+  flex-grow: 1;
+}
+
+.pench-season-timings {
+  border-top: 1px dashed #d2e3d9;
+  padding-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--forest-dark);
+}
+
+/* =========================================================
+   8. SAFARI GATES DIRECTORY
+   ========================================================= */
+.dest-details-gates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.dest-details-gate-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.dest-details-gate-card:hover {
+  border-color: #b7cbbf;
+  box-shadow: 0 6px 18px rgba(23, 77, 59, 0.06);
+}
+
+.dest-details-gate-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.65rem;
+}
+
+.dest-details-gate-name {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+}
+
+.pench-gate-district {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pench-gate-desc {
+  margin: 0 0 0.5rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #4a5d53;
+}
+
+.pench-gate-highlights {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  color: var(--forest-dark);
+  line-height: 1.4;
+}
+
+.dest-details-gate-map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  align-self: flex-start;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  background: var(--forest-soft);
+  color: var(--forest-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dest-details-gate-map-btn:hover {
+  background: var(--forest);
+  color: #ffffff;
+}
+
+.pench-scope-note {
+  margin-top: 1.75rem;
+  padding: 1rem 1.25rem;
+  background: #f0f7f4;
+  border-left: 4px solid var(--forest);
+  border-radius: 0 10px 10px 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #2c4238;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.pench-scope-note svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--forest);
+}
+
+/* =========================================================
+   9. HOW TO REACH
+   ========================================================= */
+.dest-details-reach-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.dest-details-reach-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.dest-details-reach-header {
+  margin-bottom: 0.75rem;
+}
+
+.dest-details-reach-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: #fdf3eb;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+}
+
+.dest-details-reach-main-title {
+  margin: 0 0 0.35rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+}
+
+.dest-details-reach-sub-info {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.dest-details-reach-road-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.dest-details-reach-road-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--forest-dark);
+}
+
+.dest-details-reach-footer {
+  border-top: 1px solid #edf2ef;
+  padding-top: 0.75rem;
+}
+
+.dest-details-reach-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* =========================================================
+   10. FAQS SECTION
+   ========================================================= */
+.dest-details-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.dest-details-faq-item {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.dest-details-faq-item.active {
+  border-color: #b7cbbf;
+}
+
+.dest-details-faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 1.25rem;
+  background: #ffffff;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dest-details-faq-question:hover {
+  background: var(--forest-soft);
+}
+
+.dest-details-faq-chevron {
+  color: var(--accent);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.dest-details-faq-item.active .dest-details-faq-chevron {
+  transform: rotate(180deg);
+}
+
+.dest-details-faq-answer {
+  padding: 0 1.25rem 1.25rem;
+  background: #ffffff;
+  border-top: 1px solid #f0f4f2;
+}
+
+.dest-details-faq-answer p {
+  margin: 0.85rem 0 0;
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: #3b4e45;
+}
+
+/* =========================================================
+   11. FINAL CTA CARD
+   ========================================================= */
+.dest-details-final-cta-card {
+  background: linear-gradient(135deg, #102d23 0%, #081d16 100%);
+  border-radius: 24px;
+  padding: 3.5rem 2.5rem;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: 0 12px 35px rgba(16, 45, 35, 0.25);
+}
+
+.dest-details-final-cta-title {
+  margin: 0 0 0.75rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  font-weight: 700;
+}
+
+.dest-details-final-cta-desc {
+  margin: 0 auto 2rem;
+  max-width: 620px;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #d1e4db;
+}
+
+.dest-details-final-cta-actions {
+  margin-bottom: 2rem;
+}
+
+.dest-details-final-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 20px rgba(232, 117, 36, 0.4);
+}
+
+.dest-details-final-cta-btn:hover {
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(232, 117, 36, 0.5);
+}
+
+.dest-details-final-cta-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #b7cbbf;
+}
+
+.dest-details-final-cta-trust span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dest-details-final-cta-trust svg {
+  color: var(--accent);
+}
+
+/* =========================================================
+   12. STICKY SIDEBAR NAVIGATION
+   ========================================================= */
+.dest-details-sidebar {
+  position: sticky;
+  top: 90px;
+}
+
+.dest-sidebar-nav-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 4px 20px rgba(23, 77, 59, 0.04);
+}
+
+.dest-sidebar-nav-eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.dest-sidebar-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.dest-sidebar-nav-link {
+  display: block;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #3b4e45;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dest-sidebar-nav-link:hover {
+  background: var(--forest-soft);
+  color: var(--forest-dark);
+  transform: translateX(4px);
+}
+
+.dest-sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 1.25rem 0;
+}
+
+.dest-sidebar-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  background: var(--forest);
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dest-sidebar-cta-btn:hover {
+  background: var(--forest-dark);
+}
+
+/* =========================================================
+   13. RESPONSIVE MEDIA QUERIES
+   ========================================================= */
+@media (max-width: 1024px) {
+  .dest-details-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dest-details-sidebar {
+    display: none;
+  }
+
+  .dest-details-history-timeline-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .dest-details-history-timeline-track {
+    display: none;
+  }
+
+  .pench-seasons-grid,
+  .dest-details-reach-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dest-details-about-stats-grid.pench-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dest-details-gates-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dest-details-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .dest-details-safari-vehicles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pench-ceiling-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pench-seasons-grid,
+  .dest-details-reach-grid,
+  .dest-details-gates-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dest-details-history-timeline-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .dest-details-proposal-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dest-details-hero-counter {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .dest-details-about-stats-grid.pench-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dest-details-hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .dest-details-hero-cta,
+  .dest-details-hero-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
