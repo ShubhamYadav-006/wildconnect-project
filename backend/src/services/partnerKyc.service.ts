@@ -35,14 +35,28 @@ export class PartnerKycService {
       });
     }
 
-    // Notify User
+    // Notify Partner
     await notificationService.createNotification({
       userId,
       title: 'KYC Documents Submitted',
       message: 'Your partner KYC compliance documents have been submitted and are pending admin review.',
       type: NotificationType.KYC_SUBMITTED,
       referenceId: kyc.id,
+    }).catch(() => {});
+
+    // Notify Admins
+    const admins = await prisma.user.findMany({
+      where: { role: 'ADMIN', deletedAt: null },
     });
+    for (const admin of admins) {
+      await notificationService.createNotification({
+        userId: admin.id,
+        title: 'New Partner KYC Submission',
+        message: 'A partner has submitted KYC documents for verification.',
+        type: NotificationType.KYC_SUBMITTED,
+        referenceId: kyc.id,
+      }).catch(() => {});
+    }
 
     return kyc;
   }

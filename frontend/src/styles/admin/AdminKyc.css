@@ -20,8 +20,12 @@
 .admin-kyc-subtitle {
   color: var(--color-text-muted, #6F7B73);
   font-size: 0.95rem;
+  line-height: 1.5;
 }
 
+/* ==========================================================
+   Admin KYC Grid & Cards
+   ========================================================== */
 .admin-kyc-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -34,51 +38,218 @@
   border-radius: var(--radius-lg, 0.75rem);
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-kyc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.admin-kyc-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border, #DCE2DC);
+}
+
+.admin-kyc-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-kyc-user-icon {
+  color: var(--color-primary, #1F4D3A);
 }
 
 .admin-kyc-user {
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--color-text-primary, #26332D);
-  margin-bottom: 0.5rem;
 }
 
 .admin-kyc-field {
   font-size: 0.875rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   color: var(--color-text-primary, #26332D);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .admin-kyc-field strong {
   color: var(--color-text-muted, #6F7B73);
+  min-width: 50px;
 }
 
+/* ==========================================================
+   Submitted 2-Document Number Display
+   ========================================================== */
+.admin-kyc-docs-block {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background-color: #FAFBF9;
+  border: 1px solid #E4EBE6;
+  border-radius: var(--radius-md, 0.5rem);
+  padding: 0.875rem 1rem;
+}
+
+.admin-kyc-doc-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-kyc-doc-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-primary, #1F4D3A);
+}
+
+.admin-kyc-doc-val {
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #26332D;
+  background-color: #FFFFFF;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.25rem;
+  border: 1px solid #DCE2DC;
+  letter-spacing: 0.05em;
+}
+
+.admin-kyc-rejection-note {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #FDF2F2;
+  border: 1px solid #F8B4B4;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  color: #9B1C1C;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ==========================================================
+   Status Badges
+   ========================================================== */
+.admin-kyc-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-kyc-badge.verified {
+  background-color: #EBF5EE;
+  color: #1F4D3A;
+  border: 1px solid #A3D4AE;
+}
+
+.admin-kyc-badge.pending {
+  background-color: #FFF9EB;
+  color: #8C5E00;
+  border: 1px solid #F8DA8B;
+}
+
+.admin-kyc-badge.rejected {
+  background-color: #FDF2F2;
+  color: #9B1C1C;
+  border: 1px solid #F8B4B4;
+}
+
+.admin-kyc-badge.unsubmitted {
+  background-color: #F3F4F6;
+  color: #6B7280;
+  border: 1px solid #D1D5DB;
+}
+
+/* ==========================================================
+   Admin Actions
+   ========================================================== */
 .admin-kyc-actions {
   display: flex;
   gap: 0.75rem;
-  margin-top: 1.25rem;
+  margin-top: auto;
   padding-top: 1rem;
   border-top: 1px solid var(--color-border, #DCE2DC);
 }
 
 .admin-btn-approve {
   flex: 1;
-  padding: 0.6rem;
+  padding: 0.65rem 1rem;
   background-color: var(--color-primary, #1F4D3A);
   color: #FFFFFF;
   border: none;
   border-radius: var(--radius-md, 0.5rem);
   font-weight: 600;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-approve:hover:not(:disabled) {
+  background-color: var(--color-primary-dark, #16382B);
+}
+
+.admin-btn-approve:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .admin-btn-reject {
   flex: 1;
-  padding: 0.6rem;
+  padding: 0.65rem 1rem;
   background-color: #FDF2F2;
   color: #9B1C1C;
   border: 1px solid #F8B4B4;
   border-radius: var(--radius-md, 0.5rem);
   font-weight: 600;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-reject:hover:not(:disabled) {
+  background-color: #FCE8E8;
+}
+
+.admin-btn-reject:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==========================================================
+   Media Queries
+   ========================================================== */
+@media (max-width: 768px) {
+  .admin-kyc-grid {
+    grid-template-columns: 1fr;
+  }
 }

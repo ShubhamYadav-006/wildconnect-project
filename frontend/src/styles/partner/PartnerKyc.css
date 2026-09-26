@@ -4,7 +4,7 @@
 
 .partner-kyc-container {
   padding: 1.5rem 0;
-  max-width: 1000px;
+  max-width: 860px;
 }
 
 .partner-kyc-header {
@@ -21,10 +21,12 @@
 .partner-kyc-subtitle {
   color: var(--color-text-muted, #6F7B73);
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-/* Status Banner */
+/* ==========================================================
+   Status Banners
+   ========================================================== */
 .kyc-status-banner {
   display: flex;
   align-items: center;
@@ -34,6 +36,12 @@
   margin-bottom: 2rem;
   background-color: var(--color-surface, #FFFFFF);
   border: 1px solid var(--color-border, #DCE2DC);
+}
+
+.kyc-status-banner.info {
+  background-color: #EBF3F5;
+  border-color: #B4D7DF;
+  color: #1A4D59;
 }
 
 .kyc-status-banner.verified {
@@ -66,9 +74,12 @@
 
 .kyc-status-content p {
   font-size: 0.9rem;
+  line-height: 1.5;
 }
 
-/* Form Sections */
+/* ==========================================================
+   Form Card & Document Cards
+   ========================================================== */
 .kyc-form-card {
   background: var(--color-surface, #FFFFFF);
   border: 1px solid var(--color-border, #DCE2DC);
@@ -82,7 +93,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--color-primary, #1F4D3A);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--color-border, #DCE2DC);
   display: flex;
@@ -90,13 +101,48 @@
   gap: 0.5rem;
 }
 
-.kyc-grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+.kyc-instruction-text {
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #6F7B73);
   margin-bottom: 1.5rem;
+  line-height: 1.5;
 }
 
+.kyc-doc-card {
+  background-color: #FAFBF9;
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: var(--radius-md, 0.625rem);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kyc-doc-card:hover {
+  border-color: #B4D7DF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.kyc-doc-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed #DCE2DC;
+}
+
+.kyc-doc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* ==========================================================
+   Input & Select Elements
+   ========================================================== */
 .kyc-form-group {
   display: flex;
   flex-direction: column;
@@ -109,24 +155,55 @@
   color: var(--color-text-primary, #26332D);
 }
 
+.kyc-form-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: var(--radius-md, 0.5rem);
+  font-size: 0.95rem;
+  color: var(--color-text-primary, #26332D);
+  background-color: #FFFFFF;
+  transition: border-color 0.2s;
+  cursor: pointer;
+  width: 100%;
+}
+
+.kyc-form-select:focus {
+  outline: none;
+  border-color: var(--color-primary, #1F4D3A);
+}
+
+.kyc-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.kyc-input-icon {
+  position: absolute;
+  left: 0.85rem;
+  color: #6F7B73;
+  pointer-events: none;
+}
+
 .kyc-form-input {
   padding: 0.75rem 1rem;
   border: 1px solid var(--color-border, #DCE2DC);
   border-radius: var(--radius-md, 0.5rem);
   font-size: 0.95rem;
   color: var(--color-text-primary, #26332D);
-  background-color: var(--color-surface, #FFFFFF);
+  background-color: #FFFFFF;
   transition: border-color 0.2s;
+  width: 100%;
+}
+
+.kyc-form-input.kyc-with-icon {
+  padding-left: 2.5rem;
 }
 
 .kyc-form-input:focus {
   outline: none;
   border-color: var(--color-primary, #1F4D3A);
-}
-
-.kyc-form-input:disabled {
-  background-color: #F7F5EF;
-  cursor: not-allowed;
+  box-shadow: 0 0 0 3px rgba(31, 77, 58, 0.08);
 }
 
 .kyc-helper-text {
@@ -134,12 +211,75 @@
   color: var(--color-text-muted, #6F7B73);
 }
 
-/* Submit Bar */
+/* ==========================================================
+   Summary View for Verified/Pending
+   ========================================================== */
+.kyc-summary-card {
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.kyc-doc-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.kyc-doc-badge-item {
+  background-color: #F8FAF8;
+  border: 1px solid #DCE2DC;
+  border-radius: var(--radius-md, 0.5rem);
+  padding: 1.25rem 1.5rem;
+}
+
+.kyc-doc-badge-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #6F7B73;
+  margin-bottom: 0.5rem;
+}
+
+.kyc-doc-badge-icon {
+  color: #1F4D3A;
+}
+
+.kyc-doc-badge-type {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1F4D3A;
+  margin-bottom: 0.35rem;
+}
+
+.kyc-doc-badge-number {
+  font-family: monospace;
+  font-size: 1rem;
+  color: #26332D;
+  font-weight: 600;
+  background-color: #EBF3F5;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.25rem;
+  display: inline-block;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================
+   Submit Bar Actions
+   ========================================================== */
 .kyc-actions {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .kyc-btn-submit {
@@ -151,20 +291,41 @@
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(31, 77, 58, 0.2);
 }
 
-.kyc-btn-submit:hover {
+.kyc-btn-submit:hover:not(:disabled) {
   background-color: var(--color-primary-dark, #16382B);
+  transform: translateY(-1px);
 }
 
 .kyc-btn-submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
+/* ==========================================================
+   Media Queries
+   ========================================================== */
 @media (max-width: 768px) {
-  .kyc-grid-2 {
+  .kyc-doc-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .kyc-doc-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .partner-kyc-title {
+    font-size: 1.5rem;
+  }
+
+  .kyc-form-card,
+  .kyc-summary-card {
+    padding: 1.25rem;
   }
 }

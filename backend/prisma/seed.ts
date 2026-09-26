@@ -57,6 +57,23 @@ async function main() {
       role: 'TOURIST',
     },
   });
+
+  // Seed Partner KYC for Demo Partner
+  await prisma.partnerKyc.upsert({
+    where: { userId: partnerUser.id },
+    update: {
+      idProofUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=80',
+      status: 'KYC_VERIFIED',
+      verifiedAt: new Date(),
+    },
+    create: {
+      userId: partnerUser.id,
+      aadhaarNumber: '1234 5678 9012',
+      idProofUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=80',
+      status: 'KYC_VERIFIED',
+      verifiedAt: new Date(),
+    },
+  });
   logger.info(`Created Users: ${adminUser.email}, ${partnerUser.email}, ${touristUser.email}`);
 
   // 2. Seed Destination (1 Destination)

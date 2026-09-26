@@ -133,7 +133,7 @@ export const PartnerDashboard = () => {
         <header className="partner-dashboard-header">
           <div className="partner-dashboard-header-text">
             <span className="partner-dashboard-eyebrow">
-              PARTNER OPERATIONS HUB
+              BUSINESS PARTNER DASHBOARD
             </span>
             <h1 className="partner-dashboard-title">
               Welcome back, {user?.firstName || 'Partner'} 👋
@@ -353,7 +353,7 @@ export const PartnerDashboard = () => {
                   </div>
                   <div className="partner-quick-info">
                     <span className="partner-quick-item-title">KYC Verification</span>
-                    <span className="partner-quick-item-subtitle">Upload compliance documents</span>
+                    <span className="partner-quick-item-subtitle">Verify 2 ID document numbers</span>
                   </div>
                 </div>
                 <ArrowRight size={18} className="partner-quick-arrow" />

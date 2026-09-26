@@ -1,11 +1,68 @@
 /* ==========================================================
-   Partner KYC Compliance Component
+   Partner KYC Compliance Component (2-Document Number Verification)
    ========================================================== */
 
 import { useState, useEffect } from 'react';
 import { kycService, PartnerKyc as KycData } from '../../../services/kyc.service';
-import { ShieldCheck, Clock, AlertCircle, Landmark, CheckCircle2 } from 'lucide-react';
+import {
+  ShieldCheck,
+  Clock,
+  AlertCircle,
+  CheckCircle2,
+  FileCheck2,
+  FileText,
+  BadgeCheck,
+  CreditCard,
+  Hash,
+} from 'lucide-react';
+import LoadingSpinner from '../../../components/ui/LoadingSpinner';
 import '../../../styles/partner/PartnerKyc.css';
+
+interface DocumentOption {
+  value: string;
+  label: string;
+  placeholder: string;
+  hint: string;
+}
+
+const DOCUMENT_OPTIONS: DocumentOption[] = [
+  {
+    value: 'AADHAAR_CARD',
+    label: 'Aadhaar Card',
+    placeholder: 'e.g. 7113 8633 9171',
+    hint: '12-digit Unique Identification Number (UIDAI)',
+  },
+  {
+    value: 'PAN_CARD',
+    label: 'PAN Card',
+    placeholder: 'e.g. ABCDE1234F',
+    hint: '10-character Permanent Account Number',
+  },
+  {
+    value: 'DRIVING_LICENSE',
+    label: 'Driving License',
+    placeholder: 'e.g. MH31 20180012345',
+    hint: 'Valid Indian State Driving License Number',
+  },
+  {
+    value: 'VOTER_ID',
+    label: 'Voter ID (EPIC)',
+    placeholder: 'e.g. ABC1234567',
+    hint: '10-character Election Photo Identity Card Number',
+  },
+  {
+    value: 'PASSPORT',
+    label: 'Indian Passport',
+    placeholder: 'e.g. A1234567',
+    hint: '8-character Passport Identification Number',
+  },
+  {
+    value: 'GSTIN_REGISTRATION',
+    label: 'GSTIN / Business Registration',
+    placeholder: 'e.g. 27AAAAA0000A1Z5',
+    hint: '15-character Goods and Services Tax ID',
+  },
+];
 
 export const PartnerKyc = () => {
   const [kyc, setKyc] = useState<KycData | null>(null);
@@ -15,15 +72,10 @@ export const PartnerKyc = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const [formData, setFormData] = useState({
-    businessPan: '',
-    gstin: '',
-    idProofUrl: '',
-    businessProofUrl: '',
-    bankAccountName: '',
-    bankAccountNumber: '',
-    bankIfsc: '',
-    bankName: '',
-    cancelledChequeUrl: '',
+    doc1Type: 'AADHAAR_CARD',
+    doc1Number: '',
+    doc2Type: 'PAN_CARD',
+    doc2Number: '',
   });
 
   useEffect(() => {
@@ -37,15 +89,10 @@ export const PartnerKyc = () => {
       if (res.data) {
         setKyc(res.data);
         setFormData({
-          businessPan: res.data.businessPan || '',
-          gstin: res.data.gstin || '',
-          idProofUrl: res.data.idProofUrl || '',
-          businessProofUrl: res.data.businessProofUrl || '',
-          bankAccountName: res.data.bankAccountName || '',
-          bankAccountNumber: res.data.bankAccountNumber || '',
-          bankIfsc: res.data.bankIfsc || '',
-          bankName: res.data.bankName || '',
-          cancelledChequeUrl: res.data.cancelledChequeUrl || '',
+          doc1Type: res.data.doc1Type || (res.data.aadhaarNumber ? 'AADHAAR_CARD' : 'AADHAAR_CARD'),
+          doc1Number: res.data.doc1Number || res.data.aadhaarNumber || '',
+          doc2Type: res.data.doc2Type || (res.data.businessPan ? 'PAN_CARD' : 'PAN_CARD'),
+          doc2Number: res.data.doc2Number || res.data.businessPan || '',
         });
       }
     } catch (err: any) {
@@ -55,23 +102,47 @@ export const PartnerKyc = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrorMessage('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.doc1Type || !formData.doc1Number.trim()) {
+      setErrorMessage('Please provide the Document 1 type and identification number.');
+      return;
+    }
+
+    if (!formData.doc2Type || !formData.doc2Number.trim()) {
+      setErrorMessage('Please provide the Document 2 type and identification number.');
+      return;
+    }
+
+    if (formData.doc1Type === formData.doc2Type) {
+      setErrorMessage('Please select two distinct documents from the approved list.');
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage('');
     setSuccessMessage('');
 
     try {
-      const res = await kycService.submitKyc(formData);
+      const res = await kycService.submitKyc({
+        doc1Type: formData.doc1Type,
+        doc1Number: formData.doc1Number.trim(),
+        doc2Type: formData.doc2Type,
+        doc2Number: formData.doc2Number.trim(),
+        aadhaarNumber: formData.doc1Type === 'AADHAAR_CARD' ? formData.doc1Number.trim() : (formData.doc2Type === 'AADHAAR_CARD' ? formData.doc2Number.trim() : undefined),
+        businessPan: formData.doc1Type === 'PAN_CARD' ? formData.doc1Number.trim() : (formData.doc2Type === 'PAN_CARD' ? formData.doc2Number.trim() : undefined),
+      });
       setKyc(res.data);
-      setSuccessMessage('KYC documents submitted successfully and queued for verification.');
+      setSuccessMessage('KYC identification numbers submitted successfully for verification!');
     } catch (err: any) {
-      setErrorMessage(err.response?.data?.message || 'Failed to submit KYC documents.');
+      setErrorMessage(err.response?.data?.message || 'Failed to submit KYC numbers.');
     } finally {
       setIsSubmitting(false);
     }
@@ -80,27 +151,56 @@ export const PartnerKyc = () => {
   const isVerified = kyc?.status === 'KYC_VERIFIED';
   const isPending = kyc?.status === 'KYC_PENDING';
   const isRejected = kyc?.status === 'KYC_REJECTED';
+  const isUnsubmitted = !kyc || kyc.status === 'KYC_UNSUBMITTED';
+
+  const isFormDisabled = isVerified || isPending;
+
+  const getDocMeta = (docType: string) => {
+    return DOCUMENT_OPTIONS.find((d) => d.value === docType) || DOCUMENT_OPTIONS[0];
+  };
+
+  const doc1Meta = getDocMeta(formData.doc1Type);
+  const doc2Meta = getDocMeta(formData.doc2Type);
 
   if (isLoading) {
-    return <div className="partner-kyc-container"><p>Loading KYC compliance status...</p></div>;
+    return (
+      <div className="partner-kyc-container">
+        <div style={{ textAlign: 'center', padding: '3rem' }}>
+          <LoadingSpinner size="md" />
+          <p style={{ marginTop: '1rem', color: '#6F7B73' }}>Loading KYC details...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="partner-kyc-container">
       <div className="partner-kyc-header">
-        <h1 className="partner-kyc-title">Partner KYC & Compliance</h1>
+        <h1 className="partner-kyc-title">Partner Identity & Compliance</h1>
         <p className="partner-kyc-subtitle">
-          Verify your business identity and bank settlement details to publish listings and receive direct payouts.
+          Verify your business partner account by providing identification numbers for any <strong>2 valid government/business documents</strong>. No image or file upload is required.
         </p>
       </div>
 
       {/* Status Banners */}
+      {isUnsubmitted && (
+        <div className="kyc-status-banner info">
+          <ShieldCheck size={28} className="kyc-status-icon" />
+          <div className="kyc-status-content">
+            <h3>Identity Verification Required</h3>
+            <p>
+              Select any 2 documents from the approved list and enter their numbers below. Once verified, your resorts, safari vehicles, and rentals will be approved for live bookings.
+            </p>
+          </div>
+        </div>
+      )}
+
       {isVerified && (
         <div className="kyc-status-banner verified">
           <CheckCircle2 size={28} className="kyc-status-icon" />
           <div className="kyc-status-content">
-            <h3>KYC Verified & Active</h3>
-            <p>Your business identity and settlement banking profile are verified. You can publish live listings and accept direct bookings.</p>
+            <h3>Partner Identity Verified & Active</h3>
+            <p>Your identification documents have been verified by the WildConnect team. Your listings and booking calendar are active.</p>
           </div>
         </div>
       )}
@@ -109,8 +209,8 @@ export const PartnerKyc = () => {
         <div className="kyc-status-banner pending">
           <Clock size={28} className="kyc-status-icon" />
           <div className="kyc-status-content">
-            <h3>Verification In Progress</h3>
-            <p>Your documents have been received and are being reviewed by the compliance desk. This typically takes 12–24 hours.</p>
+            <h3>Verification In Review</h3>
+            <p>Your document identification numbers are currently under review by our compliance desk. Approval usually takes 12–24 hours.</p>
           </div>
         </div>
       )}
@@ -119,8 +219,10 @@ export const PartnerKyc = () => {
         <div className="kyc-status-banner rejected">
           <AlertCircle size={28} className="kyc-status-icon" />
           <div className="kyc-status-content">
-            <h3>KYC Verification Rejected</h3>
-            <p><strong>Reason:</strong> {kyc.rejectionReason || 'Please review document clarity and resubmit.'}</p>
+            <h3>Verification Rejected</h3>
+            <p>
+              <strong>Admin Feedback:</strong> {kyc.rejectionReason || 'Please check the document identification numbers and resubmit.'}
+            </p>
           </div>
         </div>
       )}
@@ -128,169 +230,158 @@ export const PartnerKyc = () => {
       {successMessage && <div className="kyc-status-banner verified"><p>{successMessage}</p></div>}
       {errorMessage && <div className="kyc-status-banner rejected"><p>{errorMessage}</p></div>}
 
-      <form onSubmit={handleSubmit}>
-        {/* Section 1: Business Identification */}
-        <div className="kyc-form-card">
+      {/* Verified / Pending Summary View */}
+      {isFormDisabled && kyc && (
+        <div className="kyc-summary-card">
           <h2 className="kyc-section-title">
-            <ShieldCheck size={20} />
-            1. Business Identification Proofs
+            <BadgeCheck size={20} />
+            Submitted Identification Numbers
           </h2>
 
-          <div className="kyc-grid-2">
-            <div className="kyc-form-group">
-              <label>Business PAN / Tax ID *</label>
-              <input
-                type="text"
-                name="businessPan"
-                value={formData.businessPan}
-                onChange={handleChange}
-                required
-                disabled={isVerified}
-                className="kyc-form-input"
-                placeholder="ABCDE1234F"
-              />
+          <div className="kyc-doc-summary-grid">
+            <div className="kyc-doc-badge-item">
+              <div className="kyc-doc-badge-header">
+                <FileCheck2 size={18} className="kyc-doc-badge-icon" />
+                <span>Primary Document (Doc 1)</span>
+              </div>
+              <h4 className="kyc-doc-badge-type">{getDocMeta(kyc.doc1Type || 'AADHAAR_CARD').label}</h4>
+              <p className="kyc-doc-badge-number">{kyc.doc1Number || kyc.aadhaarNumber || 'N/A'}</p>
             </div>
 
-            <div className="kyc-form-group">
-              <label>GSTIN (Optional for Unregistered Homestays)</label>
-              <input
-                type="text"
-                name="gstin"
-                value={formData.gstin}
-                onChange={handleChange}
-                disabled={isVerified}
-                className="kyc-form-input"
-                placeholder="27ABCDE1234F1Z5"
-              />
-            </div>
-          </div>
-
-          <div className="kyc-grid-2">
-            <div className="kyc-form-group">
-              <label>Government Photo ID URL (Passport / Aadhaar / DL) *</label>
-              <input
-                type="url"
-                name="idProofUrl"
-                value={formData.idProofUrl}
-                onChange={handleChange}
-                required
-                disabled={isVerified}
-                className="kyc-form-input"
-                placeholder="https://.../id-proof.pdf"
-              />
-              <span className="kyc-helper-text">Direct secure link to passport/Aadhaar document.</span>
-            </div>
-
-            <div className="kyc-form-group">
-              <label>Business Registration / Ownership Proof URL *</label>
-              <input
-                type="url"
-                name="businessProofUrl"
-                value={formData.businessProofUrl}
-                onChange={handleChange}
-                required
-                disabled={isVerified}
-                className="kyc-form-input"
-                placeholder="https://.../msme-registration.pdf"
-              />
-              <span className="kyc-helper-text">MSME, Shop Act, or Property Ownership Deed.</span>
+            <div className="kyc-doc-badge-item">
+              <div className="kyc-doc-badge-header">
+                <FileCheck2 size={18} className="kyc-doc-badge-icon" />
+                <span>Secondary Document (Doc 2)</span>
+              </div>
+              <h4 className="kyc-doc-badge-type">{getDocMeta(kyc.doc2Type || 'PAN_CARD').label}</h4>
+              <p className="kyc-doc-badge-number">{kyc.doc2Number || kyc.businessPan || 'N/A'}</p>
             </div>
           </div>
         </div>
+      )}
 
-        {/* Section 2: Bank Settlement Details */}
-        <div className="kyc-form-card">
-          <h2 className="kyc-section-title">
-            <Landmark size={20} />
-            2. Bank Settlement & Payout Profile
-          </h2>
+      {/* Interactive Form for New / Resubmission */}
+      {!isFormDisabled && (
+        <form onSubmit={handleSubmit}>
+          <div className="kyc-form-card">
+            <h2 className="kyc-section-title">
+              <FileText size={20} />
+              Select Any 2 Documents for Verification
+            </h2>
+            <p className="kyc-instruction-text">
+              Choose two different documents from the list and enter the corresponding identification numbers:
+            </p>
 
-          <div className="kyc-grid-2">
-            <div className="kyc-form-group">
-              <label>Bank Account Holder Name *</label>
-              <input
-                type="text"
-                name="bankAccountName"
-                value={formData.bankAccountName}
-                onChange={handleChange}
-                required
-                disabled={isVerified}
-                className="kyc-form-input"
-                placeholder="As per bank passbook"
-              />
+            {/* Document 1 Card */}
+            <div className="kyc-doc-card">
+              <div className="kyc-doc-card-header">
+                <CreditCard size={18} />
+                <span>Document 1 (Primary ID)</span>
+              </div>
+
+              <div className="kyc-doc-grid">
+                <div className="kyc-form-group">
+                  <label htmlFor="doc1Type">Select Document Type *</label>
+                  <select
+                    id="doc1Type"
+                    name="doc1Type"
+                    value={formData.doc1Type}
+                    onChange={handleInputChange}
+                    className="kyc-form-select"
+                  >
+                    {DOCUMENT_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value} disabled={opt.value === formData.doc2Type}>
+                        {opt.label} {opt.value === formData.doc2Type ? '(Selected as Doc 2)' : ''}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="kyc-form-group">
+                  <label htmlFor="doc1Number">
+                    {doc1Meta.label} Identification Number *
+                  </label>
+                  <div className="kyc-input-wrapper">
+                    <Hash size={16} className="kyc-input-icon" />
+                    <input
+                      id="doc1Number"
+                      type="text"
+                      name="doc1Number"
+                      value={formData.doc1Number}
+                      onChange={handleInputChange}
+                      placeholder={doc1Meta.placeholder}
+                      className="kyc-form-input kyc-with-icon"
+                      required
+                    />
+                  </div>
+                  <span className="kyc-helper-text">{doc1Meta.hint}</span>
+                </div>
+              </div>
             </div>
 
-            <div className="kyc-form-group">
-              <label>Bank Name *</label>
-              <input
-                type="text"
-                name="bankName"
-                value={formData.bankName}
-                onChange={handleChange}
-                required
-                disabled={isVerified}
-                className="kyc-form-input"
-                placeholder="e.g. HDFC Bank"
-              />
+            {/* Document 2 Card */}
+            <div className="kyc-doc-card">
+              <div className="kyc-doc-card-header">
+                <CreditCard size={18} />
+                <span>Document 2 (Secondary ID)</span>
+              </div>
+
+              <div className="kyc-doc-grid">
+                <div className="kyc-form-group">
+                  <label htmlFor="doc2Type">Select Document Type *</label>
+                  <select
+                    id="doc2Type"
+                    name="doc2Type"
+                    value={formData.doc2Type}
+                    onChange={handleInputChange}
+                    className="kyc-form-select"
+                  >
+                    {DOCUMENT_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value} disabled={opt.value === formData.doc1Type}>
+                        {opt.label} {opt.value === formData.doc1Type ? '(Selected as Doc 1)' : ''}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="kyc-form-group">
+                  <label htmlFor="doc2Number">
+                    {doc2Meta.label} Identification Number *
+                  </label>
+                  <div className="kyc-input-wrapper">
+                    <Hash size={16} className="kyc-input-icon" />
+                    <input
+                      id="doc2Number"
+                      type="text"
+                      name="doc2Number"
+                      value={formData.doc2Number}
+                      onChange={handleInputChange}
+                      placeholder={doc2Meta.placeholder}
+                      className="kyc-form-input kyc-with-icon"
+                      required
+                    />
+                  </div>
+                  <span className="kyc-helper-text">{doc2Meta.hint}</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="kyc-grid-2">
-            <div className="kyc-form-group">
-              <label>Account Number *</label>
-              <input
-                type="text"
-                name="bankAccountNumber"
-                value={formData.bankAccountNumber}
-                onChange={handleChange}
-                required
-                disabled={isVerified}
-                className="kyc-form-input"
-                placeholder="50100234567890"
-              />
-            </div>
-
-            <div className="kyc-form-group">
-              <label>IFSC Code *</label>
-              <input
-                type="text"
-                name="bankIfsc"
-                value={formData.bankIfsc}
-                onChange={handleChange}
-                required
-                disabled={isVerified}
-                className="kyc-form-input"
-                placeholder="HDFC0001234"
-              />
-            </div>
-          </div>
-
-          <div className="kyc-form-group">
-            <label>Cancelled Cheque / Passbook Copy URL</label>
-            <input
-              type="url"
-              name="cancelledChequeUrl"
-              value={formData.cancelledChequeUrl}
-              onChange={handleChange}
-              disabled={isVerified}
-              className="kyc-form-input"
-              placeholder="https://.../cancelled-cheque.jpg"
-            />
-          </div>
-        </div>
-
-        {!isVerified && (
           <div className="kyc-actions">
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !formData.doc1Number.trim() || !formData.doc2Number.trim()}
               className="kyc-btn-submit"
             >
-              {isSubmitting ? 'Submitting Documents...' : 'Submit KYC for Verification'}
+              {isSubmitting
+                ? 'Submitting...'
+                : isRejected
+                ? 'Resubmit Document Numbers'
+                : 'Submit Document Numbers for Verification'}
             </button>
           </div>
-        )}
-      </form>
+        </form>
+      )}
     </div>
   );
 };

@@ -196,14 +196,19 @@ model Notification {
 model PartnerKyc {
   id                 String     @id @default(uuid())
   userId             String     @unique
-  businessPan        String
+  doc1Type           String?
+  doc1Number         String?
+  doc2Type           String?
+  doc2Number         String?
+  aadhaarNumber      String?
+  businessPan        String?
   gstin              String?
-  idProofUrl         String
-  businessProofUrl   String
-  bankAccountName    String
-  bankAccountNumber  String
-  bankIfsc           String
-  bankName           String
+  idProofUrl         String?
+  businessProofUrl   String?
+  bankAccountName    String?
+  bankAccountNumber  String?
+  bankIfsc           String?
+  bankName           String?
   cancelledChequeUrl String?
   status             KycStatus  @default(KYC_UNSUBMITTED)
   rejectionReason    String?

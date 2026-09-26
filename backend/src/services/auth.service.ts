@@ -46,21 +46,6 @@ export class AuthService {
           referenceId: newUser.id,
         }).catch(() => {});
       }
-
-      // Create a pending KYC entry for partner moderation
-      await prisma.partnerKyc.create({
-        data: {
-          userId: newUser.id,
-          businessPan: 'PENDING_ADMIN_REVIEW',
-          idProofUrl: '',
-          businessProofUrl: '',
-          bankAccountName: `${newUser.firstName} ${newUser.lastName}`,
-          bankAccountNumber: 'PENDING',
-          bankIfsc: 'PENDING',
-          bankName: 'PENDING',
-          status: 'KYC_PENDING',
-        },
-      }).catch(() => {});
     }
 
     // Generate token

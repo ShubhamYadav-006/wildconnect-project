@@ -3,14 +3,19 @@ import api from './api';
 export interface PartnerKyc {
   id: string;
   userId: string;
-  businessPan: string;
+  doc1Type?: string | null;
+  doc1Number?: string | null;
+  doc2Type?: string | null;
+  doc2Number?: string | null;
+  aadhaarNumber?: string | null;
+  businessPan?: string | null;
   gstin?: string | null;
-  idProofUrl: string;
-  businessProofUrl: string;
-  bankAccountName: string;
-  bankAccountNumber: string;
-  bankIfsc: string;
-  bankName: string;
+  idProofUrl?: string | null;
+  businessProofUrl?: string | null;
+  bankAccountName?: string | null;
+  bankAccountNumber?: string | null;
+  bankIfsc?: string | null;
+  bankName?: string | null;
   cancelledChequeUrl?: string | null;
   status: 'KYC_UNSUBMITTED' | 'KYC_PENDING' | 'KYC_VERIFIED' | 'KYC_REJECTED';
   rejectionReason?: string | null;
@@ -33,15 +38,14 @@ class KycService {
   }
 
   async submitKyc(data: {
-    businessPan: string;
+    doc1Type: string;
+    doc1Number: string;
+    doc2Type: string;
+    doc2Number: string;
+    aadhaarNumber?: string;
+    businessPan?: string;
     gstin?: string;
-    idProofUrl: string;
-    businessProofUrl: string;
-    bankAccountName: string;
-    bankAccountNumber: string;
-    bankIfsc: string;
-    bankName: string;
-    cancelledChequeUrl?: string;
+    idProofUrl?: string;
   }) {
     const response = await api.post('/kyc/submit', data);
     return response.data;
