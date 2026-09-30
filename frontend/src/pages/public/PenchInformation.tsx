@@ -1,25 +1,33 @@
 /* ==========================================================
    Pench Tiger Reserve Comprehensive Information Page
+   Visual Structure & Layout: Matching Luxury Wildlife Standard
    ========================================================== */
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   MapPin,
   Clock,
   History,
-  ArrowDown,
   ArrowUpRight,
   CheckCircle2,
   ChevronDown,
   Compass,
   AlertTriangle,
-  Info
+  Car,
+  Layers,
+  Calendar,
+  Plane,
+  Train,
+  TreePine,
+  HelpCircle,
+  Search
 } from 'lucide-react';
 
 import { Destination } from '../../services/destination.service';
 import { Resort } from '../../services/resort.service';
 
+// Scoped Page Stylesheet
 import '../../styles/public/PenchInformation.css';
 
 interface SafariGate {
@@ -30,6 +38,7 @@ interface SafariGate {
   description: string;
   highlights?: string;
   mapLink?: string;
+  quota?: string;
 }
 
 interface PenchDetailsProps {
@@ -38,12 +47,7 @@ interface PenchDetailsProps {
   safariGates?: SafariGate[];
 }
 
-const PENCH_HERO_IMAGES = [
-  'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1600&q=80',
-  'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=1600&q=80',
-  'https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?auto=format&fit=crop&w=1600&q=80',
-  'https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1600&q=80',
-];
+const PENCH_HERO_IMAGE = 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1600&q=80';
 
 const PENCH_MASTER_GATES: SafariGate[] = [
   // Core Gates (Madhya Pradesh side)
@@ -53,7 +57,8 @@ const PENCH_MASTER_GATES: SafariGate[] = [
     type: 'Core',
     district: 'Seoni District, MP',
     description: 'Khawasa / Turia village, near the MP–Maharashtra border. The most popular gate with high predator activity and proximity to major lodges. (Wednesday afternoon closed)',
-    highlights: 'Highest tiger sighting frequency, Baghin Nala, Mahadev Ghat',
+    highlights: 'Highest tiger sighting frequency, Baghin Nala, Mahadev Ghat, Alikatta grasslands, Junewani talao',
+    quota: '34 Morning / 34 Evening',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Turia+Gate+Pench+National+Park'
   },
   {
@@ -62,7 +67,8 @@ const PENCH_MASTER_GATES: SafariGate[] = [
     type: 'Core',
     district: 'Seoni District, MP',
     description: 'Karmajhiri, Seoni district. Serene, pristine core zone known for towering teak canopies, Bodhanala waterbody, and wild dog packs. (Wednesday afternoon closed)',
-    highlights: 'Bodhanala lake, wild dog (dhole) packs, gaur herds',
+    highlights: 'Bodhanala lake, wild dog (dhole) packs, gaur herds, Chhindimatta river bank, Sitaghat',
+    quota: '6 Morning / 6 Evening',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Karmajhiri+Gate+Pench'
   },
   {
@@ -71,69 +77,155 @@ const PENCH_MASTER_GATES: SafariGate[] = [
     type: 'Core',
     district: 'Chhindwara District, MP',
     description: 'Jamtara village, Chhindwara district. Quiet western entrance with rolling hills and tranquil tracks; entry is currently approached via Karmajhiri. (Wednesday afternoon closed)',
-    highlights: 'Undulating riverine terrain, sloth bear habitat, birdwatching',
+    highlights: 'Undulating riverine terrain, sloth bear habitat, birdwatching, Jamtara nullah, western riparian ridges',
+    quota: '4 Morning / 4 Evening',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Jamtara+Gate+Pench'
   },
   // Buffer Gates (Madhya Pradesh side)
   {
     id: 'buf-rukhad',
-    name: 'Rukhad Gate',
+    name: 'Rukhad Gate (Sanctuary)',
     type: 'Buffer',
-    district: 'Seoni District, MP',
-    description: 'Rukhad, Seoni district. Vital tiger corridor linking Pench with Kanha. Famous for night safaris, cycling trails, and walking safaris. (Wednesday afternoon closed)',
-    highlights: 'Night safaris, canopy cycling, Pench-Kanha corridor',
+    district: 'Seoni District, MP (NH-44 Ridge)',
+    description: 'Rukhad, Seoni district. Vital tiger corridor linking Pench with Kanha. Famous for night safaris, cycling trails, walking safaris, and historic British Rest House. (Wednesday afternoon closed)',
+    highlights: 'Night safaris, canopy cycling, Pench-Kanha corridor, historic British Rest House',
+    quota: 'Night Drive Enabled',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Rukhad+Sanctuary+Pench'
   },
   {
-    id: 'buf-khawasa',
-    name: 'Khawasa Buffer Gate',
+    id: 'buf-teliya',
+    name: 'Teliya Buffer Gate',
     type: 'Buffer',
-    district: 'Seoni District, MP',
-    description: 'Khawasa, near Turia border. Locally known as the "Wolf Sanctuary" zone, offering rich nocturnal wildlife drives. (Wednesday afternoon closed)',
-    highlights: 'Indian wolf sightings, jackal, hyena, dusk drives',
-    mapLink: 'https://www.google.com/maps/search/?api=1&query=Khawasa+Gate+Pench'
+    district: 'Adjacent to Turia, Seoni, MP',
+    description: 'Adjacent to Turia gate. Offers night safaris, walking trails, and rich wolf pack sightings; convenient for guests staying in Turia. (Wednesday afternoon closed)',
+    highlights: 'Teliya Lake, resident Teliya wolf pack, nocturnal tracking, close proximity to Turia resorts',
+    quota: 'Night Drive Enabled',
+    mapLink: 'https://www.google.com/maps/search/?api=1&query=Teliya+Buffer+Gate+Pench'
   },
   {
-    id: 'buf-teliya',
-    name: 'Teliya / Telia Buffer Gate',
+    id: 'buf-khawasa',
+    name: 'Khawasa Buffer (Wolf Sanctuary)',
     type: 'Buffer',
-    district: 'Seoni District, MP',
-    description: 'Near Turia gate, Seoni district. Highly active buffer zone offering afternoon and night safaris with regular tiger sightings. (Wednesday afternoon closed)',
-    highlights: 'Night safaris, grassland predator tracking, flexible quotas',
-    mapLink: 'https://www.google.com/maps/search/?api=1&query=Telia+Gate+Pench'
+    district: 'MP/Maharashtra Border, Seoni, MP',
+    description: 'Near MP–MH border. Open scrub and rocky terrain ideal for sighting wolves, leopards, and nocturnal species. (Wednesday afternoon closed)',
+    highlights: 'Indian wolf, striped hyena, rusty-spotted cat, night drives',
+    quota: 'Open Year-Round',
+    mapLink: 'https://www.google.com/maps/search/?api=1&query=Khawasa+Pench'
+  },
+  {
+    id: 'buf-sakata',
+    name: 'Sakata Buffer Gate',
+    type: 'Buffer',
+    district: 'Balaghat / Seoni Border, MP',
+    description: 'Hilly and dense forest buffer on the eastern fringe. Ideal for off-beat exploration, quiet birdwatching, and night safaris. (Wednesday afternoon closed)',
+    highlights: 'Offbeat wilderness, rocky cliffs, night drives, pristine riparian flora',
+    quota: 'Buffer Quota Applies',
+    mapLink: 'https://www.google.com/maps/search/?api=1&query=Sakata+Pench'
+  },
+  {
+    id: 'buf-chikhlarapuri',
+    name: 'Kumbh-Pani / Chikhlarapuri Buffer',
+    type: 'Buffer',
+    district: 'Chhindwara District, MP',
+    description: 'Buffer zone in Chhindwara district near the Totladoh reservoir catchment; rich in birdlife and dramatic waterbody landscapes. (Wednesday afternoon closed)',
+    highlights: 'Totladoh reservoir backwaters, water birds, fishing eagle, scenic lakeside tracks',
+    quota: 'Buffer Quota Applies',
+    mapLink: 'https://www.google.com/maps/search/?api=1&query=Chikhlarapuri+Buffer+Pench'
   }
+];
+
+const PENCH_HISTORICAL_MILESTONES = [
+  {
+    year: '1977',
+    stepNumber: '01',
+    shortLabel: 'Sanctuary Act',
+    title: 'Wildlife Sanctuary Declared',
+    description: '449.39 sq km declared Sanctuary; initial protection of Seoni Mowgli lands and rich teak bio-corridors.',
+    badge: 'First Protected Era'
+  },
+  {
+    year: '1983',
+    stepNumber: '02',
+    shortLabel: 'National Park',
+    title: 'National Park Established',
+    description: '292.85 sq km carved as Pench National Park within Seoni and Chhindwara districts to secure critical core habitats.',
+    badge: 'Core Demarcation'
+  },
+  {
+    year: '1992',
+    stepNumber: '03',
+    shortLabel: 'Project Tiger',
+    title: '19th Project Tiger Reserve',
+    description: 'Inducted as India’s 19th Project Tiger Reserve, establishing apex NTCA conservation over 411.33 sq km core.',
+    badge: 'Apex NTCA Status'
+  },
+  {
+    year: '2002',
+    stepNumber: '04',
+    shortLabel: 'Indira Priyadarshini',
+    title: 'Indira Priyadarshini Nomenclature',
+    description: 'Renamed Indira Priyadarshini Pench National Park & Mowgli Sanctuary, celebrating its Kipling literary heritage.',
+    badge: 'Official Nomenclature'
+  },
+  {
+    year: '2010',
+    stepNumber: '05',
+    shortLabel: 'Buffer Notified',
+    title: 'Buffer Zone Notification',
+    description: '768.30 sq km buffer formally notified, bringing total MP sanctuary landscape to 1,179.63 sq km.',
+    badge: 'Current Boundaries'
+  }
+];
+
+const PENCH_SAFARI_TIMETABLE = [
+  { season: 'October (From Oct 1)', slot: 'Morning', entryTime: '06:00 AM', exitTime: '11:00 AM' },
+  { season: 'October (From Oct 1)', slot: 'Evening', entryTime: '14:30 PM', exitTime: '17:30 PM' },
+  { season: 'November', slot: 'Morning', entryTime: '06:15 AM', exitTime: '11:00 AM' },
+  { season: 'November', slot: 'Evening', entryTime: '14:30 PM', exitTime: '17:15 PM' },
+  { season: 'December', slot: 'Morning', entryTime: '06:30 AM', exitTime: '11:00 AM' },
+  { season: 'December', slot: 'Evening', entryTime: '14:30 PM', exitTime: '17:15 PM' },
+  { season: 'January', slot: 'Morning', entryTime: '06:45 AM', exitTime: '11:15 AM' },
+  { season: 'January', slot: 'Evening', entryTime: '14:30 PM', exitTime: '17:30 PM' },
+  { season: 'February', slot: 'Morning', entryTime: '06:30 AM', exitTime: '11:00 AM' },
+  { season: 'February', slot: 'Evening', entryTime: '14:45 PM', exitTime: '17:45 PM' },
+  { season: 'March', slot: 'Morning', entryTime: '06:00 AM', exitTime: '10:30 AM' },
+  { season: 'March', slot: 'Evening', entryTime: '15:00 PM', exitTime: '18:00 PM' },
+  { season: 'April', slot: 'Morning', entryTime: '05:45 AM', exitTime: '10:15 AM' },
+  { season: 'April', slot: 'Evening', entryTime: '15:30 PM', exitTime: '18:30 PM' },
+  { season: 'May – June', slot: 'Morning', entryTime: '05:30 AM', exitTime: '10:00 AM' },
+  { season: 'May – June', slot: 'Evening', entryTime: '15:30 PM', exitTime: '18:45 PM' }
 ];
 
 const PENCH_FAQS = [
   {
-    question: 'What is the best time to visit Pench Tiger Reserve?',
+    question: '1. What is the best time to visit Pench Tiger Reserve?',
     answer:
-      'The park is open from October to June. November to February offers cool, pleasant weather ideal for families and birdwatching, while March to June (summer) offers excellent tiger-sighting odds as animals gather predictably around shrinking waterholes. The park is fully closed during the monsoon, roughly 1 July to 30 September.'
+      'The park is open from October 1 to June 30. For pleasant weather and birdwatching, visit between November and February (10°C–25°C). For the highest probability of tiger sightings and predator tracking around shrinking natural waterholes, the summer months of March through May are optimal despite daytime warmth. The park is fully closed during the monsoon, roughly 1 July to 30 September.'
   },
   {
-    question: 'How do I book a Pench safari?',
+    question: '2. How do I book safari permits for Pench (Madhya Pradesh)?',
     answer:
-      'Safaris on the Madhya Pradesh side are booked online through the official MP Forest Department portal (forest.mponline.gov.in). Bookings typically open up to 120 days in advance, with a next-day "Single Seat" quota released daily at 2:00 PM and a "Premium Tatkal" quota released 7 days ahead at 11:00 AM. Vehicle and guide charges are paid separately at the gate.'
+      'Safari permits must be booked online through the official MPOnline portal (forest.mponline.gov.in). Advance bookings open 120 days prior to the safari date at 08:00 AM IST. Single-seat permits open at 14:00 daily. A limited Tatkal quota opens 7 days in advance at 11:00 AM. Original government photo IDs entered during booking must match the physical ID presented at the gate. Vehicle and guide charges are paid separately at the gate.'
   },
   {
-    question: 'How long does a safari last, and how many can I take in a day?',
+    question: '3. What is the tourist carrying capacity per Gypsy vehicle?',
     answer:
-      'Two safari shifts run daily — one morning shift and one afternoon/evening shift — each lasting roughly 3.5 to 5 hours depending on the season and sunrise/sunset times. Only one safari per shift/gate is permitted per permit.'
+      'Each registered 4x4 Maruti Gypsy can carry a maximum of 6 tourists plus 1 registered park naturalist guide and 1 authorized forest driver (total 8 occupants). Children aged 5 and above are counted towards the 6-tourist maximum quota. Canters (where operable at Turia) carry 12 to 18 tourists.'
   },
   {
-    question: 'Which entry gate should I choose for Pench?',
+    question: '4. Which safari gate should I choose for my stay?',
     answer:
-      'Turia is the most popular core gate with the highest historical tiger-sighting frequency and maximum luxury lodges nearby. Karmajhiri and Jamtara offer quieter, less-crowded core experiences. Rukhad, Khawasa, and Teliya are buffer zones offering flexible permits and exciting night safaris, which are not permitted in the core.'
+      'Turia Gate (Core) is the most sought-after entrance, surrounded by the largest cluster of wildlife lodges, luxury resorts, and high vehicle quotas. Karmajhiri is ideal for deep undisturbed forest drives on the northern periphery. Jamtara serves western secluded luxury. Rukhad, Khawasa, and Teliya are buffer zones offering flexible permits and exciting night safaris, which are not permitted in the core. If booking resorts along Khawasa or Turia, choose Turia, Teliya, or Rukhad to avoid 1.5+ hour inter-gate transfers.'
   },
   {
-    question: 'What documents and essentials should I carry?',
+    question: '5. What identity documents are compulsory at entry?',
     answer:
-      'Carry the original valid government-issued photo ID used during booking (mandatory for gate verification), your printed/digital safari voucher, and arrive at least 30 minutes before gate opening. Wear earthy/neutral tones (khaki, olive green, brown), carry sun protection, and bring binoculars.'
+      'For Indian citizens: Original Aadhaar Card, Passport, Voter ID, or Driving License. For foreign nationals: Original physical Passport and valid Indian Visa. The identity number recorded on the MPOnline entry ticket MUST exactly match the physical ID produced at gate check; discrepancies result in non-negotiable entry denial by forest rangers.'
   },
   {
-    question: 'What is the weekly closure policy in Pench Tiger Reserve?',
+    question: '6. Are safaris open on Wednesdays and during the monsoon?',
     answer:
-      'Core zones (Turia, Karmajhiri, Jamtara) and buffer gates on the MP side are closed for the afternoon safari every Wednesday ("half-day off on Wednesday"). The morning safari on Wednesdays operates normally. Safaris are also closed on the afternoons of Holi and Diwali.'
+      'On every Wednesday afternoon, all Core and Buffer safari zones across Madhya Pradesh are closed to visitors ("half-day off on Wednesday"). Wednesday morning drives operate normally. The entire Core zone closes from July 1 through September 30 annually for the monsoon replenishment and animal breeding season, reopening on October 1. Buffer zones and Rukhad offer limited monsoon ecotourism.'
   }
 ];
 
@@ -142,811 +234,713 @@ const PenchInformation = ({
   resorts: _resorts,
   safariGates = PENCH_MASTER_GATES
 }: PenchDetailsProps) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<'vehicles' | 'timings' | 'gates'>('vehicles');
+  const [gateFilter, setGateFilter] = useState<'all' | 'Core' | 'Buffer'>('all');
+  const [gateSearchQuery, setGateSearchQuery] = useState<string>('');
+  const [timingSlotFilter, setTimingSlotFilter] = useState<'All' | 'Morning' | 'Evening'>('All');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [activeSection, setActiveSection] = useState<string>('about');
+  const [activeMilestoneIndex, setActiveMilestoneIndex] = useState<number>(0);
 
+  // Sticky Sub-Nav Scroll-Spy Listener
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % PENCH_HERO_IMAGES.length);
-    }, 4500);
+    const handleScroll = () => {
+      const sectionIds = ['about', 'history', 'safari-hub', 'how-to-reach', 'faqs'];
+      const scrollPos = window.scrollY + 180;
 
-    return () => clearInterval(interval);
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const id = sectionIds[i];
+        const elem = document.getElementById(id);
+        if (elem) {
+          if (scrollPos >= elem.offsetTop) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   if (!destination) return null;
 
-  const coreGates = safariGates.filter((gate) => gate.type === 'Core');
-  const bufferGates = safariGates.filter((gate) => gate.type === 'Buffer');
+  // Filter gates dynamically from props & search query
+  const filteredGates = safariGates.filter((gate) => {
+    const matchesFilter = gateFilter === 'all' || gate.type === gateFilter;
+    const matchesSearch = gate.name.toLowerCase().includes(gateSearchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
+
+  const coreGatesCount = safariGates.filter((g) => g.type === 'Core').length;
+  const bufferGatesCount = safariGates.filter((g) => g.type === 'Buffer').length;
+
+  const filteredTimings = timingSlotFilter === 'All'
+    ? PENCH_SAFARI_TIMETABLE
+    : PENCH_SAFARI_TIMETABLE.filter((t) => t.slot === timingSlotFilter);
 
   const toggleFaq = (index: number) => {
     setOpenFaqIndex((prev) => (prev === index ? null : index));
   };
 
+  const scrollToSection = (id: string, e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    const elem = document.getElementById(id);
+    if (elem) {
+      const headerOffset = 135;
+      const elementPosition = elem.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      setActiveSection(id);
+    }
+  };
+
   return (
-    <div className="dest-details-page">
-      {/* ================= 1. HERO ================= */}
-      <section className="dest-details-hero">
-        {PENCH_HERO_IMAGES.map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            alt={`Pench Tiger Reserve banner ${index + 1}`}
-            className={`dest-details-hero-img ${index === activeIndex ? 'active' : ''}`}
-          />
-        ))}
+    <div className="pench-page">
+      {/* ================= 1. COMPACT LUXURY HERO SECTION ================= */}
+      <section className="pench-hero">
+        <img
+          src={destination.bannerImage || destination.imageUrl || PENCH_HERO_IMAGE}
+          alt={destination.name || 'Pench scenic background'}
+          className="pench-hero-img"
+        />
 
-        <div className="dest-details-hero-overlay" />
+        <div className="pench-hero-overlay" />
 
-        <div className="dest-details-hero-content">
-          <div className="dest-details-hero-wrapper">
-            <h1 className="dest-details-hero-title">
+        <div className="pench-hero-content">
+          <div className="pench-hero-wrapper">
+            <div className="pench-hero-eyebrow">
+              <span className="pench-hero-sublocation">SEONI &amp; CHHINDWARA, MADHYA PRADESH</span>
+            </div>
+
+            <h1 className="pench-hero-title">
               {destination.name || 'Pench Tiger Reserve'}
             </h1>
 
-            <p className="dest-details-hero-subtitle">
-              Mowgli's Land — The Original Home of the Jungle Book. Explore pristine teak forests, meandering rivers, and thrilling tiger tracking.
+            <p className="pench-hero-subtitle">
+              The legendary wilderness that inspired Rudyard Kipling’s <em>The Jungle Book</em>. Spanning 1,179.63 sq km across the Satpura-Maikal hills, teak canopies, and the life-giving Pench River.
             </p>
 
-            <div className="dest-details-hero-meta">
-              <div className="dest-details-hero-meta-item">
-                <MapPin className="dest-details-hero-meta-icon" />
-                <span>Seoni & Chhindwara, Madhya Pradesh, India</span>
-              </div>
-            </div>
-
-            <div className="dest-details-hero-actions">
+            <div className="pench-hero-actions">
               <Link
                 to={`/trip-request/new?destination=${destination.id}`}
-                className="dest-details-hero-cta"
+                className="pench-hero-cta"
               >
-                Plan Your Safari
-                <ArrowUpRight size={18} />
+                <span>Plan Your Safari</span>
+                <Calendar size={16} />
               </Link>
 
-              <a
-                href="#destination-overview"
+              <button
+                type="button"
                 onClick={(e) => {
-                  e.preventDefault();
-                  const elem = document.getElementById('destination-overview');
-                  if (elem) {
-                    elem.scrollIntoView({ behavior: 'smooth' });
-                  }
+                  setActiveTab('gates');
+                  scrollToSection('safari-hub', e);
                 }}
-                className="dest-details-hero-secondary"
+                className="pench-hero-secondary"
               >
-                Explore destination
-                <ArrowDown size={17} />
-              </a>
+                <span>Explore Safari Gates</span>
+                <Compass size={16} />
+              </button>
             </div>
           </div>
         </div>
-
-        <div className="dest-details-hero-counter">
-          <span>{String(activeIndex + 1).padStart(2, '0')}</span>
-          <span>/</span>
-          <span>{String(PENCH_HERO_IMAGES.length).padStart(2, '0')}</span>
-        </div>
       </section>
 
-      {/* ================= MAIN CONTAINER ================= */}
-      <div className="dest-details-container">
-        <div className="dest-details-layout">
-          {/* ================= MAIN CONTENT ================= */}
-          <main className="dest-details-main">
-            {/* ================= 1. ABOUT PENCH → Overview ================= */}
-            <section id="destination-overview" className="dest-details-card dest-details-about-card">
-              <div className="dest-details-about-header">
-                <div className="dest-details-about-header-text">
-                  <div className="dest-details-about-eyebrow">ABOUT PENCH</div>
-                  <h2 className="dest-details-about-title">
-                    The Original Home of The Jungle Book
-                  </h2>
-                </div>
+      {/* ================= 2. FLOATING HORIZONTAL SECTION NAV ================= */}
+      <div className="pench-nav-wrapper">
+        <nav className="pench-sticky-nav" aria-label="Reserve Sections Navigation">
+          <div className="pench-sticky-nav-inner">
+            <div className="pench-sticky-nav-links">
+              <button
+                type="button"
+                onClick={(e) => scrollToSection('about', e)}
+                className={`pench-sticky-nav-link ${activeSection === 'about' ? 'active' : ''}`}
+              >
+                <TreePine size={16} />
+                <span>Overview &amp; Habitat</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={(e) => scrollToSection('history', e)}
+                className={`pench-sticky-nav-link ${activeSection === 'history' ? 'active' : ''}`}
+              >
+                <History size={16} />
+                <span>Milestones</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={(e) => scrollToSection('safari-hub', e)}
+                className={`pench-sticky-nav-link ${activeSection === 'safari-hub' ? 'active' : ''}`}
+              >
+                <Compass size={16} />
+                <span>Safari Planning Hub</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={(e) => scrollToSection('how-to-reach', e)}
+                className={`pench-sticky-nav-link ${activeSection === 'how-to-reach' ? 'active' : ''}`}
+              >
+                <MapPin size={16} />
+                <span>How to Reach</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={(e) => scrollToSection('faqs', e)}
+                className={`pench-sticky-nav-link ${activeSection === 'faqs' ? 'active' : ''}`}
+              >
+                <HelpCircle size={16} />
+                <span>FAQs</span>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      {/* ================= 3. FULL-WIDTH LUXURY CONTAINER ================= */}
+      <div className="pench-container">
+        <main className="pench-main">
+          {/* ================= SECTION 1: ABOUT & HABITAT ================= */}
+          <section id="about" className="pench-card pench-about-card">
+            <div className="pench-card-header">
+              <span className="pench-card-eyebrow">ABOUT PENCH</span>
+              <h2 className="pench-card-title">The Land of The Jungle Book</h2>
+            </div>
+
+            <div className="pench-about-body">
+              <p>
+                Named after the meandering <strong>Pench River</strong> that bisects the sanctuary from north to south, Pench Tiger Reserve encompasses a rich mosaic of tropical dry and moist teak forests, open savannah grasses, and riverine banks. It acts as an indispensable ecological corridor connecting <strong>Kanha Tiger Reserve</strong> to the east and <strong>Satpura Tiger Reserve</strong> to the west, harboring prime populations of Bengal tigers, leopards, dholes, and sloth bears.
+              </p>
+            </div>
+
+            {/* Metric Stats Cards */}
+            <div className="pench-stats-grid">
+              <div className="pench-stat-card">
+                <span className="pench-stat-value">~1,179.63</span>
+                <span className="pench-stat-unit">SQ KM</span>
+                <span className="pench-stat-label">TOTAL PROTECTED AREA (MP)</span>
               </div>
 
-              <div className="dest-details-about-intro">
-                <p>
-                  Nestled in the southern reaches of the Satpura hill ranges, <strong>Pench Tiger Reserve</strong> straddles the Seoni and Chhindwara districts of southern Madhya Pradesh. The <strong>Pench River</strong> flows north to south through the reserve, splitting it into two nearly equal blocks and feeding numerous seasonal streams and waterholes.
-                </p>
-                <p>
-                  The forest is predominantly southern tropical dry and moist deciduous, dominated by teak (<em>Tectona grandis</em>), interspersed with bamboo thickets and open grassy meadows. Pench supports a thriving population of <strong>Bengal tigers, leopards, sloth bears, Indian gaur, wild dogs (dhole), and wolves</strong>, alongside large herds of chital, sambar, nilgai, and wild boar. The reserve forms a critical genetic corridor linking Kanha and Satpura Tiger Reserves within the Central Indian tiger landscape.
-                </p>
+              <div className="pench-stat-card">
+                <span className="pench-stat-value">~411.33</span>
+                <span className="pench-stat-unit">SQ KM</span>
+                <span className="pench-stat-label">PRISTINE CORE ZONE</span>
               </div>
 
-              {/* 4 Metric Stats Grid */}
-              <div className="dest-details-about-stats-grid pench-stats-grid">
-                <div className="dest-details-about-stat-card">
-                  <div className="dest-details-about-stat-value">1,179.63</div>
-                  <div className="dest-details-about-stat-label">SQ KM</div>
-                  <div className="dest-details-about-stat-sub">TOTAL AREA (MP)</div>
-                </div>
+              <div className="pench-stat-card">
+                <span className="pench-stat-value">~768.30</span>
+                <span className="pench-stat-unit">SQ KM</span>
+                <span className="pench-stat-label">BUFFER CORRIDOR</span>
+              </div>
+            </div>
 
-                <div className="dest-details-about-stat-card">
-                  <div className="dest-details-about-stat-value">411.33</div>
-                  <div className="dest-details-about-stat-label">SQ KM</div>
-                  <div className="dest-details-about-stat-sub">CORE HABITAT</div>
-                </div>
+            {/* Story / Provenance of Pench */}
+            <div className="pench-story-card">
+              <div className="pench-story-badge">
+                <TreePine size={16} />
+                <span>LITERARY HERITAGE</span>
+              </div>
+              <h3 className="pench-story-title">Mowgli and The Jungle Book</h3>
+              <p className="pench-story-text">
+                The dense teak valleys of Pench and Seoni highlands served as the authentic geographical backdrop for Rudyard Kipling's 1894 classic <em>The Jungle Book</em>. Inspired by historical accounts of human-wolf encounters documented by British naturalists in the 19th century, Pench preserves the timeless beauty of the Seeonee wolf packs, Sher Khan's trails, and the life-giving Pench River.
+              </p>
+            </div>
+          </section>
 
-                <div className="dest-details-about-stat-card">
-                  <div className="dest-details-about-stat-value">768.30</div>
-                  <div className="dest-details-about-stat-label">SQ KM</div>
-                  <div className="dest-details-about-stat-sub">BUFFER ZONE</div>
-                </div>
+          {/* ================= SECTION 2: HISTORICAL MILESTONES ================= */}
+          <section id="history" className="pench-card pench-history-card">
+            <div className="pench-card-header">
+              <span className="pench-card-eyebrow">CHRONICLES OF CONSERVATION</span>
+              <h2 className="pench-card-title">Historical Milestones</h2>
+              <p className="pench-card-subtitle">
+                From protected Mowgli sanctuary to India’s 19th Project Tiger Reserve — explore the key conservation eras. Hover or tap any year to view details.
+              </p>
+            </div>
 
-                <div className="dest-details-about-stat-card">
-                  <div className="dest-details-about-stat-value">77</div>
-                  <div className="dest-details-about-stat-label">TIGERS</div>
-                  <div className="dest-details-about-stat-sub">2022 CENSUS (MP)</div>
-                </div>
+            {/* Interactive Horizontal Year Track */}
+            <div className="pench-milestone-track-container">
+              <div className="pench-milestone-track-line" />
+              <div className="pench-milestone-nodes">
+                {PENCH_HISTORICAL_MILESTONES.map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setActiveMilestoneIndex(idx)}
+                    onMouseEnter={() => setActiveMilestoneIndex(idx)}
+                    className={`pench-milestone-node ${activeMilestoneIndex === idx ? 'active' : ''}`}
+                    aria-label={`Milestone year ${item.year}: ${item.title}`}
+                  >
+                    <span className="pench-milestone-node-dot" />
+                    <span className="pench-milestone-node-year">{item.year}</span>
+                    <span className="pench-milestone-node-label">{item.shortLabel}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Active Milestone Detail Card */}
+            <div className="pench-milestone-detail-card">
+              <div className="pench-milestone-detail-watermark">
+                {PENCH_HISTORICAL_MILESTONES[activeMilestoneIndex].year}
               </div>
 
-              {/* Divider */}
-              <div className="dest-details-about-divider" />
+              <div className="pench-milestone-detail-inner">
+                <div className="pench-milestone-detail-top-badge">
+                  <span className="pench-milestone-badge-pill">
+                    <span className="pench-milestone-badge-dot" />
+                    {PENCH_HISTORICAL_MILESTONES[activeMilestoneIndex].badge}
+                  </span>
+                </div>
 
-              {/* THE STORY OF PENCH */}
-              <div className="dest-details-about-subsection">
-                <h3 className="dest-details-about-subtitle">
-                  THE STORY &amp; ORIGIN OF THE NAME
-                </h3>
-                <div className="dest-details-about-story-content">
-                  <p>
-                    <strong>Documented History:</strong> The reserve is named after the Pench River, a tributary of the Kanhan River, which flows roughly 74 km through the forest from north to south, bisecting the core area into western and eastern blocks. The natural richness of this forest tract has been documented since the 16th century in Abul Fazl's <em>Ain-i-Akbari</em>, and later in colonial-era natural history accounts such as Captain James Forsyth's <em>The Highlands of Central India</em> and A. A. Dunbar Brander's <em>Wild Animals of Central India</em>.
+                <div className="pench-milestone-detail-body">
+                  <div className="pench-milestone-detail-lead">
+                    <span className="pench-milestone-detail-year-highlight">
+                      {PENCH_HISTORICAL_MILESTONES[activeMilestoneIndex].year}
+                    </span>
+                    <h3 className="pench-milestone-detail-title">
+                      {PENCH_HISTORICAL_MILESTONES[activeMilestoneIndex].title}
+                    </h3>
+                  </div>
+                  <p className="pench-milestone-detail-desc">
+                    {PENCH_HISTORICAL_MILESTONES[activeMilestoneIndex].description}
                   </p>
-                  <p style={{ marginTop: '0.85rem' }}>
-                    <strong>Local Legend &amp; Literary Connection:</strong> Pench and the neighbouring Seoni forests are widely celebrated as the real-life setting that inspired Rudyard Kipling's <em>The Jungle Book</em> and its legendary character Mowgli. This association is linked to an 1831 report (referenced via Sir William Henry Sleeman's writings) of a child said to have been raised by wolves near Seoni.
-                  </p>
                 </div>
               </div>
-            </section>
+            </div>
+          </section>
 
-            {/* ================= 2. HISTORY & LEGACY → History ================= */}
-            <section id="history-legacy" className="dest-details-card dest-details-history-card">
-              <div className="dest-details-history-header">
-                <div className="dest-details-history-title-wrap">
-                  <History className="dest-details-card-icon" size={24} />
-                  <h2 className="dest-details-history-title">HISTORY &amp; LEGACY</h2>
-                </div>
-                <p className="dest-details-history-subtitle">
-                  From wildlife sanctuary to India's 19th Project Tiger reserve — Pench's 5 key conservation milestones.
-                </p>
-              </div>
+          {/* ================= SECTION 3: SAFARI PLANNING HUB ================= */}
+          <section id="safari-hub" className="pench-card pench-safari-hub-card">
+            <div className="pench-card-header">
+              <span className="pench-card-eyebrow">SAFARI PLANNING &amp; GATES DIRECTORY</span>
+              <h2 className="pench-card-title">Pench Safari Planning Hub</h2>
+              <p className="pench-card-subtitle">
+                Interactive directory of official safari vehicles, monthly gate shift timings, and MP core vs. buffer gate locations.
+              </p>
+            </div>
 
-              <div className="dest-details-history-timeline-container">
-                <div className="dest-details-history-timeline-track" />
+            {/* Navigation Tabs */}
+            <div className="pench-hub-tabs">
+              <button
+                type="button"
+                className={`pench-hub-tab ${activeTab === 'vehicles' ? 'active' : ''}`}
+                onClick={() => setActiveTab('vehicles')}
+              >
+                <Car size={16} />
+                <span>Vehicles &amp; Capacities</span>
+              </button>
 
-                <div className="dest-details-history-timeline-grid">
-                  {/* 1977 */}
-                  <div className="dest-details-history-timeline-item">
-                    <div className="dest-details-history-year">1977</div>
-                    <div className="dest-details-history-dot" />
-                    <div className="dest-details-history-content">
-                      <h4 className="dest-details-history-event-title">WILDLIFE SANCTUARY</h4>
-                      <p className="dest-details-history-event-desc">
-                        Pench (Mowgli) Sanctuary constituted with ~449.39 sq km.
-                      </p>
+              <button
+                type="button"
+                className={`pench-hub-tab ${activeTab === 'timings' ? 'active' : ''}`}
+                onClick={() => setActiveTab('timings')}
+              >
+                <Clock size={16} />
+                <span>Shift Timings &amp; Rules</span>
+              </button>
+
+              <button
+                type="button"
+                className={`pench-hub-tab ${activeTab === 'gates' ? 'active' : ''}`}
+                onClick={() => setActiveTab('gates')}
+              >
+                <MapPin size={16} />
+                <span>Gates Directory ({safariGates.length})</span>
+              </button>
+            </div>
+
+            {/* Tab 1: Vehicles & Capacities */}
+            {activeTab === 'vehicles' && (
+              <div className="pench-tab-pane">
+                <div className="pench-vehicles-grid">
+                  <div className="pench-vehicle-card">
+                    <div className="pench-vehicle-header">
+                      <div className="pench-vehicle-icon-wrap">
+                        <Car size={24} />
+                      </div>
+                      <div>
+                        <span className="pench-vehicle-tag">STANDARD SAFARI</span>
+                        <h3 className="pench-vehicle-title">Open 4x4 Maruti Gypsy</h3>
+                      </div>
                     </div>
+                    <p className="pench-vehicle-desc">
+                      Standard 4x4 registered open vehicle operated for official forest drives across core and buffer sectors.
+                    </p>
+                    <ul className="pench-vehicle-features">
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Permit Scope:</strong> Valid across 3 Core Gates &amp; 5 Buffer Gates (MP)</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Occupancy:</strong> Strictly capped at 6 tourists + 1 guide + 1 driver</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Shift Types:</strong> Morning &amp; Evening Game Drives</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Booking Type:</strong> Full vehicle permit or single-seat reservation</span>
+                      </li>
+                    </ul>
                   </div>
 
-                  {/* 1983 */}
-                  <div className="dest-details-history-timeline-item">
-                    <div className="dest-details-history-year">1983</div>
-                    <div className="dest-details-history-dot" />
-                    <div className="dest-details-history-content">
-                      <h4 className="dest-details-history-event-title">NATIONAL PARK</h4>
-                      <p className="dest-details-history-event-desc">
-                        Pench National Park created (292.85 sq km) in Seoni & Chhindwara.
-                      </p>
+                  <div className="pench-vehicle-card">
+                    <div className="pench-vehicle-header">
+                      <div className="pench-vehicle-icon-wrap">
+                        <Layers size={24} />
+                      </div>
+                      <div>
+                        <span className="pench-vehicle-tag">SHARED SERVICE</span>
+                        <h3 className="pench-vehicle-title">Open Canter (Safari Bus)</h3>
+                      </div>
                     </div>
-                  </div>
-
-                  {/* 1992 */}
-                  <div className="dest-details-history-timeline-item">
-                    <div className="dest-details-history-year">1992</div>
-                    <div className="dest-details-history-dot" />
-                    <div className="dest-details-history-content">
-                      <h4 className="dest-details-history-event-title">PROJECT TIGER</h4>
-                      <p className="dest-details-history-event-desc">
-                        Notified as India's 19th Tiger Reserve (unified core 411.33 sq km).
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 2002 */}
-                  <div className="dest-details-history-timeline-item">
-                    <div className="dest-details-history-year">2002</div>
-                    <div className="dest-details-history-dot" />
-                    <div className="dest-details-history-content">
-                      <h4 className="dest-details-history-event-title">INDIRA PRIYADARSHINI</h4>
-                      <p className="dest-details-history-event-desc">
-                        Park renamed Indira Priyadarshini Pench National Park.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 2010 */}
-                  <div className="dest-details-history-timeline-item">
-                    <div className="dest-details-history-year">2010</div>
-                    <div className="dest-details-history-dot" />
-                    <div className="dest-details-history-content">
-                      <h4 className="dest-details-history-event-title">BUFFER NOTIFIED</h4>
-                      <p className="dest-details-history-event-desc">
-                        768.30 sq km buffer formally notified (Total: 1,179.63 sq km).
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* ================= 3. SAFARI EXPERIENCES & BOOKINGS → Safari Experience ================= */}
-            <section id="safari-experience" className="dest-details-card dest-details-safari-exp-card">
-              <div className="dest-details-safari-header">
-                <h2 className="dest-details-card-title">
-                  Safari Experiences &amp; Bookings
-                </h2>
-                <p className="dest-details-safari-subtitle">
-                  Guided open Gypsy and Canter safaris across Pench Madhya Pradesh
-                </p>
-                <div className="dest-details-disclaimer-note">
-                  <AlertTriangle className="dest-details-disclaimer-icon" size={16} />
-                  <span>Safaris on the MP side are booked via MPOnline (forest.mponline.gov.in). Vehicle & guide fees are payable at gate.</span>
-                </div>
-              </div>
-
-              {/* Vehicle Options Grid (Gypsy vs Canter) */}
-              <div className="dest-details-safari-vehicles-grid">
-                {/* Gypsy Card */}
-                <div className="dest-details-safari-vehicle-card">
-                  <div className="dest-details-vehicle-header">
-                    <div className="dest-details-vehicle-title-wrap">
-                      <h3 className="dest-details-vehicle-title">OPEN 4x4 GYPSY</h3>
-                    </div>
-                  </div>
-                  <ul className="dest-details-vehicle-list">
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Core & Buffer Circuits</li>
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Morning & Afternoon Shifts</li>
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Capacity: Capped at 6 tourists (+ guide & driver)</li>
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Bookable as Full Vehicle or Single Seat Permit</li>
-                  </ul>
-                </div>
-
-                {/* Canter Card */}
-                <div className="dest-details-safari-vehicle-card">
-                  <div className="dest-details-vehicle-header">
-                    <div className="dest-details-vehicle-title-wrap">
-                      <h3 className="dest-details-vehicle-title">CANTER SAFARI</h3>
-                    </div>
-                  </div>
-                  <ul className="dest-details-vehicle-list">
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Budget-friendly shared safari bus</li>
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Available at select gates during peak season</li>
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Capacity: 12 to 18 tourists</li>
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Accompanied by mandatory Forest Guide</li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Vehicle Ceiling Note */}
-              <div className="pench-vehicle-ceiling-box">
-                <div className="pench-ceiling-badge">
-                  <Info size={16} />
-                  <span>Daily Vehicle Ceilings (MP Forest Department)</span>
-                </div>
-                <div className="pench-ceiling-grid">
-                  <div className="pench-ceiling-item">
-                    <strong>Turia Gate:</strong> Up to 68 vehicles/day (34 morning + 34 evening)
-                  </div>
-                  <div className="pench-ceiling-item">
-                    <strong>Karmajhiri Gate:</strong> Up to 12 vehicles/day
-                  </div>
-                  <div className="pench-ceiling-item">
-                    <strong>Jamtara Gate:</strong> Up to 8 vehicles/day
-                  </div>
-                  <div className="pench-ceiling-item">
-                    <strong>Buffer Zones:</strong> Up to 30 vehicles/day (Rukhad & Teliya)
+                    <p className="pench-vehicle-desc">
+                      Higher-elevation shared safari vehicle operating on designated core routes from select gate hubs.
+                    </p>
+                    <ul className="pench-vehicle-features">
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Route Scope:</strong> Selected gates (Turia Gate Hub)</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Capacity:</strong> Shared vehicle with 12 to 18 tourist seats</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Naturalist:</strong> Escorted by certified forest department guide</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Cost Advantage:</strong> Economical individual per-seat booking</span>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
+            )}
 
-              {/* Safari Timings Block */}
-              <div className="dest-details-timings-box">
-                <h4 className="dest-details-timings-title">
-                  <Clock size={20} />
-                  Official Month-wise Safari Shifts &amp; Timings
-                </h4>
-                <p className="dest-details-timings-desc">
-                  Entry and exit times shift gradually with sunrise and sunset. Core zones are closed for afternoon safaris every Wednesday.
-                </p>
+            {/* Tab 2: Timings & Rules */}
+            {activeTab === 'timings' && (
+              <div className="pench-tab-pane">
+                <div className="pench-timings-filter-bar">
+                  <div className="pench-timings-filter-buttons">
+                    {(['All', 'Morning', 'Evening'] as const).map((slot) => {
+                      const count = slot === 'All'
+                        ? PENCH_SAFARI_TIMETABLE.length
+                        : PENCH_SAFARI_TIMETABLE.filter((t) => t.slot === slot).length;
+                      return (
+                        <button
+                          key={slot}
+                          type="button"
+                          className={`pench-timing-filter-btn ${timingSlotFilter === slot ? 'active' : ''}`}
+                          onClick={() => setTimingSlotFilter(slot)}
+                        >
+                          {slot === 'All' ? 'All Slots' : `${slot} Slot`} ({count})
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                <div className="dest-details-timings-table-container">
-                  <table className="dest-details-timings-table">
+                <div className="pench-timings-table-wrapper compact">
+                  <table className="pench-timings-table compact">
                     <thead>
                       <tr>
-                        <th>Period / Month</th>
-                        <th>Morning Entry</th>
-                        <th>Morning Exit</th>
-                        <th>Afternoon Entry</th>
-                        <th>Afternoon Exit</th>
+                        <th>Safari Season / Month</th>
+                        <th>Slot</th>
+                        <th>Entry Time</th>
+                        <th>Exit Time</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td><strong>October</strong></td>
-                        <td>6:00 AM</td>
-                        <td>11:00 AM</td>
-                        <td>3:00 PM</td>
-                        <td>6:00 PM</td>
-                      </tr>
-                      <tr>
-                        <td><strong>November</strong></td>
-                        <td>6:15 AM</td>
-                        <td>11:00 AM</td>
-                        <td>3:00 PM</td>
-                        <td>5:45 PM</td>
-                      </tr>
-                      <tr>
-                        <td><strong>December</strong></td>
-                        <td>6:30 AM</td>
-                        <td>11:00 AM</td>
-                        <td>3:00 PM</td>
-                        <td>5:30 PM</td>
-                      </tr>
-                      <tr>
-                        <td><strong>January</strong></td>
-                        <td>6:45 AM</td>
-                        <td>11:00 AM</td>
-                        <td>3:00 PM</td>
-                        <td>5:45 PM</td>
-                      </tr>
-                      <tr>
-                        <td><strong>February</strong></td>
-                        <td>6:30 AM</td>
-                        <td>11:00 AM</td>
-                        <td>3:00 PM</td>
-                        <td>6:15 PM</td>
-                      </tr>
-                      <tr>
-                        <td><strong>March</strong></td>
-                        <td>6:15 AM</td>
-                        <td>11:00 AM</td>
-                        <td>3:00 PM</td>
-                        <td>6:30 PM</td>
-                      </tr>
-                      <tr>
-                        <td><strong>April</strong></td>
-                        <td>5:45 AM</td>
-                        <td>11:00 AM</td>
-                        <td>4:00 PM</td>
-                        <td>6:45 PM</td>
-                      </tr>
-                      <tr>
-                        <td><strong>May</strong></td>
-                        <td>5:30 AM</td>
-                        <td>11:00 AM</td>
-                        <td>4:00 PM</td>
-                        <td>7:00 PM</td>
-                      </tr>
-                      <tr>
-                        <td><strong>June</strong></td>
-                        <td>5:30 AM</td>
-                        <td>11:00 AM</td>
-                        <td>4:00 PM</td>
-                        <td>7:00 PM</td>
-                      </tr>
-                      <tr className="pench-table-closed-row">
-                        <td><strong>Jul – Sep</strong></td>
-                        <td colSpan={4}><strong>CLOSED FOR MONSOON / BREEDING SEASON</strong> (Reopens ~15 October)</td>
-                      </tr>
+                      {filteredTimings.map((row, idx) => (
+                        <tr key={idx}>
+                          <td className="pench-timing-season"><strong>{row.season}</strong></td>
+                          <td className="pench-timing-slot">{row.slot}</td>
+                          <td className="pench-timing-time">{row.entryTime}</td>
+                          <td className="pench-timing-time">{row.exitTime}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
 
-                <div className="pench-timing-notes">
-                  <p><strong>• Weekly Closure:</strong> Core zones (Turia, Karmajhiri, Jamtara) are closed on <strong>Wednesday afternoons</strong> only (morning safari runs normally). Also closed afternoon on Holi & Diwali.</p>
-                  <p><strong>• Monsoon Closure:</strong> Core zones close 1 July to 30 September annually. Buffer zones generally follow core closure.</p>
-                </div>
-              </div>
-
-              {/* Proposal Banner */}
-              <div className="dest-details-proposal-banner">
-                <div className="dest-details-proposal-banner-content">
-                  <div className="dest-details-proposal-banner-icon-wrap">
-                    <Compass className="dest-details-proposal-banner-icon" />
-                  </div>
-                  <p className="dest-details-proposal-banner-text">
-                    Planning a Pench safari? Share your preferred dates and requirements to receive a personalized safari proposal.
-                  </p>
-                </div>
-                <div className="dest-details-proposal-banner-action">
-                  <Link
-                    to={`/trip-request/new?destination=${destination.id}`}
-                    className="dest-details-proposal-banner-btn"
-                  >
-                    REQUEST SAFARI PROPOSAL
-                    <ArrowUpRight size={16} />
-                  </Link>
-                </div>
-              </div>
-            </section>
-
-            {/* ================= 4. BEST TIME TO VISIT → Best Time ================= */}
-            <section id="best-time" className="dest-details-card dest-details-seasons-section">
-              <h2 className="dest-details-card-title">
-                Best Time to Visit Pench
-              </h2>
-
-              <div className="dest-details-seasons-header-note">
-                <h3 className="dest-details-seasons-headline">
-                  EACH SEASON OFFERS A UNIQUE GLIMPSE OF MOWGLI'S JUNGLE.
-                </h3>
-                <p className="dest-details-seasons-subline">
-                  Choose winter for pleasant weather and verdant scenery, or summer for peak big-cat sightings.
-                </p>
-              </div>
-
-              <div className="pench-seasons-grid">
-                <div className="pench-season-card">
-                  <span className="pench-season-badge">WINTER (NOV – FEB)</span>
-                  <h4 className="pench-season-title">Crisp Mornings & Birdwatching</h4>
-                  <p className="pench-season-desc">
-                    Misty morning drives with temperatures between 10°C and 25°C. Lush green canopies, active bird migrations, and comfortable weather make it ideal for family holidays.
-                  </p>
-                  <div className="pench-season-timings">
-                    <span>Morning: 6:15–6:45 AM to 11:00 AM</span>
-                    <span>Afternoon: 3:00 PM to 5:30–6:15 PM</span>
-                  </div>
-                </div>
-
-                <div className="pench-season-card">
-                  <span className="pench-season-badge">SUMMER (MAR – JUN)</span>
-                  <h4 className="pench-season-title">Prime Tiger Tracking</h4>
-                  <p className="pench-season-desc">
-                    Deciduous leaves drop and water sources shrink, drawing tigers, leopards, wild dogs, and gaurs to the Pench riverbed and prominent forest waterholes.
-                  </p>
-                  <div className="pench-season-timings">
-                    <span>Morning: 5:30–6:15 AM to 11:00 AM</span>
-                    <span>Afternoon: 3:00–4:00 PM to 6:45–7:00 PM</span>
-                  </div>
-                </div>
-
-                <div className="pench-season-card">
-                  <span className="pench-season-badge closed">MONSOON (JUL – SEP)</span>
-                  <h4 className="pench-season-title">Park Breeding & Rejuvenation</h4>
-                  <p className="pench-season-desc">
-                    Core zones are fully closed to tourists from 1 July to 30 September as forest rivers swell and wildlife enters its breeding season. Safaris resume around 15 October.
-                  </p>
-                  <div className="pench-season-timings">
-                    <span>Core Status: CLOSED</span>
-                    <span>Reopening: Mid-October</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* ================= 5. SAFARI GATES → Safari Gates ================= */}
-            <section id="safari-gates" className="dest-details-card">
-              <h2 className="dest-details-card-title">
-                Core Safari Gates (Madhya Pradesh)
-              </h2>
-
-              <p className="dest-details-section-info">
-                Core zones represent the <strong>protected 411.33 sq km critical tiger habitat</strong>. All core gates observe a <strong>half-day closure on Wednesday afternoons</strong>.
-              </p>
-
-              <div className="dest-details-gates-grid dest-details-core-gates-grid">
-                {coreGates.map((gate) => (
-                  <div key={gate.id} className="dest-details-gate-card core-compact pench-gate-detailed">
-                    <div className="dest-details-gate-top">
-                      <span className="dest-details-gate-name">{gate.name}</span>
-                      <span className="pench-gate-district">{gate.district}</span>
+                {/* Closure Warnings */}
+                <div className="pench-closure-box compact">
+                  <div className="pench-closure-item">
+                    <AlertTriangle className="pench-closure-icon" size={16} />
+                    <div>
+                      <strong>Wednesday Afternoon Closure:</strong> All Core and Buffer safari zones are closed every Wednesday afternoon.
                     </div>
-
-                    <p className="pench-gate-desc">{gate.description}</p>
-                    {gate.highlights && (
-                      <p className="pench-gate-highlights">
-                        <strong>Highlights:</strong> {gate.highlights}
-                      </p>
-                    )}
-
-                    {gate.mapLink && (
-                      <a
-                        href={gate.mapLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="dest-details-gate-map-btn"
-                        title={`Locate ${gate.name} on Google Maps`}
-                      >
-                        <MapPin size={14} />
-                        <span>Locate Gate</span>
-                      </a>
-                    )}
                   </div>
-                ))}
+                  <div className="pench-closure-item">
+                    <AlertTriangle className="pench-closure-icon" size={16} />
+                    <div>
+                      <strong>Monsoon Core Closure:</strong> Core zones are closed from July 1 to Sept 30 (Buffer zones offer limited ecotourism).
+                    </div>
+                  </div>
+                </div>
               </div>
+            )}
 
-              <div style={{ marginTop: '2.5rem' }}>
-                <h3 className="dest-details-card-title" style={{ fontSize: '1.5rem' }}>
-                  Buffer Safari Gates (Madhya Pradesh)
-                </h3>
-                <p className="dest-details-section-info" style={{ marginBottom: '1.25rem' }}>
-                  Buffer zones cover <strong>768.30 sq km</strong> of reserve forest, offering exciting daytime tracking as well as <strong>regulated night safaris and cycling trails</strong>.
-                </p>
+            {/* Tab 3: Gates Directory */}
+            {activeTab === 'gates' && (
+              <div className="pench-tab-pane">
+                <div className="pench-gates-filter-bar">
+                  <div className="pench-gates-filter-buttons">
+                    <button
+                      type="button"
+                      className={`pench-gate-filter-btn ${gateFilter === 'all' ? 'active' : ''}`}
+                      onClick={() => setGateFilter('all')}
+                    >
+                      All Safari Gates ({safariGates.length})
+                    </button>
+                    <button
+                      type="button"
+                      className={`pench-gate-filter-btn ${gateFilter === 'Core' ? 'active' : ''}`}
+                      onClick={() => setGateFilter('Core')}
+                    >
+                      Core Gates ({coreGatesCount})
+                    </button>
+                    <button
+                      type="button"
+                      className={`pench-gate-filter-btn ${gateFilter === 'Buffer' ? 'active' : ''}`}
+                      onClick={() => setGateFilter('Buffer')}
+                    >
+                      Buffer Gates ({bufferGatesCount})
+                    </button>
+                  </div>
 
-                <div className="dest-details-gates-grid dest-details-buffer-gates-grid">
-                  {bufferGates.map((gate) => (
-                    <div key={gate.id} className="dest-details-gate-card buffer-compact pench-gate-detailed">
-                      <div className="dest-details-gate-top">
-                        <span className="dest-details-gate-name">{gate.name}</span>
-                        <span className="pench-gate-district">{gate.district}</span>
+                  <div className="pench-gates-search-box">
+                    <Search size={15} className="pench-gates-search-icon" />
+                    <input
+                      type="text"
+                      value={gateSearchQuery}
+                      onChange={(e) => setGateSearchQuery(e.target.value)}
+                      placeholder="Search gate name..."
+                      className="pench-gates-search-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="pench-gates-compact-grid">
+                  {filteredGates.map((gate) => (
+                    <div key={gate.id} className={`pench-gate-compact-card ${gate.type.toLowerCase()}`}>
+                      <div className="pench-gate-compact-main">
+                        <span className={`pench-gate-type-badge ${gate.type.toLowerCase()}`}>
+                          {gate.type} Gate
+                        </span>
+                        <h4 className="pench-gate-compact-name">{gate.name}</h4>
                       </div>
-
-                      <p className="pench-gate-desc">{gate.description}</p>
-                      {gate.highlights && (
-                        <p className="pench-gate-highlights">
-                          <strong>Highlights:</strong> {gate.highlights}
-                        </p>
-                      )}
 
                       {gate.mapLink && (
                         <a
                           href={gate.mapLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="dest-details-gate-map-btn"
-                          title={`Locate ${gate.name} on Google Maps`}
+                          className="pench-gate-compact-map-btn"
+                          title={`Open ${gate.name} location in Google Maps`}
                         >
                           <MapPin size={14} />
-                          <span>Locate Gate</span>
+                          <span>Location</span>
+                          <ArrowUpRight size={13} />
                         </a>
                       )}
                     </div>
                   ))}
                 </div>
+
+                {filteredGates.length === 0 && (
+                  <div className="pench-gates-empty-state">
+                    <p>No safari gates found matching "{gateSearchQuery}".</p>
+                  </div>
+                )}
               </div>
+            )}
+          </section>
 
-              {/* Scope Note on Maharashtra Side */}
-              <div className="pench-scope-note">
-                <Info size={16} />
-                <span>
-                  <strong>Administrative Scope Note:</strong> The gates above belong to Pench Tiger Reserve, Madhya Pradesh. The Maharashtra side of Pench (core 257.3 sq km + buffer 483.96 sq km) operates separate entry gates (Sillari, Khursapar, Kolitmara, Chorbahuli, Surewani) booked via the Maharashtra Forest Department portal.
-                </span>
-              </div>
-            </section>
-
-            {/* ================= 6. HOW TO REACH PENCH → How to Reach ================= */}
-            <section id="how-to-reach" className="dest-details-card dest-details-reach-section">
-              <h2 className="dest-details-card-title">
-                How to Reach Pench Tiger Reserve?
-              </h2>
-
-              <p className="dest-details-section-info">
-                Pench MP is exceptionally well-connected by road via NH-44 from Nagpur and Jabalpur.
+          {/* ================= SECTION 4: HOW TO REACH ================= */}
+          <section id="how-to-reach" className="pench-card pench-reach-card">
+            <div className="pench-card-header">
+              <span className="pench-card-eyebrow">TRAVEL &amp; CONNECTIVITY</span>
+              <h2 className="pench-card-title">How to Reach Pench</h2>
+              <p className="pench-card-subtitle">
+                Strategically situated along National Highway 44 (NH-44), seamlessly connected to international airports and major railway junctions.
               </p>
-
-              <div className="dest-details-reach-grid">
-                {/* NEAREST AIRPORT */}
-                <div className="dest-details-reach-card">
-                  <div className="dest-details-reach-header">
-                    <span className="dest-details-reach-tag">NEAREST AIRPORT</span>
-                  </div>
-
-                  <div className="dest-details-reach-body">
-                    <h3 className="dest-details-reach-main-title">Nagpur Airport</h3>
-                    <p className="dest-details-reach-sub-info">
-                      Dr. Babasaheb Ambedkar International Airport (NAG)
-                    </p>
-                  </div>
-
-                  <div className="dest-details-reach-footer">
-                    <span className="dest-details-reach-note">
-                      ~92–145 km (2–2.5 hrs via NH-44). Jabalpur Airport: ~205–215 km.
-                    </span>
-                  </div>
-                </div>
-
-                {/* NEAREST RAILWAY STATION */}
-                <div className="dest-details-reach-card">
-                  <div className="dest-details-reach-header">
-                    <span className="dest-details-reach-tag">NEAREST RAILWAY</span>
-                  </div>
-
-                  <div className="dest-details-reach-body">
-                    <h3 className="dest-details-reach-main-title">Nagpur / Seoni Railway</h3>
-                    <p className="dest-details-reach-sub-info">
-                      Nagpur Junction (NGP) &amp; Seoni Railway Station
-                    </p>
-                  </div>
-
-                  <div className="dest-details-reach-footer">
-                    <span className="dest-details-reach-note">
-                      Nagpur Junction: ~130–145 km. Seoni Station: ~65–72 km.
-                    </span>
-                  </div>
-                </div>
-
-                {/* BY ROAD */}
-                <div className="dest-details-reach-card">
-                  <div className="dest-details-reach-header">
-                    <span className="dest-details-reach-tag">BY ROAD (NH-44)</span>
-                  </div>
-
-                  <div className="dest-details-reach-body dest-details-reach-road-body">
-                    <div className="dest-details-reach-road-row">
-                      <span className="dest-details-reach-city">Nagpur</span>
-                      <span className="dest-details-reach-dist">~130–145 km</span>
-                    </div>
-                    <div className="dest-details-reach-road-row">
-                      <span className="dest-details-reach-city">Jabalpur</span>
-                      <span className="dest-details-reach-dist">~185–215 km</span>
-                    </div>
-                    <div className="dest-details-reach-road-row">
-                      <span className="dest-details-reach-city">Seoni Town</span>
-                      <span className="dest-details-reach-dist">~65–72 km</span>
-                    </div>
-                  </div>
-
-                  <div className="dest-details-reach-footer">
-                    <span className="dest-details-reach-note">
-                      Smooth 4-lane highway with dedicated wildlife underpasses.
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* ================= 7. FAQS ================= */}
-            <section id="faqs" className="dest-details-card dest-details-faq-section">
-              <h2 className="dest-details-card-title">
-                Frequently Asked Questions
-              </h2>
-              <p className="dest-details-section-info">
-                Official guidelines and essential answers for planning your Pench safari.
-              </p>
-
-              <div className="dest-details-faq-list">
-                {PENCH_FAQS.map((faq, index) => (
-                  <div
-                    key={index}
-                    className={`dest-details-faq-item ${openFaqIndex === index ? 'active' : ''}`}
-                  >
-                    <button
-                      type="button"
-                      className="dest-details-faq-question"
-                      onClick={() => toggleFaq(index)}
-                    >
-                      <span>{faq.question}</span>
-                      <ChevronDown className="dest-details-faq-chevron" size={18} />
-                    </button>
-
-                    {openFaqIndex === index && (
-                      <div className="dest-details-faq-answer">
-                        <p>{faq.answer}</p>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* ================= 8. FINAL CTA ================= */}
-            <section className="dest-details-final-cta-card">
-              <div className="dest-details-final-cta-content">
-                <h2 className="dest-details-final-cta-title">
-                  Ready for an Unforgettable Pench Safari?
-                </h2>
-                <p className="dest-details-final-cta-desc">
-                  Let our dedicated safari specialists curate your MPOnline permits, handpicked jungle resort stays, and naturalist-guided open 4x4 Gypsy drives.
-                </p>
-
-                <div className="dest-details-final-cta-actions">
-                  <Link
-                    to={`/trip-request/new?destination=${destination.id}`}
-                    className="dest-details-final-cta-btn"
-                  >
-                    Request a Custom Proposal
-                    <ArrowUpRight size={18} />
-                  </Link>
-                </div>
-
-                <div className="dest-details-final-cta-trust">
-                  <span><CheckCircle2 size={15} /> Guaranteed Forest Permits</span>
-                  <span><CheckCircle2 size={15} /> Handpicked Jungle Lodges</span>
-                  <span><CheckCircle2 size={15} /> Certified Naturalists</span>
-                </div>
-              </div>
-            </section>
-          </main>
-
-          {/* ================= STICKY SIDEBAR NAVIGATION ================= */}
-          <aside className="dest-details-sidebar">
-            <div className="dest-sidebar-nav-card">
-              <span className="dest-sidebar-nav-eyebrow">EXPLORE PENCH</span>
-
-              <nav className="dest-sidebar-nav-list">
-                <a
-                  href="#destination-overview"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('destination-overview')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  Overview
-                </a>
-                <a
-                  href="#history-legacy"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('history-legacy')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  History &amp; Legacy
-                </a>
-                <a
-                  href="#safari-experience"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('safari-experience')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  Safari Experience
-                </a>
-                <a
-                  href="#best-time"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('best-time')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  Best Time
-                </a>
-                <a
-                  href="#safari-gates"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('safari-gates')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  Safari Gates
-                </a>
-                <a
-                  href="#how-to-reach"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('how-to-reach')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  How to Reach
-                </a>
-                <a
-                  href="#faqs"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('faqs')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  FAQs
-                </a>
-              </nav>
-
-              <div className="dest-sidebar-divider" />
-
-              <Link
-                to={`/trip-request/new?destination=${destination.id}`}
-                className="dest-sidebar-cta-btn"
-              >
-                Plan Your Safari
-                <ArrowUpRight size={16} />
-              </Link>
             </div>
-          </aside>
-        </div>
+
+            <div className="pench-reach-grid">
+              {/* By Air */}
+              <div className="pench-reach-card-item air">
+                <div className="pench-reach-card-top">
+                  <div className="pench-reach-icon-badge air">
+                    <Plane size={20} />
+                  </div>
+                  <span className="pench-reach-pill air">BY AIR</span>
+                </div>
+
+                <div className="pench-reach-card-main">
+                  <h3 className="pench-reach-title">Nagpur &amp; Jabalpur Airports</h3>
+                  <p className="pench-reach-desc">
+                    Dr. Babasaheb Ambedkar Airport (Nagpur - NAG) is the primary aviation hub with direct metro connections. Jabalpur (JLR) serves northern gates.
+                  </p>
+                </div>
+
+                <div className="pench-reach-meta-box">
+                  <div className="pench-reach-stat">
+                    <span className="pench-reach-stat-label">Nagpur Airport (NAG)</span>
+                    <span className="pench-reach-stat-val">~90 km (~1.5–2 hrs)</span>
+                  </div>
+                  <div className="pench-reach-stat">
+                    <span className="pench-reach-stat-label">Jabalpur Airport (JLR)</span>
+                    <span className="pench-reach-stat-val">~190 km (~4 hrs)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* By Rail */}
+              <div className="pench-reach-card-item rail">
+                <div className="pench-reach-card-top">
+                  <div className="pench-reach-icon-badge rail">
+                    <Train size={20} />
+                  </div>
+                  <span className="pench-reach-pill rail">BY RAIL</span>
+                </div>
+
+                <div className="pench-reach-card-main">
+                  <h3 className="pench-reach-title">Nagpur Jn &amp; Seoni Stations</h3>
+                  <p className="pench-reach-desc">
+                    Nagpur Junction connects superfast expresses nationwide. Seoni Station offers close regional broad-gauge rail connectivity.
+                  </p>
+                </div>
+
+                <div className="pench-reach-meta-box">
+                  <div className="pench-reach-stat">
+                    <span className="pench-reach-stat-label">Nagpur Jn (NGP)</span>
+                    <span className="pench-reach-stat-val">~90 km (~1.5 hrs)</span>
+                  </div>
+                  <div className="pench-reach-stat">
+                    <span className="pench-reach-stat-label">Seoni Station</span>
+                    <span className="pench-reach-stat-val">~60 km (~1 hr)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* By Road */}
+              <div className="pench-reach-card-item road">
+                <div className="pench-reach-card-top">
+                  <div className="pench-reach-icon-badge road">
+                    <Car size={20} />
+                  </div>
+                  <span className="pench-reach-pill road">BY ROAD</span>
+                </div>
+
+                <div className="pench-reach-card-main">
+                  <h3 className="pench-reach-title">NH-44 Express Highway</h3>
+                  <p className="pench-reach-desc">
+                    Pench gates (Turia / Khawasa) sit right on 4-lane NH-44 with world-class elevated wildlife eco-duct corridors.
+                  </p>
+                </div>
+
+                <div className="pench-reach-cities-grid">
+                  <div className="pench-reach-city-chip">
+                    <span className="city">Nagpur</span>
+                    <span className="dist">90 km</span>
+                  </div>
+                  <div className="pench-reach-city-chip">
+                    <span className="city">Seoni</span>
+                    <span className="dist">60 km</span>
+                  </div>
+                  <div className="pench-reach-city-chip">
+                    <span className="city">Kanha</span>
+                    <span className="dist">180 km</span>
+                  </div>
+                  <div className="pench-reach-city-chip">
+                    <span className="city">Tadoba / Jabalpur</span>
+                    <span className="dist">250 / 190 km</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ================= SECTION 5: FAQS ================= */}
+          <section id="faqs" className="pench-card pench-faqs-card">
+            <div className="pench-card-header">
+              <span className="pench-card-eyebrow">COMMON QUERIES</span>
+              <h2 className="pench-card-title">Frequently Asked Questions</h2>
+              <p className="pench-card-subtitle">
+                Essential MPOnline rules, vehicle quotas, permit timelines, and safari guidance.
+              </p>
+            </div>
+
+            <div className="pench-faqs-list">
+              {PENCH_FAQS.map((faq, index) => (
+                <div
+                  key={index}
+                  className={`pench-faq-item ${openFaqIndex === index ? 'active' : ''}`}
+                >
+                  <button
+                    type="button"
+                    className="pench-faq-question-btn"
+                    onClick={() => toggleFaq(index)}
+                  >
+                    <span>{faq.question}</span>
+                    <ChevronDown
+                      className={`pench-faq-chevron ${openFaqIndex === index ? 'rotate' : ''}`}
+                      size={18}
+                    />
+                  </button>
+
+                  {openFaqIndex === index && (
+                    <div className="pench-faq-answer">
+                      <p>{faq.answer}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ================= SECTION 6: FINAL LUXURY CTA ================= */}
+          <section className="pench-final-cta-card">
+            <div className="pench-final-cta-content">
+              <h2 className="pench-final-cta-title">
+                Ready for an Unforgettable Pench Safari?
+              </h2>
+              <p className="pench-final-cta-desc">
+                Let our dedicated safari specialists curate your MPOnline permits, handpicked resort stays, and naturalist-guided jeep drives across Pench's prime zones.
+              </p>
+
+              <div className="pench-final-cta-actions">
+                <Link
+                  to={`/trip-request/new?destination=${destination.id}`}
+                  className="pench-final-cta-btn"
+                >
+                  <span>Request a Custom Proposal</span>
+                  <ArrowUpRight size={18} />
+                </Link>
+              </div>
+
+              <div className="pench-final-cta-trust">
+                <span><CheckCircle2 size={16} /> Guaranteed Forest Permits</span>
+                <span><CheckCircle2 size={16} /> Handpicked Jungle Lodges</span>
+                <span><CheckCircle2 size={16} /> Certified Naturalists</span>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   );

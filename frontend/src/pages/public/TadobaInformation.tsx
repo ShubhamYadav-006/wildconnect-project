@@ -1,235 +1,351 @@
-import { useState, useEffect } from 'react';
+/* ==========================================================
+   Tadoba Andhari Tiger Reserve Comprehensive Information Page
+   Visual Structure & Layout: Matching Luxury Wildlife Standard
+   ========================================================== */
+
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   MapPin,
   Clock,
   History,
-  ArrowDown,
   ArrowUpRight,
   CheckCircle2,
   ChevronDown,
   Compass,
-  AlertTriangle
+  AlertTriangle,
+  Car,
+  Layers,
+  Calendar,
+  Plane,
+  Train,
+  TreePine,
+  HelpCircle,
+  Search
 } from 'lucide-react';
 
 import { Destination } from '../../services/destination.service';
 import { Resort } from '../../services/resort.service';
 
+// Scoped Page Stylesheet
+import '../../styles/public/TadobaInformation.css';
 
-import matkasur from "../../assets/Tiger&Logo Image/Matkasur.JPG";
-import matkasur2 from "../../assets/Tiger&Logo Image/Matkasur2.JPG";
-import maya from "../../assets/Tiger&Logo Image/Maya.jpg";
-import tadoba from "../../assets/Tiger&Logo Image/Tadoba.jpg";
-import kuwani from "../../assets/Tiger&Logo Image/Kuwani.JPG";
-import leopard from "../../assets/Tiger&Logo Image/Leopard.JPG";
-
-const CAROUSEL_IMAGES = [
-  matkasur,
-  matkasur2,
-  maya,
-  tadoba,
-  kuwani,
-  leopard,
-];
+import matkasur from '../../assets/Tiger&Logo Image/Matkasur.JPG';
 
 interface SafariGate {
   id: string;
   name: string;
   type: 'Core' | 'Buffer';
   description: string;
+  highlights?: string;
   mapLink?: string;
+  quota?: string;
 }
 
 interface TadobaDetailsProps {
   destination: Destination;
-  resorts: Resort[];
+  resorts?: Resort[];
   safariGates?: SafariGate[];
 }
 
 const TADOBA_MASTER_GATES: SafariGate[] = [
+  // Core Gates
   {
     id: 'core-moharli',
     name: 'Moharli Gate',
     type: 'Core',
-    description: 'Moharli, Chandrapur, Maharashtra.',
+    description: 'Moharli, Chandrapur, Maharashtra. The most famous and historic gate with maximum resort access and prime tiger territory.',
+    highlights: 'Telia Dam, Moharli waterhole, Khatoda grassland, highest tiger sighting frequency',
+    quota: 'Morning & Afternoon Shifts',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Moharli+Gate+Tadoba'
   },
   {
     id: 'core-kolara',
     name: 'Kolara Gate',
     type: 'Core',
-    description: 'Kolara, Chandrapur, Maharashtra.',
+    description: 'Kolara, Chandrapur, Maharashtra. Premier northern core entrance offering scenic landscapes and high tiger movement.',
+    highlights: 'Kolara lake, Jamunbodi, productive bamboo thickets, direct access from Nagpur',
+    quota: 'Morning & Afternoon Shifts',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Kolara+Gate+Tadoba'
   },
   {
     id: 'core-khutwanda',
     name: 'Khutwanda Gate',
     type: 'Core',
-    description: 'Khutwanda, Chandrapur, Maharashtra.',
+    description: 'Khutwanda, Chandrapur, Maharashtra. Situated between Moharli and Kolara, known for tranquil forest tracks.',
+    highlights: 'Panchdhara, Jamni waterhole, tranquil core tracking',
+    quota: 'Morning & Afternoon Shifts',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Khutwanda+Gate+Tadoba'
   },
   {
     id: 'core-navegaon',
     name: 'Navegaon Gate',
     type: 'Core',
-    description: 'Navegaon, Chandrapur, Maharashtra.',
+    description: 'Navegaon, Chandrapur, Maharashtra. Northern gate serving as an excellent entry for visitors approaching via Nagpur.',
+    highlights: 'Navegaon meadow, rich birdlife, leopard and tiger territory',
+    quota: 'Morning & Afternoon Shifts',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Navegaon+Gate+Tadoba'
   },
   {
     id: 'core-zari',
     name: 'Zari Gate',
     type: 'Core',
-    description: 'Zari, Chandrapur, Maharashtra.',
+    description: 'Zari, Chandrapur, Maharashtra. Southern sector core gate with rolling forest ridges and pristine valleys.',
+    highlights: 'Zari waterhole, southern tiger corridors, sloth bear habitat',
+    quota: 'Morning & Afternoon Shifts',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Zari+Gate+Tadoba'
   },
   {
     id: 'core-pangdi',
     name: 'Pangadi Gate',
     type: 'Core',
-    description: 'Pangadi, Chandrapur, Maharashtra.',
+    description: 'Pangadi, Chandrapur, Maharashtra. Remote southern core gate offering exclusive, uncrowded wildlife encounters.',
+    highlights: 'Pristine deep forest, wild dog packs, gaur herds',
+    quota: 'Morning & Afternoon Shifts',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Pangadi+Gate+Tadoba'
   },
+  // Buffer Gates
   {
     id: 'buf-agarzari',
     name: 'Agarzari Gate',
     type: 'Buffer',
-    description: 'Agarzari, Chandrapur, Maharashtra.',
+    description: 'Agarzari, Chandrapur, Maharashtra. One of the most famous buffer gates with regular tiger and leopard sightings.',
+    highlights: 'Agarzari lake, night safaris, excellent tiger tracking records',
+    quota: 'Day & Night Drives Available',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Agarzari+Gate+Tadoba'
   },
   {
     id: 'buf-devada',
     name: 'Devada-Adegaon Gate',
     type: 'Buffer',
-    description: 'Devada-Adegaon, Chandrapur, Maharashtra.',
+    description: 'Devada-Adegaon, Chandrapur, Maharashtra. Highly popular buffer zone near Moharli with prolific tiger movement.',
+    highlights: 'Junona-Devada corridor, night drives, resident tigresses',
+    quota: 'Day & Night Drives Available',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Devada+Adegaon+Gate+Tadoba'
   },
   {
     id: 'buf-adegaon',
     name: 'Adegaon Gate',
     type: 'Buffer',
-    description: 'Adegaon, Chandrapur, Maharashtra.',
+    description: 'Adegaon, Chandrapur, Maharashtra. Rich scrub and mixed deciduous habitat with frequent predator activity.',
+    highlights: 'Scenic waterbodies, active tiger corridor',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Adegaon+Gate+Tadoba'
   },
   {
     id: 'buf-junona',
     name: 'Junona Gate',
     type: 'Buffer',
-    description: 'Junona, Chandrapur, Maharashtra.',
+    description: 'Junona, Chandrapur, Maharashtra. Located close to Moharli; renowned for night safaris and leopard sightings.',
+    highlights: 'Junona waterhole, nocturnal wildlife, close to prime resorts',
+    quota: 'Day & Night Drives Available',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Junona+Gate+Tadoba'
   },
   {
     id: 'buf-alizanza',
     name: 'Alizanza Gate',
     type: 'Buffer',
-    description: 'Alizanza, Chandrapur, Maharashtra.',
+    description: 'Alizanza, Chandrapur, Maharashtra. Peaceful buffer zone with beautiful bamboo hills and birding spots.',
+    highlights: 'Birdwatching, tranquil forest routes',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Alizanza+Gate+Tadoba'
   },
   {
     id: 'buf-madnapur',
     name: 'Madnapur Gate',
     type: 'Buffer',
-    description: 'Madnapur, Chandrapur, Maharashtra.',
+    description: 'Madnapur, Chandrapur, Maharashtra. Located adjacent to Kolara; highly favored by northern resort guests.',
+    highlights: 'Kolara buffer corridor, high tiger activity, waterbody checks',
+    quota: 'Day & Night Drives Available',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Madnapur+Gate+Tadoba'
   },
   {
     id: 'buf-shirkheda',
     name: 'Shirkheda Gate',
     type: 'Buffer',
-    description: 'Shirkheda, Chandrapur, Maharashtra.',
+    description: 'Shirkheda, Chandrapur, Maharashtra. Dense buffer forest sector with rolling landscapes.',
+    highlights: 'Wild boars, spotted deer herds, seasonal streams',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Shirkheda+Gate+Tadoba'
   },
   {
     id: 'buf-kolara-chauradeo',
     name: 'Kolara Chauradeo Gate',
     type: 'Buffer',
-    description: 'Kolara Chauradeo, Chandrapur, Maharashtra.',
+    description: 'Kolara Chauradeo, Chandrapur, Maharashtra. Key buffer zone on the northern rim with steady tiger presence.',
+    highlights: 'Chauradeo hillock, northern predator corridor',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Kolara+Chauradeo+Gate+Tadoba'
   },
   {
     id: 'buf-palasgaon',
     name: 'Palasgaon Gate',
     type: 'Buffer',
-    description: 'Palasgaon, Chandrapur, Maharashtra.',
+    description: 'Palasgaon, Chandrapur, Maharashtra. Serene forest tracks ideal for offbeat safari enthusiasts.',
+    highlights: 'Quiet tracking, sloth bears, diverse raptors',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Palasgaon+Gate+Tadoba'
   },
   {
     id: 'buf-belara',
     name: 'Belara Gate',
     type: 'Buffer',
-    description: 'Belara, Chandrapur, Maharashtra.',
+    description: 'Belara, Chandrapur, Maharashtra. Buffer gateway connecting dense vegetation zones.',
+    highlights: 'Lush greenery, herbivore herds',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Belara+Gate+Tadoba'
   },
   {
     id: 'buf-mamla',
     name: 'Mamla Gate',
     type: 'Buffer',
-    description: 'Mamla, Chandrapur, Maharashtra.',
+    description: 'Mamla, Chandrapur, Maharashtra. Known for good birding and quiet forest exploration.',
+    highlights: 'Mamla lake, nocturnal tracking routes',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Mamla+Gate+Tadoba'
   },
   {
     id: 'buf-navegaon-ramdegi',
     name: 'Navegaon-Ramdegi Gate',
     type: 'Buffer',
-    description: 'Navegaon-Ramdegi, Chandrapur, Maharashtra.',
+    description: 'Navegaon-Ramdegi, Chandrapur, Maharashtra. Scenic buffer sector known for temple ruins, cliffs, and rich wildlife.',
+    highlights: 'Ramdegi temple hills, scenic viewpoints, leopard habitats',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Navegaon+Ramdegi+Gate+Tadoba'
   },
   {
     id: 'buf-nimdhela',
     name: 'Nimdhela Gate',
     type: 'Buffer',
-    description: 'Nimdhela, Chandrapur, Maharashtra.',
+    description: 'Nimdhela, Chandrapur, Maharashtra. Close to Kolara, famous for frequent big cat tracking on scenic pathways.',
+    highlights: 'Nimdhela meadow, waterholes, high big cat sightings',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Nimdhela+Gate+Tadoba'
   },
   {
     id: 'buf-aswal-chuha',
     name: 'Pangadi Aswal Chuha Gate',
     type: 'Buffer',
-    description: 'Pangadi, Chandrapur, Maharashtra.',
+    description: 'Pangadi Aswal Chuha, Chandrapur, Maharashtra. Southern buffer with rugged charm and bear habitats.',
+    highlights: 'Sloth bear territory, pristine untouched wilderness',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Pangadi+Aswal+Chuha+Gate+Tadoba'
   },
   {
     id: 'buf-keslaghat',
     name: 'Keslaghat Gate',
     type: 'Buffer',
-    description: 'Keslaghat, Chandrapur, Maharashtra.',
+    description: 'Keslaghat, Chandrapur, Maharashtra. Southern sector buffer gate with scenic rocky ridges.',
+    highlights: 'Hilly terrain, raptors, tranquil forest trails',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Keslaghat+Gate+Tadoba'
   },
   {
     id: 'buf-zari-peth',
     name: 'Zari Peth Gate',
     type: 'Buffer',
-    description: 'Zari Peth, Chandrapur, Maharashtra.',
+    description: 'Zari Peth, Chandrapur, Maharashtra. Buffer section offering relaxed wilderness drives.',
+    highlights: 'Waterbodies, dense teak groves',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Zari+Peth+Gate+Tadoba'
   },
   {
     id: 'buf-somnath',
     name: 'Somnath Gate',
     type: 'Buffer',
-    description: 'Somnath, Chandrapur, Maharashtra.',
+    description: 'Somnath, Chandrapur, Maharashtra. Serene eastern fringe buffer with lush seasonal flora.',
+    highlights: 'Somnath river valley, off-the-beaten-path safari',
+    quota: 'Buffer Quota Applies',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Somnath+Gate+Tadoba'
   }
 ];
 
-const FAQS = [
+const TADOBA_HISTORICAL_MILESTONES = [
   {
-    question: "How many tigers are there in Tadoba Tiger Reserve?",
-    answer: "Tadoba-Andhari Tiger Reserve is home to an estimated 100+ tigers across its core and buffer areas, making it one of the highest-density tiger reserves in Central India."
+    year: '1935',
+    stepNumber: '01',
+    shortLabel: 'Game Sanctuary',
+    title: 'Game Sanctuary Declared',
+    description: 'Tadoba Lake area first protected as a game sanctuary under British forestry administration, laying the foundation for modern wildlife protection.',
+    badge: 'First Protected Era'
   },
   {
-    question: "Which safari gate is best for tiger sightings in Tadoba?",
-    answer: "Moharli and Kolara are historically the most renowned core gates with extensive track networks. However, buffer gates like Agarzari, Devada, and Junona also offer phenomenal tiger and leopard sighting records."
+    year: '1955',
+    stepNumber: '02',
+    shortLabel: 'National Park',
+    title: 'Maharashtra’s 1st National Park',
+    description: '116.54 sq km declared as Tadoba National Park, establishing it as the oldest and first ever National Park in the state of Maharashtra.',
+    badge: 'Oldest in Maharashtra'
   },
   {
-    question: "How far in advance should I book Tadoba safari permits?",
-    answer: "Core zone permits open up to 60 to 120 days in advance on the official forest portal. Because quotas are strictly limited, early booking is highly recommended, especially for peak weekends and holiday seasons."
+    year: '1986',
+    stepNumber: '03',
+    shortLabel: 'Andhari WLS',
+    title: 'Andhari Wildlife Sanctuary Notified',
+    description: '508.85 sq km of adjoining dense teak and bamboo forests officially notified as the Andhari Wildlife Sanctuary to safeguard wildlife corridors.',
+    badge: 'Sanctuary Expansion'
   },
   {
-    question: "Are core zones closed during the monsoon season?",
-    answer: "Yes, Tadoba's core zones remain closed from July 1 to September 30 each year for wildlife breeding and terrain maintenance. Select buffer safari gates remain open year-round for eco-tourism."
+    year: '1995',
+    stepNumber: '04',
+    shortLabel: 'Project Tiger',
+    title: '41st Project Tiger Reserve (TATR)',
+    description: 'Tadoba National Park and Andhari Sanctuary united to form the 41st Project Tiger Reserve in India, now celebrated worldwide as TATR.',
+    badge: 'Project Tiger Notified'
   },
   {
-    question: "What is the key difference between Core and Buffer zones?",
-    answer: "Core zones form the protected national park and sanctuary interior where human activity is strictly prohibited. Buffer zones surround the core, offering regulated safaris, night drives, and nature walks while serving as essential wildlife corridors."
+    year: '2009',
+    stepNumber: '05',
+    shortLabel: 'TATRCF Foundation',
+    title: 'TATR Conservation Foundation',
+    description: 'Tadoba-Andhari Tiger Reserve Conservation Foundation constituted to empower eco-development, buffer zone stewardship, and local community welfare.',
+    badge: 'Foundation Era'
+  }
+];
+
+const TADOBA_SAFARI_TIMETABLE = [
+  { season: '1 Apr to 30 Jun', slot: 'Afternoon', entryTime: '15:00 PM', exitTime: '19:00 PM' },
+  { season: '1 Feb to 31 Mar', slot: 'Afternoon', entryTime: '14:30 PM', exitTime: '18:30 PM' },
+  { season: '1 Jul to 30 Sep', slot: 'Full Day', entryTime: '05:45 AM', exitTime: '18:45 PM' },
+  { season: '1 Jul to 30 Sep', slot: 'Afternoon', entryTime: '14:30 PM', exitTime: '18:30 PM' },
+  { season: '1 Jul to 30 Sep', slot: 'Morning', entryTime: '6:00 AM', exitTime: '10:00 AM' },
+  { season: '1 Mar to 30 Apr', slot: 'Morning', entryTime: '6:00 AM', exitTime: '10:00 AM' },
+  { season: '1 Mar to 30 Apr', slot: 'Full Day', entryTime: '05:45 AM', exitTime: '18:45 PM' },
+  { season: '1 May to 30 Jun', slot: 'Morning', entryTime: '5:30 AM', exitTime: '9:30 AM' },
+  { season: '1 May to 30 Jun', slot: 'Full Day', entryTime: '05:15 AM', exitTime: '19:15 PM' },
+  { season: '1 Nov to 31 Jan', slot: 'Afternoon', entryTime: '14:00 PM', exitTime: '18:00 PM' },
+  { season: '1 Nov to 29 Feb', slot: 'Morning', entryTime: '6:00 AM', exitTime: '10:30 AM' },
+  { season: '1 Nov to 29 Feb', slot: 'Full Day', entryTime: '06:15 AM', exitTime: '18:15 PM' },
+  { season: '1 Oct to 31 Oct', slot: 'Morning', entryTime: '6:00 AM', exitTime: '10:00 AM' },
+  { season: '1 Oct to 31 Oct', slot: 'Afternoon', entryTime: '14:30 PM', exitTime: '18:30 PM' },
+  { season: '1 Oct to 31 Oct', slot: 'Full Day', entryTime: '05:45 AM', exitTime: '18:45 PM' }
+];
+
+const TADOBA_FAQS = [
+  {
+    question: '1. How many tigers are there in Tadoba Tiger Reserve?',
+    answer:
+      'Tadoba-Andhari Tiger Reserve is home to an estimated 100+ tigers across its core and buffer areas, making it one of the highest-density tiger reserves in Central India.'
+  },
+  {
+    question: '2. Which safari gate is best for tiger sightings in Tadoba?',
+    answer:
+      'Moharli and Kolara are historically the most renowned core gates with extensive track networks. However, buffer gates like Agarzari, Devada, and Junona also offer phenomenal tiger and leopard sighting records.'
+  },
+  {
+    question: '3. How far in advance should I book Tadoba safari permits?',
+    answer:
+      'Core zone permits open up to 60 to 120 days in advance on the official Maharashtra Forest Department portal. Because quotas are strictly limited, early booking is highly recommended, especially for peak weekends and holiday seasons.'
+  },
+  {
+    question: '4. Are core zones closed during the monsoon season?',
+    answer:
+      'Yes, Tadoba’s core zones remain closed from July 1 to September 30 each year for wildlife breeding and terrain maintenance. Select buffer safari gates remain open year-round for eco-tourism.'
+  },
+  {
+    question: '5. What is the key difference between Core and Buffer zones?',
+    answer:
+      'Core zones form the protected national park and sanctuary interior where human activity is strictly prohibited. Core gates are closed on Tuesdays. Buffer zones surround the core, offering regulated safaris, night drives, and nature walks (closed on Wednesdays).'
   }
 ];
 
@@ -238,714 +354,716 @@ const TadobaDetails = ({
   resorts: _resorts,
   safariGates = TADOBA_MASTER_GATES
 }: TadobaDetailsProps) => {
-
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<'vehicles' | 'timings' | 'gates'>('vehicles');
+  const [gateFilter, setGateFilter] = useState<'all' | 'Core' | 'Buffer'>('all');
+  const [gateSearchQuery, setGateSearchQuery] = useState<string>('');
+  const [timingSlotFilter, setTimingSlotFilter] = useState<'All' | 'Morning' | 'Afternoon' | 'Full Day'>('All');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [activeSection, setActiveSection] = useState<string>('about');
+  const [activeMilestoneIndex, setActiveMilestoneIndex] = useState<number>(0);
 
+  // Sticky Sub-Nav Scroll-Spy Listener
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % CAROUSEL_IMAGES.length);
-    }, 4000);
+    const handleScroll = () => {
+      const sectionIds = ['about', 'history', 'safari-hub', 'how-to-reach', 'faqs'];
+      const scrollPos = window.scrollY + 180;
 
-    return () => clearInterval(interval);
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const id = sectionIds[i];
+        const elem = document.getElementById(id);
+        if (elem) {
+          if (scrollPos >= elem.offsetTop) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   if (!destination) return null;
 
-  const coreGates = safariGates.filter(gate => gate.type === 'Core');
-  const bufferGates = safariGates.filter(gate => gate.type === 'Buffer');
+  // Filter gates dynamically from props & search query
+  const filteredGates = safariGates.filter((gate) => {
+    const matchesFilter = gateFilter === 'all' || gate.type === gateFilter;
+    const matchesSearch = gate.name.toLowerCase().includes(gateSearchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
+
+  const coreGatesCount = safariGates.filter((g) => g.type === 'Core').length;
+  const bufferGatesCount = safariGates.filter((g) => g.type === 'Buffer').length;
+
+  const filteredTimings = timingSlotFilter === 'All'
+    ? TADOBA_SAFARI_TIMETABLE
+    : TADOBA_SAFARI_TIMETABLE.filter((t) => t.slot === timingSlotFilter);
 
   const toggleFaq = (index: number) => {
-    setOpenFaqIndex(prev => (prev === index ? null : index));
+    setOpenFaqIndex((prev) => (prev === index ? null : index));
+  };
+
+  const scrollToSection = (id: string, e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    const elem = document.getElementById(id);
+    if (elem) {
+      const headerOffset = 135;
+      const elementPosition = elem.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      setActiveSection(id);
+    }
   };
 
   return (
-    <div className="dest-details-page">
+    <div className="tadoba-page">
+      {/* ================= 1. COMPACT LUXURY HERO SECTION ================= */}
+      <section className="tadoba-hero">
+        <img
+          src={matkasur}
+          alt={destination.name || 'Tadoba scenic background'}
+          className="tadoba-hero-img"
+        />
 
-      {/* ================= 1. HERO ================= */}
-      <section className="dest-details-hero">
+        <div className="tadoba-hero-overlay" />
 
-        {CAROUSEL_IMAGES.map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            alt={`Tadoba background ${index + 1}`}
-            className={`dest-details-hero-img ${index === activeIndex ? "active" : ""}`}
-          />
-        ))}
-
-        <div className="dest-details-hero-overlay" />
-
-        <div className="dest-details-hero-content">
-          <div className="dest-details-hero-wrapper">
-            <h1 className="dest-details-hero-title">
-              {destination.name}
-            </h1>
-
-            <p className="dest-details-hero-subtitle">
-              Experience the Wild of Tadoba — meet majestic tigers, explore ancient teak forests, and create lasting memories.
-            </p>
-
-            <div className="dest-details-hero-meta">
-              <div className="dest-details-hero-meta-item">
-                <MapPin className="dest-details-hero-meta-icon" />
-                <span>{destination.state}, India</span>
-              </div>
+        <div className="tadoba-hero-content">
+          <div className="tadoba-hero-wrapper">
+            <div className="tadoba-hero-eyebrow">
+              <span className="tadoba-hero-sublocation">CHANDRAPUR, MAHARASHTRA</span>
             </div>
 
-            <div className="dest-details-hero-actions">
+            <h1 className="tadoba-hero-title">
+              {destination.name || 'Tadoba Andhari Tiger Reserve'}
+            </h1>
+
+            <p className="tadoba-hero-subtitle">
+              Maharashtra’s oldest and premier tiger reserve, spanning 1,727 sq km of pristine teak forests, tranquil lakes, and one of Central India’s highest wild tiger densities.
+            </p>
+
+            <div className="tadoba-hero-actions">
               <Link
                 to={`/trip-request/new?destination=${destination.id}`}
-                className="dest-details-hero-cta"
+                className="tadoba-hero-cta"
               >
-                Plan Your Safari
-                <ArrowUpRight size={18} />
+                <span>Plan Your Safari</span>
+                <Calendar size={16} />
               </Link>
 
-              <a
-                href="#destination-overview"
+              <button
+                type="button"
                 onClick={(e) => {
-                  e.preventDefault();
-                  const elem = document.getElementById("destination-overview");
-                  if (elem) {
-                    elem.scrollIntoView({ behavior: "smooth" });
-                  }
+                  setActiveTab('gates');
+                  scrollToSection('safari-hub', e);
                 }}
-                className="dest-details-hero-secondary"
+                className="tadoba-hero-secondary"
               >
-                Explore destination
-                <ArrowDown size={17} />
-              </a>
+                <span>Explore Safari Gates</span>
+                <Compass size={16} />
+              </button>
             </div>
           </div>
         </div>
-
-        <div className="dest-details-hero-counter">
-          <span>{String(activeIndex + 1).padStart(2, "0")}</span>
-          <span>/</span>
-          <span>{String(CAROUSEL_IMAGES.length).padStart(2, "0")}</span>
-        </div>
-
       </section>
 
+      {/* ================= 2. FLOATING HORIZONTAL SECTION NAV ================= */}
+      <div className="tadoba-nav-wrapper">
+        <nav className="tadoba-sticky-nav" aria-label="Reserve Sections Navigation">
+          <div className="tadoba-sticky-nav-inner">
+            <div className="tadoba-sticky-nav-links">
+              <button
+                type="button"
+                onClick={(e) => scrollToSection('about', e)}
+                className={`tadoba-sticky-nav-link ${activeSection === 'about' ? 'active' : ''}`}
+              >
+                <TreePine size={16} />
+                <span>Overview &amp; Habitat</span>
+              </button>
 
-      {/* ================= MAIN CONTAINER ================= */}
-      <div
-        className="dest-details-container"
-      >
+              <button
+                type="button"
+                onClick={(e) => scrollToSection('history', e)}
+                className={`tadoba-sticky-nav-link ${activeSection === 'history' ? 'active' : ''}`}
+              >
+                <History size={16} />
+                <span>Milestones</span>
+              </button>
 
-        <div className="dest-details-layout">
-          {/* ================= MAIN CONTENT ================= */}
-          <main className="dest-details-main">
+              <button
+                type="button"
+                onClick={(e) => scrollToSection('safari-hub', e)}
+                className={`tadoba-sticky-nav-link ${activeSection === 'safari-hub' ? 'active' : ''}`}
+              >
+                <Compass size={16} />
+                <span>Safari Planning Hub</span>
+              </button>
 
-            {/* ================= 1. ABOUT TADOBA → Overview ================= */}
-            <section id="destination-overview" className="dest-details-card dest-details-about-card">
-              <div className="dest-details-about-header">
-                <div className="dest-details-about-header-text">
-                  <div className="dest-details-about-eyebrow">
-                    ABOUT TADOBA
+              <button
+                type="button"
+                onClick={(e) => scrollToSection('how-to-reach', e)}
+                className={`tadoba-sticky-nav-link ${activeSection === 'how-to-reach' ? 'active' : ''}`}
+              >
+                <MapPin size={16} />
+                <span>How to Reach</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={(e) => scrollToSection('faqs', e)}
+                className={`tadoba-sticky-nav-link ${activeSection === 'faqs' ? 'active' : ''}`}
+              >
+                <HelpCircle size={16} />
+                <span>FAQs</span>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      {/* ================= 3. FULL-WIDTH LUXURY CONTAINER ================= */}
+      <div className="tadoba-container">
+        <main className="tadoba-main">
+          {/* ================= SECTION 1: ABOUT & HABITAT ================= */}
+          <section id="about" className="tadoba-card tadoba-about-card">
+            <div className="tadoba-card-header">
+              <span className="tadoba-card-eyebrow">ABOUT TADOBA</span>
+              <h2 className="tadoba-card-title">The Land of Tigers</h2>
+            </div>
+
+            <div className="tadoba-about-body">
+              <p>
+                Tadoba-Andhari Tiger Reserve (TATR) is one of Central India's most iconic wildlife landscapes. Located in Maharashtra's Chandrapur district, it harmoniously combines Maharashtra's oldest national park <strong>(formed in 1955)</strong> with the Andhari Wildlife Sanctuary <strong>(formed in 1986)</strong>—celebrated as the <strong>"Jewel of Vidarbha"</strong> for its high predator density, rugged hills, and deep teak canopies. Home to <strong>more than 100 tigers</strong>, Tadoba is also home to a rich variety of wildlife, including leopards, sloth bears, wild dogs, gaur, sambar, chital, and numerous bird species.
+              </p>
+            </div>
+
+            {/* Metric Stats Cards */}
+            <div className="tadoba-stats-grid">
+              <div className="tadoba-stat-card">
+                <span className="tadoba-stat-value">~1,727.59</span>
+                <span className="tadoba-stat-unit">SQ KM</span>
+                <span className="tadoba-stat-label">TOTAL PROTECTED AREA</span>
+              </div>
+
+              <div className="tadoba-stat-card">
+                <span className="tadoba-stat-value">~625.82</span>
+                <span className="tadoba-stat-unit">SQ KM</span>
+                <span className="tadoba-stat-label">PRISTINE CORE ZONE</span>
+              </div>
+
+              <div className="tadoba-stat-card">
+                <span className="tadoba-stat-value">~1,101.77</span>
+                <span className="tadoba-stat-unit">SQ KM</span>
+                <span className="tadoba-stat-label">BUFFER CORRIDOR</span>
+              </div>
+            </div>
+
+            {/* Story of Tadoba */}
+            <div className="tadoba-story-card">
+              <div className="tadoba-story-badge">
+                <TreePine size={16} />
+                <span>THE LEGEND OF TARU</span>
+              </div>
+              <h3 className="tadoba-story-title">The Folklore Behind the Name</h3>
+              <p className="tadoba-story-text">
+                Tadoba is named after <strong>Taru</strong>, a legendary Gond tribal chief who, according to local folklore, died while fighting a tiger. The local tribal communities consider him a protector and built a small sacred shrine in his memory near the peaceful banks of Tadoba Lake. Even today, local villagers and forest guides visit the shrine during annual festivals to seek his blessings and pray for safety in the forest.
+              </p>
+            </div>
+          </section>
+
+          {/* ================= SECTION 2: HISTORICAL MILESTONES ================= */}
+          <section id="history" className="tadoba-card tadoba-history-card">
+            <div className="tadoba-card-header">
+              <span className="tadoba-card-eyebrow">CHRONICLES OF CONSERVATION</span>
+              <h2 className="tadoba-card-title">Historical Milestones</h2>
+              <p className="tadoba-card-subtitle">
+                From protected forests to one of Maharashtra's premier tiger reserves — explore the key eras of Tadoba's conservation journey. Hover or tap any year to view details.
+              </p>
+            </div>
+
+            {/* Interactive Horizontal Year Track */}
+            <div className="tadoba-milestone-track-container">
+              <div className="tadoba-milestone-track-line" />
+              <div className="tadoba-milestone-nodes">
+                {TADOBA_HISTORICAL_MILESTONES.map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setActiveMilestoneIndex(idx)}
+                    onMouseEnter={() => setActiveMilestoneIndex(idx)}
+                    className={`tadoba-milestone-node ${activeMilestoneIndex === idx ? 'active' : ''}`}
+                    aria-label={`Milestone year ${item.year}: ${item.title}`}
+                  >
+                    <span className="tadoba-milestone-node-dot" />
+                    <span className="tadoba-milestone-node-year">{item.year}</span>
+                    <span className="tadoba-milestone-node-label">{item.shortLabel}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Active Milestone Detail Card */}
+            <div className="tadoba-milestone-detail-card">
+              <div className="tadoba-milestone-detail-watermark">
+                {TADOBA_HISTORICAL_MILESTONES[activeMilestoneIndex].year}
+              </div>
+
+              <div className="tadoba-milestone-detail-inner">
+                <div className="tadoba-milestone-detail-top-badge">
+                  <span className="tadoba-milestone-badge-pill">
+                    <span className="tadoba-milestone-badge-dot" />
+                    {TADOBA_HISTORICAL_MILESTONES[activeMilestoneIndex].badge}
+                  </span>
+                </div>
+
+                <div className="tadoba-milestone-detail-body">
+                  <div className="tadoba-milestone-detail-lead">
+                    <span className="tadoba-milestone-detail-year-highlight">
+                      {TADOBA_HISTORICAL_MILESTONES[activeMilestoneIndex].year}
+                    </span>
+                    <h3 className="tadoba-milestone-detail-title">
+                      {TADOBA_HISTORICAL_MILESTONES[activeMilestoneIndex].title}
+                    </h3>
                   </div>
-                  <h2 className="dest-details-about-title">
-                    The Land of Tigers
-                  </h2>
-                </div>
-              </div>
-
-              <div className="dest-details-about-intro">
-                <p>
-                  Tadoba-Andhari Tiger Reserve (TATR) is one of Central India's most
-                  iconic wildlife landscapes. Located in Maharashtra's Chandrapur
-                  district, it harmoniously combines Maharashtra's oldest national park
-                  <strong> (formed in 1955)</strong> with the Andhari Wildlife Sanctuary
-                  <strong> (formed in 1986)</strong>—celebrated as the
-                  <strong> "Jewel of Vidarbha"</strong> for its high predator density,
-                  rugged hills, and deep teak canopies. Home to
-                  <strong> more than 100 tigers</strong>, Tadoba is also home to a rich
-                  variety of wildlife, including leopards, sloth bears, wild dogs,
-                  gaur, sambar, chital, and numerous bird species.
-                </p>
-              </div>
-
-              {/* 3 Metric Stats Grid */}
-              <div className="dest-details-about-stats-grid">
-                <div className="dest-details-about-stat-card">
-                  <div className="dest-details-about-stat-value">~1,727.59</div>
-                  <div className="dest-details-about-stat-label">SQ KM</div>
-                  <div className="dest-details-about-stat-sub">TOTAL AREA</div>
-                </div>
-
-                <div className="dest-details-about-stat-card">
-                  <div className="dest-details-about-stat-value">~625.82</div>
-                  <div className="dest-details-about-stat-label">SQ KM</div>
-                  <div className="dest-details-about-stat-sub">CORE ZONE</div>
-                </div>
-
-                <div className="dest-details-about-stat-card">
-                  <div className="dest-details-about-stat-value">~1,101.77</div>
-                  <div className="dest-details-about-stat-label">SQ KM</div>
-                  <div className="dest-details-about-stat-sub">BUFFER ZONE</div>
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div className="dest-details-about-divider" />
-
-              {/* THE STORY OF TADOBA */}
-              <div className="dest-details-about-subsection">
-                <h3 className="dest-details-about-subtitle">
-                  THE STORY OF TADOBA
-                </h3>
-                <div className="dest-details-about-story-content">
-                  <p>
-                    Tadoba is named after <strong>Taru</strong>, a legendary Gond tribal chief
-                    who, according to local stories, died while fighting a tiger. The local
-                    tribal communities consider him a protector and built a small sacred shrine
-                    in his memory near the peaceful banks of Tadoba Lake. Even today, local
-                    villagers and forest guides visit the shrine during annual festivals to seek
-                    his blessings and pray for safety in the forest.
+                  <p className="tadoba-milestone-detail-desc">
+                    {TADOBA_HISTORICAL_MILESTONES[activeMilestoneIndex].description}
                   </p>
                 </div>
               </div>
-            </section>
+            </div>
+          </section>
 
+          {/* ================= SECTION 3: SAFARI PLANNING HUB ================= */}
+          <section id="safari-hub" className="tadoba-card tadoba-safari-hub-card">
+            <div className="tadoba-card-header">
+              <span className="tadoba-card-eyebrow">SAFARI PLANNING &amp; GATES DIRECTORY</span>
+              <h2 className="tadoba-card-title">Tadoba Safari Planning Hub</h2>
+              <p className="tadoba-card-subtitle">
+                Interactive directory of official safari vehicles, seasonal gate timings, and core vs. buffer gate locations.
+              </p>
+            </div>
 
-            {/* ================= 2. HISTORY & LEGACY → History ================= */}
-            <section id="history-legacy" className="dest-details-card dest-details-history-card">
-              <div className="dest-details-history-header">
-                <div className="dest-details-about-eyebrow" style={{ marginBottom: '0.4rem' }}>
-                </div>
-                <div className="dest-details-history-title-wrap">
-                  <History className="dest-details-card-icon" size={24} />
-                  <h2 className="dest-details-history-title">HISTORY &amp; LEGACY</h2>
-                </div>
-                <p className="dest-details-history-subtitle">
-                  From protected forests to one of Maharashtra's most important tiger reserves — Tadoba's conservation journey spans nearly a century.
-                </p>
-              </div>
+            {/* Navigation Tabs */}
+            <div className="tadoba-hub-tabs">
+              <button
+                type="button"
+                className={`tadoba-hub-tab ${activeTab === 'vehicles' ? 'active' : ''}`}
+                onClick={() => setActiveTab('vehicles')}
+              >
+                <Car size={16} />
+                <span>Vehicles &amp; Capacities</span>
+              </button>
 
-              <div className="dest-details-history-timeline-container">
-                <div className="dest-details-history-timeline-track" />
+              <button
+                type="button"
+                className={`tadoba-hub-tab ${activeTab === 'timings' ? 'active' : ''}`}
+                onClick={() => setActiveTab('timings')}
+              >
+                <Clock size={16} />
+                <span>Shift Timings &amp; Rules</span>
+              </button>
 
-                <div className="dest-details-history-timeline-grid">
-                  {/* 1935 */}
-                  <div className="dest-details-history-timeline-item">
-                    <div className="dest-details-history-year">1935</div>
-                    <div className="dest-details-history-dot" />
-                    <div className="dest-details-history-content">
-                      <h4 className="dest-details-history-event-title">PROTECTED SANCTUARY</h4>
-                      <p className="dest-details-history-event-desc">
-                        Tadoba Lake area protected as a sanctuary.
-                      </p>
+              <button
+                type="button"
+                className={`tadoba-hub-tab ${activeTab === 'gates' ? 'active' : ''}`}
+                onClick={() => setActiveTab('gates')}
+              >
+                <MapPin size={16} />
+                <span>Gates Directory ({safariGates.length})</span>
+              </button>
+            </div>
+
+            {/* Tab 1: Vehicles & Capacities */}
+            {activeTab === 'vehicles' && (
+              <div className="tadoba-tab-pane">
+                <div className="tadoba-vehicles-grid">
+                  <div className="tadoba-vehicle-card">
+                    <div className="tadoba-vehicle-header">
+                      <div className="tadoba-vehicle-icon-wrap">
+                        <Car size={24} />
+                      </div>
+                      <div>
+                        <span className="tadoba-vehicle-tag">STANDARD SAFARI</span>
+                        <h3 className="tadoba-vehicle-title">4x4 Open Safari Gypsy</h3>
+                      </div>
                     </div>
+                    <p className="tadoba-vehicle-desc">
+                      Standard registered open 4x4 Gypsy vehicle operated for official forest safari drives across core and buffer routes.
+                    </p>
+                    <ul className="tadoba-vehicle-features">
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Permit Scope:</strong> Valid for 6 Core Gates &amp; 16 Buffer Gates</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Occupancy:</strong> As per registered vehicle permit limits</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Shift Types:</strong> Morning &amp; Afternoon Shifts</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Route Access:</strong> Approved core and buffer forest tracks</span>
+                      </li>
+                    </ul>
                   </div>
 
-                  {/* 1955 */}
-                  <div className="dest-details-history-timeline-item">
-                    <div className="dest-details-history-year">1955</div>
-                    <div className="dest-details-history-dot" />
-                    <div className="dest-details-history-content">
-                      <h4 className="dest-details-history-event-title">NATIONAL PARK</h4>
-                      <p className="dest-details-history-event-desc">
-                        Tadoba National Park declared.
-                      </p>
+                  <div className="tadoba-vehicle-card">
+                    <div className="tadoba-vehicle-header">
+                      <div className="tadoba-vehicle-icon-wrap">
+                        <Layers size={24} />
+                      </div>
+                      <div>
+                        <span className="tadoba-vehicle-tag">SPECIAL SERVICE</span>
+                        <h3 className="tadoba-vehicle-title">9-Seater Safari Cruiser</h3>
+                      </div>
                     </div>
+                    <p className="tadoba-vehicle-desc">
+                      9-seater safari cruiser service operating on designated core routes in Tadoba.
+                    </p>
+                    <ul className="tadoba-vehicle-features">
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Route Scope:</strong> Moharli Core &amp; Kolara Core</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Booking Type:</strong> Individual seat booking</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Eligibility:</strong> Available for Chandrapur district locals</span>
+                      </li>
+                      <li>
+                        <CheckCircle2 size={16} />
+                        <span><strong>Allocation:</strong> Subject to availability</span>
+                      </li>
+                    </ul>
                   </div>
-
-                  {/* 1986 */}
-                  <div className="dest-details-history-timeline-item">
-                    <div className="dest-details-history-year">1986</div>
-                    <div className="dest-details-history-dot" />
-                    <div className="dest-details-history-content">
-                      <h4 className="dest-details-history-event-title">ANDHARI SANCTUARY</h4>
-                      <p className="dest-details-history-event-desc">
-                        Andhari Wildlife Sanctuary declared.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 1995 */}
-                  <div className="dest-details-history-timeline-item">
-                    <div className="dest-details-history-year">1995</div>
-                    <div className="dest-details-history-dot" />
-                    <div className="dest-details-history-content">
-                      <h4 className="dest-details-history-event-title">TATR NOTIFIED</h4>
-                      <p className="dest-details-history-event-desc">
-                        Tadoba &amp; Andhari brought together.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 2009 */}
-                  <div className="dest-details-history-timeline-item">
-                    <div className="dest-details-history-year">2009</div>
-                    <div className="dest-details-history-dot" />
-                    <div className="dest-details-history-content">
-                      <h4 className="dest-details-history-event-title">TATRCF FORMED</h4>
-                      <p className="dest-details-history-event-desc">
-                        Dedicated conservation foundation established.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-
-            {/* ================= 3. SAFARI EXPERIENCES & BOOKINGS → Safari Experience ================= */}
-            <section id="safari-experience" className="dest-details-card dest-details-safari-exp-card">
-              <div className="dest-details-safari-header">
-
-                <h2 className="dest-details-card-title">
-                  Safari Experiences &amp; Bookings
-                </h2>
-                <p className="dest-details-safari-subtitle">
-                  Guided safaris across Tadoba's Core &amp; Buffer zones
-                </p>
-                <div className="dest-details-disclaimer-note">
-                  <AlertTriangle className="dest-details-disclaimer-icon" size={16} />
-                  <span>Note: We are not the official Tadoba website. Official Gypsy permits are subject to availability.</span>
-                </div>
-              </div>
-
-              {/* Vehicle Options Grid (Gypsy vs Canter) */}
-              <div className="dest-details-safari-vehicles-grid">
-                {/* Gypsy Card */}
-                <div className="dest-details-safari-vehicle-card">
-                  <div className="dest-details-vehicle-header">
-                    <div className="dest-details-vehicle-title-wrap">
-                      <h3 className="dest-details-vehicle-title">GYPSY SAFARI</h3>
-                    </div>
-                  </div>
-                  <ul className="dest-details-vehicle-list">
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Core & Buffer</li>
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Morning / Afternoon/Full Day</li>
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Capacity : 6 tourists</li>
-                  </ul>
-                </div>
-
-                {/* Canter Card */}
-                <div className="dest-details-safari-vehicle-card">
-                  <div className="dest-details-vehicle-header">
-                    <div className="dest-details-vehicle-title-wrap">
-                      <h3 className="dest-details-vehicle-title">CANTER SAFARI</h3>
-                    </div>
-                  </div>
-                  <ul className="dest-details-vehicle-list">
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Budget-friendly</li>
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Selected routes</li>
-                    <li><CheckCircle2 className="dest-details-vehicle-check" /> Capacity: 15+ tourists</li>
-                  </ul>
                 </div>
               </div>
+            )}
 
-              {/* Safari Timings Block */}
-              <div className="dest-details-timings-box">
-                <h4 className="dest-details-timings-title">
-                  <Clock size={20} />
-                  Tadoba Wildlife Safari Timings
-                </h4>
-                <p className="dest-details-timings-desc">
-                  Safari timings in Tadoba National Park depend on the season. The park remains closed in the monsoon.
-                </p>
+            {/* Tab 2: Timings & Rules */}
+            {activeTab === 'timings' && (
+              <div className="tadoba-tab-pane">
+                <div className="tadoba-timings-filter-bar">
+                  <div className="tadoba-timings-filter-buttons">
+                    {(['All', 'Morning', 'Afternoon', 'Full Day'] as const).map((slot) => {
+                      const count = slot === 'All'
+                        ? TADOBA_SAFARI_TIMETABLE.length
+                        : TADOBA_SAFARI_TIMETABLE.filter((t) => t.slot === slot).length;
+                      return (
+                        <button
+                          key={slot}
+                          type="button"
+                          className={`tadoba-timing-filter-btn ${timingSlotFilter === slot ? 'active' : ''}`}
+                          onClick={() => setTimingSlotFilter(slot)}
+                        >
+                          {slot === 'All' ? 'All Slots' : slot} ({count})
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                <div className="dest-details-timings-table-container">
-                  <table className="dest-details-timings-table">
+                <div className="tadoba-timings-table-wrapper compact">
+                  <table className="tadoba-timings-table compact">
                     <thead>
                       <tr>
-                        <th>Date</th>
-                        <th>Morning Shift</th>
-                        <th>Afternoon Shift</th>
+                        <th>Safari Season</th>
+                        <th>Slot</th>
+                        <th>Entry Time</th>
+                        <th>Exit Time</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>October 1st – 31st</td>
-                        <td>6 AM – 10 AM</td>
-                        <td>2:30 PM – 6:30 PM</td>
-                      </tr>
-                      <tr>
-                        <td>November – February</td>
-                        <td>6:30 AM – 10:30 AM</td>
-                        <td>2 PM – 6 PM</td>
-                      </tr>
-                      <tr>
-                        <td>March – April</td>
-                        <td>6 AM – 10 AM</td>
-                        <td>2:30 PM – 6:30 PM</td>
-                      </tr>
-                      <tr>
-                        <td>May – June</td>
-                        <td>5:30 AM – 9:30 AM</td>
-                        <td>3 PM – 7 PM</td>
-                      </tr>
+                      {filteredTimings.map((row, idx) => (
+                        <tr key={idx}>
+                          <td className="tadoba-timing-season"><strong>{row.season}</strong></td>
+                          <td className="tadoba-timing-slot">{row.slot}</td>
+                          <td className="tadoba-timing-time">{row.entryTime}</td>
+                          <td className="tadoba-timing-time">{row.exitTime}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
-              </div>
 
-              {/* Proposal Banner */}
-              <div className="dest-details-proposal-banner">
-                <div className="dest-details-proposal-banner-content">
-                  <div className="dest-details-proposal-banner-icon-wrap">
-                    <Compass className="dest-details-proposal-banner-icon" />
+                {/* Closure Warnings */}
+                <div className="tadoba-closure-box compact">
+                  <div className="tadoba-closure-item">
+                    <AlertTriangle className="tadoba-closure-icon" size={16} />
+                    <div>
+                      <strong>Tuesday Core Closure:</strong> All Core safari gates are closed every Tuesday.
+                    </div>
                   </div>
-                  <p className="dest-details-proposal-banner-text">
-                    Planning a safari? Share your preferred date &amp; requirements and receive a personalized safari proposal.
-                  </p>
-                </div>
-                <div className="dest-details-proposal-banner-action">
-                  <Link
-                    to={`/trip-request/new?destination=${destination.id}`}
-                    className="dest-details-proposal-banner-btn"
-                  >
-                    REQUEST SAFARI PROPOSAL
-                    <ArrowUpRight size={16} />
-                  </Link>
+                  <div className="tadoba-closure-item">
+                    <AlertTriangle className="tadoba-closure-icon" size={16} />
+                    <div>
+                      <strong>Wednesday Buffer Closure:</strong> All Buffer safari gates are closed on Wednesdays.
+                    </div>
+                  </div>
                 </div>
               </div>
-            </section>
+            )}
 
-
-            {/* ================= 4. BEST TIME TO VISIT → Best Time ================= */}
-            <section id="best-time" className="dest-details-card dest-details-seasons-section">
-
-              <h2 className="dest-details-card-title">
-                Best Time to Visit Tadoba
-              </h2>
-
-              <div className="dest-details-seasons-header-note">
-                <h3 className="dest-details-seasons-headline">
-                  NO SINGLE BEST SEASON — JUST A DIFFERENT TADOBA.
-                </h3>
-                <p className="dest-details-seasons-subline">
-                  Visit anytime and experience the forest your way.
-                </p>
-              </div>
-            </section>
-
-
-            {/* ================= 5. SAFARI GATES → Safari Gates ================= */}
-            <section id="safari-gates" className="dest-details-card">
-
-              <h2 className="dest-details-card-title">
-                Core Safari Gates
-              </h2>
-
-              <p className="dest-details-section-info">
-                Core zones are the <strong>protected heart of Tadoba</strong>. Core gates are <strong>closed every Tuesday</strong>.
-              </p>
-
-              <div className="dest-details-gates-grid dest-details-core-gates-grid">
-                {coreGates.map((gate) => (
-                  <div
-                    key={gate.id}
-                    className="dest-details-gate-card core-compact"
-                  >
-                    <span className="dest-details-gate-name">
-                      {gate.name}
-                    </span>
-
-                    {gate.mapLink && (
-                      <a
-                        href={gate.mapLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="dest-details-gate-map-btn"
-                        title={`View ${gate.name} location`}
-                      >
-                        <MapPin size={14} />
-                        <span>Locate</span>
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <div style={{ marginTop: '2.5rem' }}>
-                <h3 className="dest-details-card-title" style={{ fontSize: '1.5rem' }}>
-                  Buffer Safari Gates
-                </h3>
-                <p className="dest-details-section-info" style={{ marginBottom: '1.25rem' }}>
-                  Buffer zones surround core areas and offer rich wildlife tracking. <strong>Buffer gates are closed on Wednesdays.</strong>
-                </p>
-
-                <div className="dest-details-gates-grid dest-details-buffer-gates-grid">
-                  {bufferGates.map((gate) => (
-                    <div
-                      key={gate.id}
-                      className="dest-details-gate-card buffer-compact"
+            {/* Tab 4: Gates Directory */}
+            {activeTab === 'gates' && (
+              <div className="tadoba-tab-pane">
+                <div className="tadoba-gates-filter-bar">
+                  <div className="tadoba-gates-filter-buttons">
+                    <button
+                      type="button"
+                      className={`tadoba-gate-filter-btn ${gateFilter === 'all' ? 'active' : ''}`}
+                      onClick={() => setGateFilter('all')}
                     >
-                      <span className="dest-details-gate-name">
-                        {gate.name}
-                      </span>
+                      All Safari Gates ({safariGates.length})
+                    </button>
+                    <button
+                      type="button"
+                      className={`tadoba-gate-filter-btn ${gateFilter === 'Core' ? 'active' : ''}`}
+                      onClick={() => setGateFilter('Core')}
+                    >
+                      Core Gates ({coreGatesCount})
+                    </button>
+                    <button
+                      type="button"
+                      className={`tadoba-gate-filter-btn ${gateFilter === 'Buffer' ? 'active' : ''}`}
+                      onClick={() => setGateFilter('Buffer')}
+                    >
+                      Buffer Gates ({bufferGatesCount})
+                    </button>
+                  </div>
+
+                  <div className="tadoba-gates-search-box">
+                    <Search size={15} className="tadoba-gates-search-icon" />
+                    <input
+                      type="text"
+                      value={gateSearchQuery}
+                      onChange={(e) => setGateSearchQuery(e.target.value)}
+                      placeholder="Search gate name..."
+                      className="tadoba-gates-search-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="tadoba-gates-compact-grid">
+                  {filteredGates.map((gate) => (
+                    <div key={gate.id} className={`tadoba-gate-compact-card ${gate.type.toLowerCase()}`}>
+                      <div className="tadoba-gate-compact-main">
+                        <span className={`tadoba-gate-type-badge ${gate.type.toLowerCase()}`}>
+                          {gate.type} Gate
+                        </span>
+                        <h4 className="tadoba-gate-compact-name">{gate.name}</h4>
+                      </div>
 
                       {gate.mapLink && (
                         <a
                           href={gate.mapLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="dest-details-gate-map-btn"
-                          title={`View ${gate.name} location`}
+                          className="tadoba-gate-compact-map-btn"
+                          title={`Open ${gate.name} location in Google Maps`}
                         >
                           <MapPin size={14} />
-                          <span>Locate</span>
+                          <span>Location</span>
+                          <ArrowUpRight size={13} />
                         </a>
                       )}
                     </div>
                   ))}
                 </div>
+
+                {filteredGates.length === 0 && (
+                  <div className="tadoba-gates-empty-state">
+                    <p>No safari gates found matching "{gateSearchQuery}".</p>
+                  </div>
+                )}
               </div>
-            </section>
+            )}
+          </section>
 
-
-            {/* ================= 6. HOW TO REACH TADOBA → How to Reach ================= */}
-            <section id="how-to-reach" className="dest-details-card dest-details-reach-section">
-
-              <h2 className="dest-details-card-title">
-                How to Reach Tadoba ?
-              </h2>
-
-              <p className="dest-details-section-info">
-                Tadoba can be reached by air, rail and road.
+          {/* ================= SECTION 4: HOW TO REACH ================= */}
+          <section id="how-to-reach" className="tadoba-card tadoba-reach-card">
+            <div className="tadoba-card-header">
+              <span className="tadoba-card-eyebrow">TRAVEL &amp; CONNECTIVITY</span>
+              <h2 className="tadoba-card-title">How to Reach Tadoba</h2>
+              <p className="tadoba-card-subtitle">
+                Centrally connected in Maharashtra and easily accessible via major airports, railheads, and all-weather national highway networks.
               </p>
-
-              <div className="dest-details-reach-grid">
-                {/* NEAREST AIRPORT */}
-                <div className="dest-details-reach-card">
-                  <div className="dest-details-reach-header">
-                    <span className="dest-details-reach-tag">NEAREST AIRPORT</span>
-                  </div>
-
-                  <div className="dest-details-reach-body">
-                    <h3 className="dest-details-reach-main-title">
-                      Nagpur Airport
-                    </h3>
-                    <p className="dest-details-reach-sub-info">
-                      Dr. Babasaheb Ambedkar International Airport
-                    </p>
-                  </div>
-
-                  <div className="dest-details-reach-footer">
-                    <span className="dest-details-reach-note">
-                      Major airport for Tadoba (~140 km)
-                    </span>
-                  </div>
-                </div>
-
-                {/* NEAREST RAILWAY STATION */}
-                <div className="dest-details-reach-card">
-                  <div className="dest-details-reach-header">
-                    <span className="dest-details-reach-tag">NEAREST RAILWAY STATION</span>
-                  </div>
-
-                  <div className="dest-details-reach-body">
-                    <h3 className="dest-details-reach-main-title">
-                      Chandrapur Railway Station
-                    </h3>
-                    <p className="dest-details-reach-sub-info">
-                      Closest major rail connection
-                    </p>
-                  </div>
-
-                  <div className="dest-details-reach-footer">
-                    <span className="dest-details-reach-note">
-                      ~45 km from Moharli Gate
-                    </span>
-                  </div>
-                </div>
-
-                {/* BY ROAD */}
-                <div className="dest-details-reach-card">
-                  <div className="dest-details-reach-header">
-                    <span className="dest-details-reach-tag">BY ROAD</span>
-                  </div>
-
-                  <div className="dest-details-reach-body dest-details-reach-road-body">
-                    <div className="dest-details-reach-road-row">
-                      <span className="dest-details-reach-city">Nagpur</span>
-                      <span className="dest-details-reach-dist">~140 km</span>
-                    </div>
-                    <div className="dest-details-reach-road-row">
-                      <span className="dest-details-reach-city">Hyderabad</span>
-                      <span className="dest-details-reach-dist">~450 km</span>
-                    </div>
-                    <div className="dest-details-reach-road-row">
-                      <span className="dest-details-reach-city">Mumbai</span>
-                      <span className="dest-details-reach-dist">~850 km</span>
-                    </div>
-                  </div>
-
-                  <div className="dest-details-reach-footer">
-                    <span className="dest-details-reach-note">
-                      Approx. distance by road to primary gates
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-
-            {/* ================= 7. FAQS ================= */}
-            <section id="faqs" className="dest-details-card dest-details-faq-section">
-              <h2 className="dest-details-card-title">
-                Frequently Asked Questions
-              </h2>
-              <p className="dest-details-section-info">
-                Common questions answered about planning a safari in Tadoba.
-              </p>
-
-              <div className="dest-details-faq-list">
-                {FAQS.map((faq, index) => (
-                  <div
-                    key={index}
-                    className={`dest-details-faq-item ${openFaqIndex === index ? 'active' : ''}`}
-                  >
-                    <button
-                      type="button"
-                      className="dest-details-faq-question"
-                      onClick={() => toggleFaq(index)}
-                    >
-                      <span>{faq.question}</span>
-                      <ChevronDown className="dest-details-faq-chevron" size={18} />
-                    </button>
-
-                    {openFaqIndex === index && (
-                      <div className="dest-details-faq-answer">
-                        <p>{faq.answer}</p>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
-
-
-            {/* ================= 8. FINAL CTA ================= */}
-            <section className="dest-details-final-cta-card">
-              <div className="dest-details-final-cta-content">
-
-                <h2 className="dest-details-final-cta-title">
-                  Ready for an Unforgettable Tadoba Safari?
-                </h2>
-                <p className="dest-details-final-cta-desc">
-                  Let our dedicated safari specialists curate your permits, handpicked resort stays, and naturalist-guided jeep drives.
-                </p>
-
-                <div className="dest-details-final-cta-actions">
-                  <Link
-                    to={`/trip-request/new?destination=${destination.id}`}
-                    className="dest-details-final-cta-btn"
-                  >
-                    Request a Custom Proposal
-                    <ArrowUpRight size={18} />
-                  </Link>
-                </div>
-
-                <div className="dest-details-final-cta-trust">
-                  <span><CheckCircle2 size={15} /> Guaranteed Forest Permits</span>
-                  <span><CheckCircle2 size={15} /> Handpicked Jungle Lodges</span>
-                  <span><CheckCircle2 size={15} /> Certified Naturalists</span>
-                </div>
-              </div>
-            </section>
-          </main>
-
-
-          {/* ================= STICKY SIDEBAR NAVIGATION ================= */}
-          <aside className="dest-details-sidebar">
-            <div className="dest-sidebar-nav-card">
-              <span className="dest-sidebar-nav-eyebrow">
-                EXPLORE TADOBA
-              </span>
-
-              <nav className="dest-sidebar-nav-list">
-                <a
-                  href="#destination-overview"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('destination-overview')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  Overview
-                </a>
-                <a
-                  href="#history-legacy"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('history-legacy')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  History &amp; Legacy
-                </a>
-                <a
-                  href="#safari-experience"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('safari-experience')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  Safari Experience
-                </a>
-                <a
-                  href="#best-time"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('best-time')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  Best Time
-                </a>
-                <a
-                  href="#safari-gates"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('safari-gates')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  Safari Gates
-                </a>
-                <a
-                  href="#how-to-reach"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('how-to-reach')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  How to Reach
-                </a>
-                <a
-                  href="#faqs"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('faqs')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="dest-sidebar-nav-link"
-                >
-                  FAQs
-                </a>
-              </nav>
-
-              <div className="dest-sidebar-divider" />
-
-              <Link
-                to={`/trip-request/new?destination=${destination.id}`}
-                className="dest-sidebar-cta-btn"
-              >
-                Plan Your Safari
-                <ArrowUpRight size={16} />
-              </Link>
             </div>
-          </aside>
 
-        </div>
+            <div className="tadoba-reach-grid">
+              {/* By Air */}
+              <div className="tadoba-reach-card-item air">
+                <div className="tadoba-reach-card-top">
+                  <div className="tadoba-reach-icon-badge air">
+                    <Plane size={20} />
+                  </div>
+                  <span className="tadoba-reach-pill air">BY AIR</span>
+                </div>
+
+                <div className="tadoba-reach-card-main">
+                  <h3 className="tadoba-reach-title">Nagpur Airport (NAG)</h3>
+                  <p className="tadoba-reach-desc">
+                    Dr. Babasaheb Ambedkar International Airport is the primary aviation hub with direct daily flights from all major Indian metros.
+                  </p>
+                </div>
+
+                <div className="tadoba-reach-meta-box">
+                  <div className="tadoba-reach-stat">
+                    <span className="tadoba-reach-stat-label">Distance</span>
+                    <span className="tadoba-reach-stat-val">~140 km</span>
+                  </div>
+                  <div className="tadoba-reach-stat">
+                    <span className="tadoba-reach-stat-label">Drive Time</span>
+                    <span className="tadoba-reach-stat-val">~2.5 – 3 hrs</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* By Rail */}
+              <div className="tadoba-reach-card-item rail">
+                <div className="tadoba-reach-card-top">
+                  <div className="tadoba-reach-icon-badge rail">
+                    <Train size={20} />
+                  </div>
+                  <span className="tadoba-reach-pill rail">BY RAIL</span>
+                </div>
+
+                <div className="tadoba-reach-card-main">
+                  <h3 className="tadoba-reach-title">Chandrapur &amp; Nagpur Jn</h3>
+                  <p className="tadoba-reach-desc">
+                    Chandrapur is the closest railhead (45 km). Nagpur Junction (140 km) connects superfast expresses nationwide.
+                  </p>
+                </div>
+
+                <div className="tadoba-reach-meta-box">
+                  <div className="tadoba-reach-stat">
+                    <span className="tadoba-reach-stat-label">Chandrapur (CD)</span>
+                    <span className="tadoba-reach-stat-val">~45 km (~1 hr)</span>
+                  </div>
+                  <div className="tadoba-reach-stat">
+                    <span className="tadoba-reach-stat-label">Nagpur Jn (NGP)</span>
+                    <span className="tadoba-reach-stat-val">~140 km (~3 hrs)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* By Road */}
+              <div className="tadoba-reach-card-item road">
+                <div className="tadoba-reach-card-top">
+                  <div className="tadoba-reach-icon-badge road">
+                    <Car size={20} />
+                  </div>
+                  <span className="tadoba-reach-pill road">BY ROAD</span>
+                </div>
+
+                <div className="tadoba-reach-card-main">
+                  <h3 className="tadoba-reach-title">Highway Corridors</h3>
+                  <p className="tadoba-reach-desc">
+                    Well-paved state &amp; national highway corridors connecting key regional cities to Tadoba gates.
+                  </p>
+                </div>
+
+                <div className="tadoba-reach-cities-grid">
+                  <div className="tadoba-reach-city-chip">
+                    <span className="city">Nagpur</span>
+                    <span className="dist">140 km</span>
+                  </div>
+                  <div className="tadoba-reach-city-chip">
+                    <span className="city">Chandrapur</span>
+                    <span className="dist">45 km</span>
+                  </div>
+                  <div className="tadoba-reach-city-chip">
+                    <span className="city">Hyderabad</span>
+                    <span className="dist">435 km</span>
+                  </div>
+                  <div className="tadoba-reach-city-chip">
+                    <span className="city">Pune / Mumbai</span>
+                    <span className="dist">720 / 850 km</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ================= SECTION 5: FAQS ================= */}
+          <section id="faqs" className="tadoba-card tadoba-faqs-card">
+            <div className="tadoba-card-header">
+              <span className="tadoba-card-eyebrow">COMMON QUERIES</span>
+              <h2 className="tadoba-card-title">Frequently Asked Questions</h2>
+              <p className="tadoba-card-subtitle">
+                Essential planning rules, permit timelines, and expert wildlife travel guidance.
+              </p>
+            </div>
+
+            <div className="tadoba-faqs-list">
+              {TADOBA_FAQS.map((faq, index) => (
+                <div
+                  key={index}
+                  className={`tadoba-faq-item ${openFaqIndex === index ? 'active' : ''}`}
+                >
+                  <button
+                    type="button"
+                    className="tadoba-faq-question-btn"
+                    onClick={() => toggleFaq(index)}
+                  >
+                    <span>{faq.question}</span>
+                    <ChevronDown
+                      className={`tadoba-faq-chevron ${openFaqIndex === index ? 'rotate' : ''}`}
+                      size={18}
+                    />
+                  </button>
+
+                  {openFaqIndex === index && (
+                    <div className="tadoba-faq-answer">
+                      <p>{faq.answer}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ================= SECTION 6: FINAL LUXURY CTA ================= */}
+          <section className="tadoba-final-cta-card">
+            <div className="tadoba-final-cta-content">
+
+
+              <h2 className="tadoba-final-cta-title">
+                Ready for an Unforgettable Tadoba Safari?
+              </h2>
+              <p className="tadoba-final-cta-desc">
+                Let our dedicated safari specialists curate your permits, handpicked resort stays, and naturalist-guided jeep drives across Tadoba's prime zones.
+              </p>
+
+              <div className="tadoba-final-cta-actions">
+                <Link
+                  to={`/trip-request/new?destination=${destination.id}`}
+                  className="tadoba-final-cta-btn"
+                >
+                  <span>Request a Custom Proposal</span>
+                  <ArrowUpRight size={18} />
+                </Link>
+              </div>
+
+              <div className="tadoba-final-cta-trust">
+                <span><CheckCircle2 size={16} /> Guaranteed Forest Permits</span>
+                <span><CheckCircle2 size={16} /> Handpicked Jungle Lodges</span>
+                <span><CheckCircle2 size={16} /> Certified Naturalists</span>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
-
     </div>
   );
 };

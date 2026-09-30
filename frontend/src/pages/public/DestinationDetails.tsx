@@ -4,6 +4,7 @@ import { destinationService, Destination } from '../../services/destination.serv
 import { resortService, Resort } from '../../services/resort.service';
 import TadobaDetails from './TadobaInformation';
 import PenchInformation from './PenchInformation';
+import KanhaInformation from './KanhaInformation';
 import {
   MapPin,
   Compass,
@@ -44,6 +45,21 @@ const DEFAULT_PENCH_DESTINATION: Destination = {
   bufferGates: 7
 };
 
+const DEFAULT_KANHA_DESTINATION: Destination = {
+  id: 'kanha-tiger-reserve',
+  name: 'Kanha Tiger Reserve',
+  slug: 'kanha-tiger-reserve',
+  state: 'Madhya Pradesh',
+  country: 'India',
+  description: "Kanha Tiger Reserve is the largest national park in Madhya Pradesh, renowned for saving the hard-ground Barasingha from extinction and inspiring Rudyard Kipling's The Jungle Book across its majestic sal forests and open meadows.",
+  establishedYear: 1955,
+  totalArea: 2074.32,
+  coreArea: 917.43,
+  coreGates: 3,
+  bufferArea: 1134.36,
+  bufferGates: 4
+};
+
 const DestinationDetails = () => {
   const { slug } = useParams<{ slug: string }>();
   const [destination, setDestination] = useState<Destination | null>(null);
@@ -75,6 +91,8 @@ const DestinationDetails = () => {
           setDestination(DEFAULT_TADOBA_DESTINATION);
         } else if (lowerSlug.includes('pench')) {
           setDestination(DEFAULT_PENCH_DESTINATION);
+        } else if (lowerSlug.includes('kanha')) {
+          setDestination(DEFAULT_KANHA_DESTINATION);
         }
       } catch (error) {
         console.error('Failed to fetch destination details:', error);
@@ -82,6 +100,8 @@ const DestinationDetails = () => {
           setDestination(DEFAULT_TADOBA_DESTINATION);
         } else if (lowerSlug.includes('pench')) {
           setDestination(DEFAULT_PENCH_DESTINATION);
+        } else if (lowerSlug.includes('kanha')) {
+          setDestination(DEFAULT_KANHA_DESTINATION);
         }
       } finally {
         setIsLoading(false);
@@ -112,6 +132,16 @@ const DestinationDetails = () => {
     (slug && slug.toLowerCase().includes('pench'))
   ) {
     return <PenchInformation destination={destination || DEFAULT_PENCH_DESTINATION} resorts={resorts} />;
+  }
+
+  // Route specifically to Kanha custom details component
+  if (
+    slug === 'kanha-tiger-reserve' ||
+    slug === 'kanha-national-park' ||
+    slug === 'kanha-kisli-national-park' ||
+    (slug && slug.toLowerCase().includes('kanha'))
+  ) {
+    return <KanhaInformation destination={destination || DEFAULT_KANHA_DESTINATION} resorts={resorts} />;
   }
 
   if (!destination) {

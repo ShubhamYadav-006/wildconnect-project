@@ -422,7 +422,7 @@ const Resorts: React.FC = () => {
                             to={`/resorts/${business.slug}`}
                             className="resort-card-btn"
                           >
-                            <span>View Details & Rooms</span>
+                            <span>Submit Enquiry</span>
                             <ArrowRight size={15} />
                           </Link>
                         </div>
