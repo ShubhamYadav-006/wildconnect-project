@@ -6,7 +6,7 @@
   "scripts": {
     "build": "prisma generate && tsc && node -e \"import('fs').then(fs => fs.cpSync('src/generated', 'dist/generated', {recursive: true}))\"",
     "start": "node dist/server.js",
-    "dev": "nodemon --exec tsx src/server.ts",
+    "dev": "nodemon",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "format": "prettier --write \"src/**/*.ts\"",
