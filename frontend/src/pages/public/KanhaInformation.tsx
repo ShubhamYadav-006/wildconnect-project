@@ -292,7 +292,7 @@ const KanhaInformation = ({
       {/* ================= 1. COMPACT LUXURY HERO SECTION ================= */}
       <section className="kanha-hero">
         <img
-          src={destination.bannerImage || destination.imageUrl || KANHA_HERO_IMAGE}
+          src={destination.coverImage || (destination.images && destination.images[0]) || KANHA_HERO_IMAGE}
           alt={destination.name || 'Kanha scenic background'}
           className="kanha-hero-img"
         />

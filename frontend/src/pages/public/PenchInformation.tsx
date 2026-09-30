@@ -305,7 +305,7 @@ const PenchInformation = ({
       {/* ================= 1. COMPACT LUXURY HERO SECTION ================= */}
       <section className="pench-hero">
         <img
-          src={destination.bannerImage || destination.imageUrl || PENCH_HERO_IMAGE}
+          src={destination.coverImage || (destination.images && destination.images[0]) || PENCH_HERO_IMAGE}
           alt={destination.name || 'Pench scenic background'}
           className="pench-hero-img"
         />
