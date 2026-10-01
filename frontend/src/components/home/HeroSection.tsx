@@ -21,7 +21,6 @@ import {
 // Image Carousel Assets
 import matkasur from "../../assets/Tiger&Logo Image/Matkasur.JPG";
 import matkasur2 from "../../assets/Tiger&Logo Image/Matkasur2.JPG";
-import maya from "../../assets/Tiger&Logo Image/Maya.jpg";
 import tadoba from "../../assets/Tiger&Logo Image/Tadoba.jpg";
 import kuwani from "../../assets/Tiger&Logo Image/Kuwani.JPG";
 import leopard from "../../assets/Tiger&Logo Image/Leopard.JPG";
@@ -32,7 +31,6 @@ import "../../styles/home/HeroSection.css";
 const CAROUSEL_IMAGES = [
   matkasur,
   matkasur2,
-  maya,
   tadoba,
   kuwani,
   leopard,
