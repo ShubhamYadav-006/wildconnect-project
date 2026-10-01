@@ -24,6 +24,7 @@ import matkasur2 from "../../assets/Tiger&Logo Image/Matkasur2.JPG";
 import tadoba from "../../assets/Tiger&Logo Image/Tadoba.jpg";
 import kuwani from "../../assets/Tiger&Logo Image/Kuwani.JPG";
 import leopard from "../../assets/Tiger&Logo Image/Leopard.JPG";
+import indianGaur from "../../assets/Tiger&Logo Image/IndianGaur.jpg";
 
 // Component CSS
 import "../../styles/home/HeroSection.css";
@@ -34,6 +35,7 @@ const CAROUSEL_IMAGES = [
   tadoba,
   kuwani,
   leopard,
+  indianGaur,
 ];
 
 const HeroSection = () => {
