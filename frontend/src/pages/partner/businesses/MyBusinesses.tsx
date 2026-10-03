@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '../../../components/ui/LoadingSpinner';
+import { getImageUrl, handleImageError, DEFAULT_RESORT_IMAGE } from '../../../utils/imageUrl';
 
 import '../../../styles/partner/MyBusinesses.css';
 
@@ -219,10 +220,8 @@ export const MyBusinesses = () => {
           /* Minimal Cards Grid */
           <div className="min-card-grid">
             {filteredBusinesses.map((biz) => {
-              const coverImg =
-                biz.coverImage ||
-                (biz.images && biz.images[0]) ||
-                'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80';
+              const rawImg = biz.coverImage || (biz.images && biz.images[0]);
+              const coverImg = getImageUrl(rawImg, DEFAULT_RESORT_IMAGE);
 
               const isDraft = biz.status === 'DRAFT';
               const isRejected = biz.status === 'REJECTED';
@@ -234,10 +233,7 @@ export const MyBusinesses = () => {
                       src={coverImg}
                       alt={biz.name}
                       className="min-card-thumbnail"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80';
-                      }}
+                      onError={(e) => handleImageError(e, DEFAULT_RESORT_IMAGE)}
                     />
                     <div className="min-card-details">
                       <div className="min-card-header-line">

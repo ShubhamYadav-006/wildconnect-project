@@ -3,6 +3,7 @@ import { UploadCloud, X, Star, MoveLeft, MoveRight, Link as LinkIcon, Plus } fro
 import { uploadService } from '../../services/upload.service';
 import toast from 'react-hot-toast';
 import LoadingSpinner from './LoadingSpinner';
+import { getImageUrl, handleImageError, DEFAULT_RESORT_IMAGE } from '../../utils/imageUrl';
 
 import '../../styles/components/ImageUpload.css';
 
@@ -158,14 +159,6 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
     onChange(coverImage, newGallery);
   };
 
-  // Helper function to resolve the API URL for local images
-  const resolveImageUrl = (url: string) => {
-    if (url.startsWith('http') || url.startsWith('data:')) return url;
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
-    const BASE_URL = API_URL.replace('/api/v1', '');
-    return `${BASE_URL}${url}`;
-  };
-
   return (
     <div className="image-upload-container">
       {/* Option 1: Direct Image Link / URL Input */}
@@ -240,11 +233,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
           {allImages.map((imgUrl, index) => (
             <div key={`${imgUrl}-${index}`} className={`image-card ${imgUrl === coverImage ? 'is-primary' : ''}`}>
               <img
-                src={resolveImageUrl(imgUrl)}
+                src={getImageUrl(imgUrl, DEFAULT_RESORT_IMAGE)}
                 alt={`Gallery item ${index}`}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80';
-                }}
+                onError={(e) => handleImageError(e, DEFAULT_RESORT_IMAGE)}
               />
 
               <div className="image-card-overlay">

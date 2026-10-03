@@ -27,6 +27,7 @@ import {
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import BusinessInquiryForm from '../../components/ui/BusinessInquiryForm';
 import RoomAvailability from '../../components/ui/RoomAvailability';
+import { getImageUrl, handleImageError, DEFAULT_RESORT_IMAGE, DEFAULT_DESTINATION_IMAGE } from '../../utils/imageUrl';
 
 import '../../styles/public/BusinessDetails.css';
 
@@ -422,7 +423,12 @@ const PublicBusinessDetails: React.FC = () => {
                 <div className="gallery-grid">
                   {business.images.map((img, index) => (
                     <div key={index} className="gallery-item">
-                      <img src={img} alt={`${business.name} Gallery ${index + 1}`} loading="lazy" />
+                      <img 
+                        src={getImageUrl(img, DEFAULT_RESORT_IMAGE)} 
+                        alt={`${business.name} Gallery ${index + 1}`} 
+                        loading="lazy" 
+                        onError={(e) => handleImageError(e, DEFAULT_RESORT_IMAGE)}
+                      />
                     </div>
                   ))}
                 </div>
@@ -548,7 +554,12 @@ const PublicBusinessDetails: React.FC = () => {
                 className="sidebar-card related-dest-card"
                 onClick={() => navigate(`/destinations/${destination.slug}`)}
               >
-                <img src={destination.coverImage || ''} alt={destination.name} className="related-dest-img" />
+                <img 
+                  src={getImageUrl(destination.coverImage, DEFAULT_DESTINATION_IMAGE)} 
+                  alt={destination.name} 
+                  className="related-dest-img" 
+                  onError={(e) => handleImageError(e, DEFAULT_DESTINATION_IMAGE)}
+                />
                 <div className="related-dest-overlay">
                   <span className="dest-label">Located in</span>
                   <h4>{destination.name}</h4>

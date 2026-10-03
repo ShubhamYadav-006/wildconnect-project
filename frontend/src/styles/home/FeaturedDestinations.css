@@ -297,3 +297,79 @@
     margin-bottom: 0.625rem;
   }
 }
+
+/* ==========================================
+   Skeleton Loading State
+========================================== */
+.destination-skeleton-card {
+  pointer-events: none;
+}
+
+.destination-skeleton-image {
+  background: #E6E2D7;
+  position: relative;
+  overflow: hidden;
+}
+
+.dest-skeleton-shimmer {
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: destShimmer 1.5s infinite;
+}
+
+.dest-skeleton-line {
+  background: #E6E2D7;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dest-skeleton-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: destShimmer 1.5s infinite;
+}
+
+.dest-skeleton-line.title {
+  height: 1.25rem;
+  width: 70%;
+  margin-bottom: 0.5rem;
+}
+
+.dest-skeleton-line.location {
+  height: 0.85rem;
+  width: 40%;
+  margin-bottom: 0.75rem;
+}
+
+.dest-skeleton-line.desc {
+  height: 2.2rem;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.dest-skeleton-line.btn {
+  height: 1.1rem;
+  width: 45%;
+}
+
+@keyframes destShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

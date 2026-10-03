@@ -104,6 +104,114 @@ async function main() {
   });
   logger.info(`Created Destination: ${destination.name}`);
 
+  const penchDestination = await prisma.destination.upsert({
+    where: { slug: 'pench-tiger-reserve' },
+    update: {
+      establishedYear: 1983,
+      totalArea: 1179.63,
+      coreArea: 411.33,
+      coreGates: 6,
+      bufferArea: 768.30,
+      bufferGates: 7,
+    },
+    create: {
+      name: 'Pench Tiger Reserve',
+      slug: 'pench-tiger-reserve',
+      description: "The legendary forest that inspired Rudyard Kipling's The Jungle Book, known for pristine teak canopies and thriving wildlife.",
+      bestSeason: 'October to June',
+      state: 'Madhya Pradesh & Maharashtra',
+      country: 'India',
+      establishedYear: 1983,
+      totalArea: 1179.63,
+      coreArea: 411.33,
+      coreGates: 6,
+      bufferArea: 768.30,
+      bufferGates: 7,
+    },
+  });
+  logger.info(`Created Destination: ${penchDestination.name}`);
+
+  const kanhaDestination = await prisma.destination.upsert({
+    where: { slug: 'kanha-tiger-reserve' },
+    update: {
+      establishedYear: 1955,
+      totalArea: 2074.32,
+      coreArea: 917.43,
+      coreGates: 3,
+      bufferArea: 1134.36,
+      bufferGates: 4,
+    },
+    create: {
+      name: 'Kanha Tiger Reserve',
+      slug: 'kanha-tiger-reserve',
+      description: 'Sprawling sal forests and open savannah meadows, home to the rare Hardground Barasingha and prime tiger habitats.',
+      bestSeason: 'October to June',
+      state: 'Madhya Pradesh',
+      country: 'India',
+      establishedYear: 1955,
+      totalArea: 2074.32,
+      coreArea: 917.43,
+      coreGates: 3,
+      bufferArea: 1134.36,
+      bufferGates: 4,
+    },
+  });
+  logger.info(`Created Destination: ${kanhaDestination.name}`);
+
+  const bandhavgarhDestination = await prisma.destination.upsert({
+    where: { slug: 'bandhavgarh-tiger-reserve' },
+    update: {
+      establishedYear: 1968,
+      totalArea: 1536.94,
+      coreArea: 716.90,
+      coreGates: 3,
+      bufferArea: 820.04,
+      bufferGates: 3,
+    },
+    create: {
+      name: 'Bandhavgarh Tiger Reserve',
+      slug: 'bandhavgarh-tiger-reserve',
+      description: 'The Kingdom of Tigers boasting one of India’s highest tiger densities, 2,000-year-old fort ruins, and thriving wild elephant herds.',
+      bestSeason: 'October to June',
+      state: 'Madhya Pradesh',
+      country: 'India',
+      establishedYear: 1968,
+      totalArea: 1536.94,
+      coreArea: 716.90,
+      coreGates: 3,
+      bufferArea: 820.04,
+      bufferGates: 3,
+    },
+  });
+  logger.info(`Created Destination: ${bandhavgarhDestination.name}`);
+
+  const satpuraDestination = await prisma.destination.upsert({
+    where: { slug: 'satpura-tiger-reserve' },
+    update: {
+      establishedYear: 1981,
+      totalArea: 2133.30,
+      coreArea: 1339.26,
+      coreGates: 4,
+      bufferArea: 794.04,
+      bufferGates: 4,
+    },
+    create: {
+      name: 'Satpura Tiger Reserve',
+      slug: 'satpura-tiger-reserve',
+      description: "India's only walking safari tiger reserve, featuring prehistoric sandstone gorges, Denwa river canoeing, and nocturnal leopard safaris.",
+      bestSeason: 'October to June',
+      state: 'Madhya Pradesh',
+      country: 'India',
+      establishedYear: 1981,
+      totalArea: 2133.30,
+      coreArea: 1339.26,
+      coreGates: 4,
+      bufferArea: 794.04,
+      bufferGates: 4,
+    },
+  });
+  logger.info(`Created Destination: ${satpuraDestination.name}`);
+
   // 3. Seed Resort (1 Resort)
   let resort = await prisma.resort.findFirst({
     where: {

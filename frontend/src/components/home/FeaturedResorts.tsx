@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Sparkles, Waves, Utensils, Bed, Wifi } from "lucide-react";
 import { businessService, type Business } from "../../services/business.service";
 import { resortService } from "../../services/resort.service";
+import { getImageUrl, handleImageError, DEFAULT_RESORT_IMAGE } from "../../utils/imageUrl";
 
 import "../../styles/home/FeaturedResorts.css";
 
@@ -151,10 +152,8 @@ const FeaturedResorts = ({ destinationId }: FeaturedResortsProps) => {
         <div className="resorts-grid">
           {businessList.map((business) => {
             const cardId = business.id || business.slug || String((business as any)._id || Math.random());
-            const displayImage =
-              business.coverImage ||
-              business.images?.[0] ||
-              "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80";
+            const rawImage = business.coverImage || business.images?.[0];
+            const displayImage = getImageUrl(rawImage, DEFAULT_RESORT_IMAGE);
 
             const detailUrl = business.slug
               ? `/resorts/${business.slug}`
@@ -186,6 +185,7 @@ const FeaturedResorts = ({ destinationId }: FeaturedResortsProps) => {
                     alt={business.name}
                     className="resort-card-img"
                     loading="lazy"
+                    onError={(e) => handleImageError(e, DEFAULT_RESORT_IMAGE)}
                   />
                 </div>
 

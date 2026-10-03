@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { destinationService, type Destination } from '../../services/destination.service';
 import { businessService, type Business } from '../../services/business.service';
+import { getImageUrl, handleImageError, DEFAULT_RESORT_IMAGE } from '../../utils/imageUrl';
 import {
   MapPin,
   ChevronDown,
@@ -346,7 +347,8 @@ const Resorts: React.FC = () => {
               <div className="resorts-grid">
                 {businesses.map((business, index) => {
                   const typeInfo = getTypeBadge(business.type, business.metadata);
-                  const cardImage = business.coverImage || (business.images && business.images[0]) || 'https://images.unsplash.com/photo-1542640244-7e672d6cef4e?q=80&w=1000';
+                  const rawImage = business.coverImage || (business.images && business.images[0]);
+                  const cardImage = getImageUrl(rawImage, DEFAULT_RESORT_IMAGE);
 
                   return (
                     <div
@@ -360,6 +362,7 @@ const Resorts: React.FC = () => {
                           alt={business.name}
                           className="resort-card-image"
                           loading="lazy"
+                          onError={(e) => handleImageError(e, DEFAULT_RESORT_IMAGE)}
                         />
 
                         {/* Business Type Badge */}

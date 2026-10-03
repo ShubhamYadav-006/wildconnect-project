@@ -19,6 +19,8 @@ const Articles = lazy(() => import('../pages/public/Articles'));
 const ArticleDetails = lazy(() => import('../pages/public/ArticleDetails'));
 const Businesses = lazy(() => import('../pages/public/Businesses'));
 const PublicBusinessDetails = lazy(() => import('../pages/public/BusinessDetails'));
+const ResortDetails = lazy(() => import('../pages/public/ResortDetails'));
+const NilawarFarmsDetails = lazy(() => import('../pages/public/NilawarFarmsDetails'));
 const Contact = lazy(() => import('../pages/public/Contact'));
 const Unauthorized = lazy(() => import('../pages/public/Unauthorized'));
 const Loading = lazy(() => import('../pages/public/Loading'));
@@ -79,7 +81,11 @@ export const AppRoutes = () => {
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/destinations/:slug" element={<DestinationDetails />} />
           <Route path="/resorts" element={<Navigate to="/businesses?type=RESORT" replace />} />
-          <Route path="/resorts/:slug" element={<PublicBusinessDetails />} />
+          <Route path="/resorts/nilawar-farms" element={<NilawarFarmsDetails />} />
+          <Route path="/resorts/nilawar-farms-1" element={<NilawarFarmsDetails />} />
+          <Route path="/businesses/nilawar-farms" element={<NilawarFarmsDetails />} />
+          <Route path="/businesses/nilawar-farms-1" element={<NilawarFarmsDetails />} />
+          <Route path="/resorts/:slug" element={<ResortDetails />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/articles/:slug" element={<ArticleDetails />} />
           <Route path="/businesses" element={<Businesses />} />

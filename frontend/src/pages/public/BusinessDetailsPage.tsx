@@ -35,6 +35,7 @@ import BusinessInquiryForm from '../../components/ui/BusinessInquiryForm';
 import RoomAvailability from '../../components/ui/RoomAvailability';
 import { renderAmenityIcon, renderCategoryBadgeIcon } from '../../utils/amenityIcons';
 import { renderExperienceIcon } from '../../utils/experienceIcons';
+import { getImageUrl } from '../../utils/imageUrl';
 
 // Component Stylesheet
 import '../../styles/public/BusinessDetailsPage.css';
@@ -73,10 +74,11 @@ export const BusinessDetailsPage: React.FC<BusinessDetailsPageProps> = ({
   // 1. Derive Images List
   const images = useMemo(() => {
     const list: string[] = [];
-    if (business.coverImage) list.push(business.coverImage);
+    if (business.coverImage) list.push(getImageUrl(business.coverImage));
     if (business.images && Array.isArray(business.images)) {
       business.images.forEach((img) => {
-        if (img && !list.includes(img)) list.push(img);
+        const formatted = getImageUrl(img);
+        if (formatted && !list.includes(formatted)) list.push(formatted);
       });
     }
     return list.length > 0 ? list : [GENERIC_PLACEHOLDER_IMAGE];

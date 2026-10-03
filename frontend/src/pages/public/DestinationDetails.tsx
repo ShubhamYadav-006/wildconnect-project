@@ -5,12 +5,15 @@ import { resortService, Resort } from '../../services/resort.service';
 import TadobaDetails from './TadobaInformation';
 import PenchInformation from './PenchInformation';
 import KanhaInformation from './KanhaInformation';
+import BandhavgarhInformation from './BandhavgarhInformation';
+import SatpuraInformation from './SatpuraInformation';
 import {
   MapPin,
   Compass,
   Tent,
   AlertTriangle
 } from 'lucide-react';
+import { getImageUrl, handleImageError, DEFAULT_RESORT_IMAGE } from '../../utils/imageUrl';
 
 // Component Styles
 import "../../styles/public/DestinationDetails.css";
@@ -60,6 +63,36 @@ const DEFAULT_KANHA_DESTINATION: Destination = {
   bufferGates: 4
 };
 
+const DEFAULT_BANDHAVGARH_DESTINATION: Destination = {
+  id: 'bandhavgarh-tiger-reserve',
+  name: 'Bandhavgarh Tiger Reserve',
+  slug: 'bandhavgarh-tiger-reserve',
+  state: 'Madhya Pradesh',
+  country: 'India',
+  description: "Set in northern Madhya Pradesh, Bandhavgarh Tiger Reserve is renowned for having one of the highest wild tiger densities in India, built around the dramatic 2,000-year-old Bandhavgarh Fort and diverse sal and bamboo woodlands.",
+  establishedYear: 1968,
+  totalArea: 1536.94,
+  coreArea: 716.90,
+  coreGates: 3,
+  bufferArea: 820.04,
+  bufferGates: 3
+};
+
+const DEFAULT_SATPURA_DESTINATION: Destination = {
+  id: 'satpura-tiger-reserve',
+  name: 'Satpura Tiger Reserve',
+  slug: 'satpura-tiger-reserve',
+  state: 'Madhya Pradesh',
+  country: 'India',
+  description: "Satpura Tiger Reserve is India's only tiger reserve offering guided walking safaris through its core forest, alongside boat and canoe safaris across pristine reservoir backwaters and rugged sandstone valleys.",
+  establishedYear: 1981,
+  totalArea: 2133.30,
+  coreArea: 1339.26,
+  coreGates: 4,
+  bufferArea: 794.04,
+  bufferGates: 4
+};
+
 const DestinationDetails = () => {
   const { slug } = useParams<{ slug: string }>();
   const [destination, setDestination] = useState<Destination | null>(null);
@@ -93,6 +126,10 @@ const DestinationDetails = () => {
           setDestination(DEFAULT_PENCH_DESTINATION);
         } else if (lowerSlug.includes('kanha')) {
           setDestination(DEFAULT_KANHA_DESTINATION);
+        } else if (lowerSlug.includes('bandhavgarh')) {
+          setDestination(DEFAULT_BANDHAVGARH_DESTINATION);
+        } else if (lowerSlug.includes('satpura')) {
+          setDestination(DEFAULT_SATPURA_DESTINATION);
         }
       } catch (error) {
         console.error('Failed to fetch destination details:', error);
@@ -102,6 +139,10 @@ const DestinationDetails = () => {
           setDestination(DEFAULT_PENCH_DESTINATION);
         } else if (lowerSlug.includes('kanha')) {
           setDestination(DEFAULT_KANHA_DESTINATION);
+        } else if (lowerSlug.includes('bandhavgarh')) {
+          setDestination(DEFAULT_BANDHAVGARH_DESTINATION);
+        } else if (lowerSlug.includes('satpura')) {
+          setDestination(DEFAULT_SATPURA_DESTINATION);
         }
       } finally {
         setIsLoading(false);
@@ -142,6 +183,24 @@ const DestinationDetails = () => {
     (slug && slug.toLowerCase().includes('kanha'))
   ) {
     return <KanhaInformation destination={destination || DEFAULT_KANHA_DESTINATION} resorts={resorts} />;
+  }
+
+  // Route specifically to Bandhavgarh custom details component
+  if (
+    slug === 'bandhavgarh-tiger-reserve' ||
+    slug === 'bandhavgarh-national-park' ||
+    (slug && slug.toLowerCase().includes('bandhavgarh'))
+  ) {
+    return <BandhavgarhInformation destination={destination || DEFAULT_BANDHAVGARH_DESTINATION} resorts={resorts} />;
+  }
+
+  // Route specifically to Satpura custom details component
+  if (
+    slug === 'satpura-tiger-reserve' ||
+    slug === 'satpura-national-park' ||
+    (slug && slug.toLowerCase().includes('satpura'))
+  ) {
+    return <SatpuraInformation destination={destination || DEFAULT_SATPURA_DESTINATION} resorts={resorts} />;
   }
 
   if (!destination) {
@@ -242,22 +301,24 @@ const DestinationDetails = () => {
                 <p className="dest-details-section-info">No resorts listed yet for this destination.</p>
               ) : (
                 <div className="dest-details-resorts-list">
-                  {resorts.slice(0, 3).map(resort => (
-                    <Link key={resort.id} to={`/resorts/${resort.slug}`} className="dest-details-resort-item">
-                      <div className="dest-details-resort-thumb">
-                        {resort.images?.[0] && (
+                  {resorts.slice(0, 3).map(resort => {
+                    const thumbUrl = getImageUrl(resort.images?.[0] || resort.coverImage, DEFAULT_RESORT_IMAGE);
+                    return (
+                      <Link key={resort.id} to={`/resorts/${resort.slug}`} className="dest-details-resort-item">
+                        <div className="dest-details-resort-thumb">
                           <img 
-                            src={resort.images[0]} 
+                            src={thumbUrl} 
                             alt={resort.name} 
+                            onError={(e) => handleImageError(e, DEFAULT_RESORT_IMAGE)}
                           />
-                        )}
-                      </div>
-                      <div className="dest-details-resort-info">
-                        <h4 className="dest-details-resort-name">{resort.name}</h4>
-                        <p className="dest-details-resort-price">Inquire for Stay</p>
-                      </div>
-                    </Link>
-                  ))}
+                        </div>
+                        <div className="dest-details-resort-info">
+                          <h4 className="dest-details-resort-name">{resort.name}</h4>
+                          <p className="dest-details-resort-price">Inquire for Stay</p>
+                        </div>
+                      </Link>
+                    );
+                  })}
                   {resorts.length > 3 && (
                     <Link to="/resorts" className="dest-details-resorts-viewall">
                       View all stays &amp; resorts

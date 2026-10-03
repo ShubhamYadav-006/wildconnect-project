@@ -44,6 +44,24 @@ const DEFAULT_FALLBACK_DESTINATIONS: Destination[] = [
     description: "Sprawling sal forests and open savannah meadows, home to the rare Hardground Barasingha and prime tiger habitats.",
     coverImage: "https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=800&q=80",
   },
+  {
+    id: "4",
+    name: "Bandhavgarh Tiger Reserve",
+    slug: "bandhavgarh-tiger-reserve",
+    state: "Madhya Pradesh",
+    country: "India",
+    description: "The Kingdom of Tigers boasting one of India's highest tiger densities, 2,000-year-old fort ruins, and thriving wild elephant herds.",
+    coverImage: "https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "5",
+    name: "Satpura Tiger Reserve",
+    slug: "satpura-tiger-reserve",
+    state: "Madhya Pradesh",
+    country: "India",
+    description: "India's only walking safari tiger reserve, featuring prehistoric sandstone gorges, Denwa river canoeing, and nocturnal leopard safaris.",
+    coverImage: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80",
+  },
 ];
 
 const Destinations = () => {

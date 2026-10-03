@@ -22,6 +22,7 @@ import {
   X
 } from 'lucide-react';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import { getImageUrl, handleImageError, DEFAULT_RESORT_IMAGE } from '../../utils/imageUrl';
 
 // Component Stylesheet
 import '../../styles/public/Businesses.css';
@@ -222,10 +223,17 @@ const Businesses: React.FC = () => {
 
         {/* Minimal Dropdown Selector */}
         <div className="minimal-dropdown-wrapper" ref={dropdownRef}>
-          <button
-            type="button"
+          <div
+            role="button"
+            tabIndex={0}
             className={`minimal-dropdown-trigger ${isDropdownOpen ? 'open' : ''} ${selectedDestination ? 'active' : ''}`}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setIsDropdownOpen(!isDropdownOpen);
+              }
+            }}
             aria-expanded={isDropdownOpen}
           >
             <div className="minimal-trigger-left">
@@ -260,7 +268,7 @@ const Businesses: React.FC = () => {
               )}
               <ChevronDown size={16} className={`minimal-chevron ${isDropdownOpen ? 'rotated' : ''}`} />
             </div>
-          </button>
+          </div>
 
           {isDropdownOpen && (
             <div className="minimal-dropdown-popup">
@@ -362,10 +370,8 @@ const Businesses: React.FC = () => {
             <div className="minimal-grid">
               {filteredBusinesses.map(biz => {
                 const badgeLabel = getBadgeLabel(biz.type);
-                const cardImg =
-                  biz.coverImage ||
-                  (biz.images && biz.images[0]) ||
-                  'https://images.unsplash.com/photo-1542640244-7e672d6cef4e?q=80&w=800';
+                const rawImg = biz.coverImage || (biz.images && biz.images[0]);
+                const cardImg = getImageUrl(rawImg, DEFAULT_RESORT_IMAGE);
 
                 return (
                   <div
@@ -375,7 +381,12 @@ const Businesses: React.FC = () => {
                   >
                     {/* Media */}
                     <div className="minimal-card-media">
-                      <img src={cardImg} alt={biz.name} loading="lazy" />
+                      <img
+                        src={cardImg}
+                        alt={biz.name}
+                        loading="lazy"
+                        onError={(e) => handleImageError(e, DEFAULT_RESORT_IMAGE)}
+                      />
                       <span className={`minimal-type-badge type-${biz.type.toLowerCase()}`}>
                         {badgeLabel}
                       </span>

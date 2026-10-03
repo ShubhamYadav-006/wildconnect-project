@@ -13,6 +13,8 @@ import { resortService, Resort } from '../../services/resort.service';
 import { businessService, Business } from '../../services/business.service';
 import { destinationService, Destination } from '../../services/destination.service';
 import BusinessDetailsPage from './BusinessDetailsPage';
+import NilawarFarmsDetails from './NilawarFarmsDetails';
+import TadobaWildernessDetails from './TadobaWildernessDetails';
 import { useAuth } from '../../hooks/useAuth';
 import {
   MapPin,
@@ -38,6 +40,7 @@ import {
   Maximize2
 } from 'lucide-react';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import { getImageUrl, handleImageError, DEFAULT_RESORT_IMAGE } from '../../utils/imageUrl';
 
 // Component Stylesheet
 import '../../styles/public/ResortDetails.css';
@@ -159,11 +162,16 @@ export const ResortDetails = () => {
     updatedAt: business.updatedAt
   } : null);
 
-  const allImages = resortData?.images && resortData.images.length > 0 
+  const rawImages = resortData?.images && resortData.images.length > 0 
     ? resortData.images 
     : resortData?.coverImage 
     ? [resortData.coverImage] 
     : [];
+
+  const allImages = rawImages.map(img => getImageUrl(img, DEFAULT_RESORT_IMAGE));
+  if (allImages.length === 0) {
+    allImages.push(DEFAULT_RESORT_IMAGE);
+  }
 
   // Handle Lightbox Navigation
   const openLightbox = (index: number) => {
@@ -204,7 +212,28 @@ export const ResortDetails = () => {
     return <LoadingSpinner message="Loading luxury lodge details..." />;
   }
 
-  // Render generic, reusable BusinessDetailsPage for any registered partner business
+  // Dedicated custom showcase for Nilawar Farms
+  if (
+    slug === 'nilawar-farms' ||
+    slug === 'nilawar-farms-1' ||
+    (slug && slug.toLowerCase().includes('nilawar')) ||
+    (business && business.name.toLowerCase().includes('nilawar'))
+  ) {
+    return <NilawarFarmsDetails business={business} destination={destination} />;
+  }
+
+  // Dedicated custom showcase for Tadoba Wilderness Resort
+  if (
+    slug === 'tadoba-wilderness-resort' ||
+    (slug && slug.toLowerCase().includes('tadoba-wilderness')) ||
+    (business && business.name.toLowerCase().includes('tadoba wilderness'))
+  ) {
+    if (business) {
+      return <TadobaWildernessDetails business={business} destination={destination} />;
+    }
+  }
+
+  // Render generic, reusable BusinessDetailsPage for any other registered partner business
   if (business) {
     return <BusinessDetailsPage business={business} destination={destination} />;
   }
@@ -349,6 +378,7 @@ export const ResortDetails = () => {
                 src={allImages[0]} 
                 alt={`${resortData.name} primary view`} 
                 className="resort-gallery-img"
+                onError={(e) => handleImageError(e, DEFAULT_RESORT_IMAGE)}
               />
               <div className="resort-gallery-hover-overlay">
                 <Maximize2 size={24} />
@@ -377,6 +407,7 @@ export const ResortDetails = () => {
                       alt={`${resortData.name} view ${actualIndex + 1}`} 
                       className="resort-gallery-img"
                       loading="lazy"
+                      onError={(e) => handleImageError(e, DEFAULT_RESORT_IMAGE)}
                     />
                     {isLastVisible ? (
                       <div className="resort-gallery-more-overlay">

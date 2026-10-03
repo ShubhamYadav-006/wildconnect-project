@@ -24,7 +24,7 @@ import matkasur2 from "../../assets/Tiger&Logo Image/Matkasur2.JPG";
 import tadoba from "../../assets/Tiger&Logo Image/Tadoba.jpg";
 import kuwani from "../../assets/Tiger&Logo Image/Kuwani.JPG";
 import leopard from "../../assets/Tiger&Logo Image/Leopard.JPG";
-import indianGaur from "../../assets/Tiger&Logo Image/IndianGaur.jpg";
+import indianGaur from "../../assets/Tiger&Logo Image/Z.jpg";
 
 // Component CSS
 import "../../styles/home/HeroSection.css";
@@ -39,24 +39,16 @@ const CAROUSEL_IMAGES = [
 ];
 
 const HeroSection = () => {
-  // Start with a random initial image from the collection
-  const [activeIndex, setActiveIndex] = useState(() =>
-    Math.floor(Math.random() * CAROUSEL_IMAGES.length)
-  );
+  // Start from the first image in the collection
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => {
-        let nextIndex;
-        do {
-          nextIndex = Math.floor(Math.random() * CAROUSEL_IMAGES.length);
-        } while (nextIndex === prevIndex && CAROUSEL_IMAGES.length > 1);
-        return nextIndex;
-      });
+      setActiveIndex((prevIndex) => (prevIndex + 1) % CAROUSEL_IMAGES.length);
     }, 4500);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [activeIndex]);
 
   const handlePrevSlide = () => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length);
