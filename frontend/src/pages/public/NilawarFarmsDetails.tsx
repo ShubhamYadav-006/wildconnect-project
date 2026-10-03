@@ -1,48 +1,60 @@
 /* ==========================================================
    NilawarFarmsDetails Component
    ----------------------------------------------------------
-   Purpose:
-   Dedicated showcase page for Nilawar Farms Agritourism Farmstay.
-   Fully incorporates verified research: Borda Lake / Mul Road location,
-   Mamla Gate access, room types, pet-friendly amenities, swimming pool,
-   and direct contact info.
+   WildConnect Wildlife Tourism Platform
+   Dedicated, responsive Resort & Farmstay details page for Nilawar Farms
+   Clean, full-width responsive layout suitable for all devices (Mobile, Tablet, Desktop)
    ========================================================== */
 
-import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { businessService, Business } from '../../services/business.service';
+import { useAuth } from '../../hooks/useAuth';
 import {
   MapPin,
-  Wifi,
-  Utensils,
-  Car,
-  Check,
   Compass,
+  ShieldCheck,
   ChevronLeft,
   ChevronRight,
   X,
-  Sparkles,
-  TreePine,
   Maximize2,
-  Send,
-  Flame,
+  TreePine,
+  Utensils,
   Wind,
-  Bed,
-  PartyPopper,
+  Wifi,
+  Car,
+  Flame,
+  Clock,
+  ArrowRight,
+  Calendar,
+  Users,
+  Building,
+  CheckCircle2,
+  Sparkles,
+  Binoculars,
+  ExternalLink,
+  MessageCircle,
+  AlertCircle,
   Dog,
   LayoutGrid
 } from 'lucide-react';
 import BusinessInquiryForm from '../../components/ui/BusinessInquiryForm';
-import RoomAvailability from '../../components/ui/RoomAvailability';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import { getImageUrl, DEFAULT_RESORT_IMAGE } from '../../utils/imageUrl';
 
-// Direct High-Resolution Assets
-import farmImg1 from '../../assets/NilawarFarmsImages/NilawarFarms1 (1).png';
-import farmImg2 from '../../assets/NilawarFarmsImages/NilawarFarms1 (2).png';
-import farmImg3 from '../../assets/NilawarFarmsImages/NilawarFarms1 (3).png';
-import farmImg4 from '../../assets/NilawarFarmsImages/NilawarFarms1 (4).png';
-import farmImg5 from '../../assets/NilawarFarmsImages/NilawarFarms1 (5).png';
-import farmImg6 from '../../assets/NilawarFarmsImages/NilawarFarms1 (6).png';
+// Direct High-Resolution Assets for Nilawar Farms
+import farmImg1 from '../../assets/NilawarFarmsImages/Nilawarfarms (1).png';
+import farmImg2 from '../../assets/NilawarFarmsImages/Nilawarfarms (2).png';
+import farmImg3 from '../../assets/NilawarFarmsImages/Nilawarfarms (3).png';
+import farmImg4 from '../../assets/NilawarFarmsImages/Nilawarfarms (4).png';
+import farmImg5 from '../../assets/NilawarFarmsImages/Nilawarfarms (5).png';
+import farmImg6 from '../../assets/NilawarFarmsImages/Nilawarfarms (6).png';
+import farmImg7 from '../../assets/NilawarFarmsImages/Nilawarfarms (7).jpg';
+import farmImg8 from '../../assets/NilawarFarmsImages/Nilawarfarms (8).jpg';
+import farmImg10 from '../../assets/NilawarFarmsImages/Nilawarfarms (10).jpg';
+import farmImg18 from '../../assets/NilawarFarmsImages/Nilawarfarms (18).jpg';
+import farmImg21 from '../../assets/NilawarFarmsImages/Nilawarfarms (21).jpg';
+import farmImg30 from '../../assets/NilawarFarmsImages/Nilawarfarms (30).jpg';
 
 // Component Stylesheet
 import '../../styles/public/NilawarFarmsDetails.css';
@@ -55,7 +67,6 @@ interface NilawarFarmsDetailsProps {
 interface GalleryItem {
   src: string;
   title: string;
-  category: 'all' | 'rooms' | 'pool' | 'landscape';
   tag: string;
   desc: string;
 }
@@ -64,66 +75,101 @@ const GALLERY_IMAGES: GalleryItem[] = [
   {
     src: farmImg1,
     title: 'Farmstay Front View & Greenery',
-    category: 'landscape',
     tag: 'Estate Overview',
-    desc: 'Lush greenery and open countryside ambiance at Borda'
+    desc: 'Lush greenery and open countryside ambiance at Borda near Tadoba'
   },
   {
     src: farmImg2,
     title: 'Deluxe AC Room & Garden Sit-Out',
-    category: 'rooms',
     tag: 'Deluxe AC Room',
-    desc: 'Spacious air-conditioned rooms opening to gardens'
+    desc: 'Spacious air-conditioned rooms opening directly to manicured lawns'
   },
   {
     src: farmImg3,
     title: 'Rustic Wooden Cottage Bedroom',
-    category: 'rooms',
     tag: 'Wooden Cottage',
-    desc: 'Warm wooden cottage interiors for a cozy wilderness stay'
+    desc: 'Warm wooden cottage interiors crafted for cozy wilderness stays'
   },
   {
     src: farmImg4,
     title: 'Standalone Cottage & Verandah',
-    category: 'rooms',
     tag: 'Private Cottage',
     desc: 'Independent cottage units with private shaded sit-outs'
   },
   {
     src: farmImg5,
     title: 'Swimming Pool & Outdoor Dining',
-    category: 'pool',
     tag: 'Pool & Lounge',
-    desc: 'Refreshing pool with deck chairs and open-air seating'
+    desc: 'Refreshing swimming pool with deck chairs and open-air seating'
   },
   {
     src: farmImg6,
-    title: 'Borda Lake Countryside & Bonfire Lawn',
-    category: 'landscape',
+    title: 'Borda Countryside & Bonfire Lawn',
     tag: 'Bonfire Lawn',
-    desc: 'Open lawn spaces for evening campfires and gatherings'
+    desc: 'Open lawn spaces for evening campfires and family gatherings'
   },
+  {
+    src: farmImg7,
+    title: 'Lush Farmstay Gardens',
+    tag: 'Orchards & Flora',
+    desc: 'Fresh agricultural plantation and flowering garden walkways'
+  },
+  {
+    src: farmImg8,
+    title: 'Outdoor Dining & Open Sit-out',
+    tag: 'Al Fresco Dining',
+    desc: 'Open-air dining areas surrounded by green trees and cool breeze'
+  },
+  {
+    src: farmImg10,
+    title: 'Farmstay Evening Ambiance',
+    tag: 'Twilight View',
+    desc: 'Peaceful evening skies over the Borda countryside estate'
+  },
+  {
+    src: farmImg18,
+    title: 'Cozy Room Interiors',
+    tag: 'Room Comforts',
+    desc: 'Comfortable bedding, clean washrooms, and peaceful amenities'
+  },
+  {
+    src: farmImg21,
+    title: 'Swimming Pool Side Deck',
+    tag: 'Poolside Deck',
+    desc: 'Sun decks and shaded seating areas around the private pool'
+  },
+  {
+    src: farmImg30,
+    title: 'Farmstay Lawns & Activities',
+    tag: 'Activities Lawn',
+    desc: 'Expansive grassy grounds for outdoor games and relaxation'
+  }
 ];
 
-// Selected 5-Image Mosaic Grid Preview items mapped to full gallery index
-const MOSAIC_PREVIEW_ITEMS = [
+const PREVIEW_IMAGES = [
   { item: GALLERY_IMAGES[0], index: 0 },
   { item: GALLERY_IMAGES[1], index: 1 },
-  { item: GALLERY_IMAGES[4], index: 4 },
-  { item: GALLERY_IMAGES[2], index: 2 },
-  { item: GALLERY_IMAGES[5], index: 5 },
+  { item: GALLERY_IMAGES[4], index: 4 }
 ];
 
-export const NilawarFarmsDetails = ({ business: initialBusiness }: NilawarFarmsDetailsProps) => {
+export const NilawarFarmsDetails: React.FC<NilawarFarmsDetailsProps> = ({
+  business: initialBusiness,
+  destination: initialDestination
+}) => {
   const { slug } = useParams<{ slug: string }>();
-  const [business, setBusiness] = useState<Business | null>(initialBusiness || null);
-  const [isLoading, setIsLoading] = useState(!initialBusiness);
-  const [showInquiryModal, setShowInquiryModal] = useState(false);
+  const { user } = useAuth();
 
-  // Lightbox State
+  const [business, setBusiness] = useState<Business | null>(initialBusiness || null);
+  const [destination, setDestination] = useState<any>(initialDestination || null);
+  const [relatedStays, setRelatedStays] = useState<Business[]>([]);
+  const [isLoading, setIsLoading] = useState(!initialBusiness);
+
+  // Modal & Lightbox states
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showInquiryModal, setShowInquiryModal] = useState(false);
 
+  // Fetch Nilawar data if not passed
   useEffect(() => {
     if (initialBusiness) {
       setBusiness(initialBusiness);
@@ -131,7 +177,7 @@ export const NilawarFarmsDetails = ({ business: initialBusiness }: NilawarFarmsD
       return;
     }
 
-    const fetchNilawarData = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
         const querySlug = slug || 'nilawar-farms';
@@ -141,15 +187,18 @@ export const NilawarFarmsDetails = ({ business: initialBusiness }: NilawarFarmsD
           bizData = await businessService.getPublicBusinessBySlug(querySlug);
         } catch {
           const allBiz = await businessService.getPublicBusinesses();
-          bizData = (Array.isArray(allBiz) ? allBiz : []).find(b =>
-            b.slug === querySlug ||
-            b.slug.includes('nilawar') ||
-            b.name.toLowerCase().includes('nilawar')
-          ) || null;
+          bizData =
+            (Array.isArray(allBiz) ? allBiz : []).find(
+              (b) =>
+                b.slug === querySlug ||
+                b.slug.includes('nilawar') ||
+                b.name.toLowerCase().includes('nilawar')
+            ) || null;
         }
 
         if (bizData) {
           setBusiness(bizData);
+          if (bizData.destination) setDestination(bizData.destination);
         }
       } catch (err) {
         console.error('Failed to load Nilawar Farms data:', err);
@@ -158,9 +207,27 @@ export const NilawarFarmsDetails = ({ business: initialBusiness }: NilawarFarmsD
       }
     };
 
-    fetchNilawarData();
+    fetchData();
   }, [slug, initialBusiness]);
 
+  // Fetch Other Stays in Tadoba for "Explore More"
+  useEffect(() => {
+    const fetchRelated = async () => {
+      try {
+        const data = await businessService.getPublicBusinesses({ type: 'RESORT' });
+        const filtered = (Array.isArray(data) ? data : []).filter(
+          (b) => b.id !== business?.id && !b.slug.includes('nilawar') && (!b.status || b.status === 'APPROVED')
+        );
+        setRelatedStays(filtered.slice(0, 3));
+      } catch {
+        // non-blocking
+      }
+    };
+
+    fetchRelated();
+  }, [business?.id]);
+
+  // Lightbox Navigation
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index);
     setIsLightboxOpen(true);
@@ -193,42 +260,88 @@ export const NilawarFarmsDetails = ({ business: initialBusiness }: NilawarFarmsD
   }, [isLightboxOpen, closeLightbox, nextImage, prevImage]);
 
   if (isLoading) {
-    return <LoadingSpinner message="Loading Nilawar Farms details..." />;
+    return <LoadingSpinner message="Loading Nilawar Farms Agritourism details..." />;
   }
+
+  const destinationName = destination?.name || 'Tadoba National Park';
+  const destinationSlug = destination?.slug || 'tadoba';
 
   return (
     <div className="nilawar-details-page">
-      {/* ================= 1. COMPACT HEADER ================= */}
-      <header className="nilawar-header-container">
-        <div className="nilawar-header-main">
-          <div className="nilawar-header-info">
-            <div className="nilawar-badge-row">
-              <span className="nilawar-tag">Agritourism &amp; Nature Stay</span>
-              <span className="nilawar-verified-badge">
-                <Sparkles size={13} /> Verified Property
-              </span>
-            </div>
-            <h1 className="nilawar-title">Nilawar Farms</h1>
-            <div className="nilawar-meta-row">
-              <span className="nilawar-meta-item">
-                <MapPin size={15} className="nilawar-meta-icon" />
-                Behind Borda Lake, Mul Road, Chandrapur
-              </span>
-            </div>
+      {/* ==========================================================
+          1. BREADCRUMBS
+         ========================================================== */}
+      <nav className="nilawar-breadcrumbs" aria-label="Breadcrumb Navigation">
+        <div className="nilawar-breadcrumbs-container">
+          <Link to="/" className="nilawar-crumb-link">Home</Link>
+          <span className="nilawar-crumb-sep">/</span>
+          <Link to="/destinations" className="nilawar-crumb-link">Destinations</Link>
+          <span className="nilawar-crumb-sep">/</span>
+          <Link to={`/destinations/${destinationSlug}`} className="nilawar-crumb-link">
+            {destinationName}
+          </Link>
+          <span className="nilawar-crumb-sep">/</span>
+          <Link to="/businesses?type=RESORT" className="nilawar-crumb-link">Resorts</Link>
+          <span className="nilawar-crumb-sep">/</span>
+          <span className="nilawar-crumb-current" aria-current="page">Nilawar Farms</span>
+        </div>
+      </nav>
+
+      {/* ==========================================================
+          2. RESORT HERO
+         ========================================================== */}
+      <header className="nilawar-hero-header">
+        <div className="nilawar-hero-meta-row">
+          <div className="nilawar-hero-location">
+            <MapPin size={15} className="nilawar-hero-loc-icon" />
+            <span>Borda, Mul Road, Tadoba, Maharashtra</span>
           </div>
 
-          <div className="nilawar-header-actions">
+          <div className="nilawar-hero-verified-badge" title="WildConnect Verified Property">
+            <ShieldCheck size={14} />
+            <span>Verified Partner</span>
+          </div>
+        </div>
+
+        <div className="nilawar-hero-title-row">
+          <div className="nilawar-hero-title-content">
+            <h1 className="nilawar-main-title">Nilawar Farms</h1>
+
+          </div>
+
+          <div className="nilawar-hero-cta-box">
+            <button
+              type="button"
+              className="nilawar-btn-primary-cta"
+              onClick={() => setShowInquiryModal(true)}
+            >
+              <Calendar size={16} />
+              <span>Inquire / Plan Your Stay</span>
+            </button>
+            <a
+              href={`https://wa.me/919422112233?text=${encodeURIComponent(
+                'Hi Nilawar Farms, I am interested in inquiring about a stay and safari booking.'
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nilawar-btn-whatsapp-hero"
+            >
+              <MessageCircle size={16} />
+              <span>WhatsApp Host</span>
+            </a>
           </div>
         </div>
       </header>
 
-      {/* ================= 2. CREATIVE PHOTO SHOWCASE (LUXURY 5-IMAGE MOSAIC) ================= */}
-      <section className="nilawar-mosaic-showcase" aria-label="Photo Showcase Gallery">
+      {/* ==========================================================
+          3. PHOTO GALLERY (COMPACT 3-IMAGE SHOWCASE + LIGHTBOX)
+         ========================================================== */}
+      <section className="nilawar-gallery-section" aria-label="Photo Showcase Gallery">
         <div className="nilawar-mosaic-grid">
-          {MOSAIC_PREVIEW_ITEMS.map(({ item, index }, idx) => (
+          {PREVIEW_IMAGES.map(({ item, index }, idx) => (
             <div
               key={idx}
-              className={`nilawar-mosaic-item nilawar-mosaic-item-${idx} ${idx === 0 ? 'nilawar-mosaic-hero' : ''}`}
+              className={`nilawar-mosaic-item nilawar-mosaic-item-${idx}`}
               onClick={() => openLightbox(index)}
               role="button"
               tabIndex={0}
@@ -241,9 +354,6 @@ export const NilawarFarmsDetails = ({ business: initialBusiness }: NilawarFarmsD
                 className="nilawar-mosaic-img"
                 loading={idx === 0 ? 'eager' : 'lazy'}
               />
-              <div className="nilawar-mosaic-badge">
-                <span>{item.tag}</span>
-              </div>
               <div className="nilawar-mosaic-overlay">
                 <div className="nilawar-mosaic-caption">
                   <h4 className="nilawar-mosaic-title">{item.title}</h4>
@@ -257,266 +367,672 @@ export const NilawarFarmsDetails = ({ business: initialBusiness }: NilawarFarmsD
           ))}
         </div>
 
-        {/* Floating View All Photos Button */}
+        {/* Floating See More Photos Button */}
         <button
           type="button"
           className="nilawar-mosaic-view-all-btn"
           onClick={() => openLightbox(0)}
-          aria-label={`View all ${GALLERY_IMAGES.length} photos`}
+          aria-label={`See more photos (${GALLERY_IMAGES.length})`}
         >
           <LayoutGrid size={15} />
-          <span>Show all {GALLERY_IMAGES.length} photos</span>
+          <span>See more photos ({GALLERY_IMAGES.length})</span>
         </button>
       </section>
 
-      {/* ================= 3. COMPACT HIGHLIGHTS STRIP ================= */}
-      <div className="nilawar-quick-strip">
-        <div className="nilawar-quick-item">
-          <span className="nilawar-quick-label">Category</span>
-          <span className="nilawar-quick-value">Pool Farmstay &amp; Resort</span>
-        </div>
-        <div className="nilawar-quick-divider" />
-        <div className="nilawar-quick-item">
-          <span className="nilawar-quick-label">Nearest Safari Gate</span>
-          <span className="nilawar-quick-value">Mamla Buffer Gate</span>
-        </div>
-        <div className="nilawar-quick-divider" />
-        <div className="nilawar-quick-item">
-          <span className="nilawar-quick-label">Stay Formats</span>
-          <span className="nilawar-quick-value">Deluxe Rooms, Cottages &amp; Villa</span>
-        </div>
-        <div className="nilawar-quick-divider" />
-        <div className="nilawar-quick-item">
-          <span className="nilawar-quick-label">Pet Policy</span>
-          <span className="nilawar-quick-value">Pet-Friendly Stay</span>
-        </div>
-      </div>
-
-      {/* ================= 4. MAIN CONTENT & SIDEBAR ================= */}
-      <div className="nilawar-layout-grid">
-        {/* Left Main Column */}
-        <div className="nilawar-main-col">
-          {/* Room Availability / Booking System */}
-          <div className="nilawar-rooms-wrapper">
-            <RoomAvailability
-              businessId={business?.id || 'nilawar-farms'}
-              businessName={business?.name || 'Nilawar Farms'}
-            />
+      {/* ==========================================================
+          4. QUICK HIGHLIGHTS (COMPACT ICON CARDS)
+         ========================================================== */}
+      <section className="nilawar-highlights-strip" aria-label="Key Highlights">
+        <div className="nilawar-highlights-grid">
+          <div className="nilawar-highlight-card">
+            <div className="nilawar-hl-icon-wrap">
+              <MapPin size={20} />
+            </div>
+            <div className="nilawar-hl-content">
+              <span className="nilawar-hl-label">Location</span>
+              <span className="nilawar-hl-value">Borda, Near Tadoba</span>
+            </div>
           </div>
 
-          {/* About & Key Highlights Combined Card */}
-          <section className="nilawar-card">
-            <div className="nilawar-card-header">
-              <span className="nilawar-card-eyebrow">The Property</span>
-              <h2 className="nilawar-card-title">About Nilawar Farms</h2>
+          <div className="nilawar-highlight-card">
+            <div className="nilawar-hl-icon-wrap">
+              <Building size={20} />
             </div>
-            <div className="nilawar-description">
-              <p>
-                Nilawar Farms is a farm-style stay set in the Borda area of Chandrapur district, on the Mul Road side of the Tadoba Andhari Tiger Reserve landscape. The property offers a serene green getaway with lush gardens, a swimming pool, and comfortable countryside stays.
+            <div className="nilawar-hl-content">
+              <span className="nilawar-hl-label">Property Type</span>
+              <span className="nilawar-hl-value">Farmstay / Resort</span>
+            </div>
+          </div>
+
+          <div className="nilawar-highlight-card">
+            <div className="nilawar-hl-icon-wrap">
+              <Car size={20} />
+            </div>
+            <div className="nilawar-hl-content">
+              <span className="nilawar-hl-label">Safari Access</span>
+              <span className="nilawar-hl-value">Mamla Gate (~4km)</span>
+            </div>
+          </div>
+
+          <div className="nilawar-highlight-card">
+            <div className="nilawar-hl-icon-wrap">
+              <Sparkles size={20} />
+            </div>
+            <div className="nilawar-hl-content">
+              <span className="nilawar-hl-label">Key Facilities</span>
+              <span className="nilawar-hl-value">Swimming Pool &amp; Lawns</span>
+            </div>
+          </div>
+
+          <div className="nilawar-highlight-card">
+            <div className="nilawar-hl-icon-wrap">
+              <Utensils size={20} />
+            </div>
+            <div className="nilawar-hl-content">
+              <span className="nilawar-hl-label">Dining</span>
+              <span className="nilawar-hl-value">Varhadi &amp; Home-style Veg/Non-Veg</span>
+            </div>
+          </div>
+
+          <div className="nilawar-highlight-card">
+            <div className="nilawar-hl-icon-wrap">
+              <Users size={20} />
+            </div>
+            <div className="nilawar-hl-content">
+              <span className="nilawar-hl-label">Suitability</span>
+              <span className="nilawar-hl-value">Families, Groups &amp; Pet Owners</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Full-Width Content Container */}
+      <main className="nilawar-main-flow">
+        {/* ==========================================================
+            5. ABOUT THE PROPERTY
+           ========================================================== */}
+        <section className="nilawar-section-card" id="about-property">
+          <div className="nilawar-section-header">
+            <div className="nilawar-section-badge">
+              <TreePine size={16} />
+              <span>Overview</span>
+            </div>
+            <h2 className="nilawar-section-title">About Nilawar Farms</h2>
+          </div>
+
+          <div className="nilawar-about-prose">
+            <p>
+              Nilawar Farms is an agritourism resort situated near Borda Lake along Mul Road, offering a tranquil sanctuary just minutes away from Tadoba Andhari Tiger Reserve’s Mamla buffer gate.
+            </p>
+            <p>
+              Spanning verdant agricultural lands with fruit orchards and manicured lawns, the property features a private swimming pool, air-conditioned cottages, open-air campfire zones, and farm-fresh Maharashtrian cuisine prepared on order.
+            </p>
+          </div>
+
+          <div className="nilawar-about-bullet-grid">
+            <div className="nilawar-about-bullet-item">
+              <CheckCircle2 size={16} className="nilawar-bullet-check" />
+              <span>Direct 5-minute proximity to Mamla Safari Gate</span>
+            </div>
+            <div className="nilawar-about-bullet-item">
+              <CheckCircle2 size={16} className="nilawar-bullet-check" />
+              <span>Private swimming pool with lounge area &amp; open showers</span>
+            </div>
+            <div className="nilawar-about-bullet-item">
+              <CheckCircle2 size={16} className="nilawar-bullet-check" />
+              <span>Pet-friendly property with spacious outdoor gardens</span>
+            </div>
+            <div className="nilawar-about-bullet-item">
+              <CheckCircle2 size={16} className="nilawar-bullet-check" />
+              <span>Home-cooked Maharashtrian, Varhadi &amp; Saoji dishes</span>
+            </div>
+          </div>
+        </section>
+        {/* ==========================================================
+            7. AMENITIES & FACILITIES (ICON GRID)
+           ========================================================== */}
+        <section className="nilawar-section-card" id="amenities">
+          <div className="nilawar-section-header">
+            <div className="nilawar-section-badge">
+              <Sparkles size={16} />
+              <span>Comfort &amp; Convenience</span>
+            </div>
+            <h2 className="nilawar-section-title">Amenities &amp; Facilities</h2>
+          </div>
+
+          <div className="nilawar-amenities-grid">
+            <div className="nilawar-amenity-tile">
+              <div className="nilawar-amenity-tile-icon"><Sparkles size={20} /></div>
+              <span className="nilawar-amenity-tile-label">Private Swimming Pool</span>
+            </div>
+            <div className="nilawar-amenity-tile">
+              <div className="nilawar-amenity-tile-icon"><Wind size={20} /></div>
+              <span className="nilawar-amenity-tile-label">Air-Conditioned Rooms</span>
+            </div>
+            <div className="nilawar-amenity-tile">
+              <div className="nilawar-amenity-tile-icon"><Dog size={20} /></div>
+              <span className="nilawar-amenity-tile-label">Pet Friendly Grounds</span>
+            </div>
+            <div className="nilawar-amenity-tile">
+              <div className="nilawar-amenity-tile-icon"><Flame size={20} /></div>
+              <span className="nilawar-amenity-tile-label">Evening Bonfire &amp; BBQ</span>
+            </div>
+            <div className="nilawar-amenity-tile">
+              <div className="nilawar-amenity-tile-icon"><Utensils size={20} /></div>
+              <span className="nilawar-amenity-tile-label">In-House Farm Kitchen</span>
+            </div>
+            <div className="nilawar-amenity-tile">
+              <div className="nilawar-amenity-tile-icon"><Car size={20} /></div>
+              <span className="nilawar-amenity-tile-label">Free Secure Parking</span>
+            </div>
+            <div className="nilawar-amenity-tile">
+              <div className="nilawar-amenity-tile-icon"><TreePine size={20} /></div>
+              <span className="nilawar-amenity-tile-label">Spacious Event Lawns</span>
+            </div>
+            <div className="nilawar-amenity-tile">
+              <div className="nilawar-amenity-tile-icon"><Wifi size={20} /></div>
+              <span className="nilawar-amenity-tile-label">Free Wi-Fi</span>
+            </div>
+            <div className="nilawar-amenity-tile">
+              <div className="nilawar-amenity-tile-icon"><Binoculars size={20} /></div>
+              <span className="nilawar-amenity-tile-label">Safari Booking Assistance</span>
+            </div>
+          </div>
+        </section>
+
+        {/* ==========================================================
+            6. ACCOMMODATION & ROOM TYPES
+           ========================================================== */}
+        <section className="nilawar-section-card" id="rooms">
+          <div className="nilawar-section-header">
+            <div className="nilawar-section-badge">
+              <Building size={16} />
+              <span>Accommodations</span>
+            </div>
+            <h2 className="nilawar-section-title">Available Room Types</h2>
+            <p className="nilawar-section-sub">
+              Nilawar Farms offers a variety of air-conditioned stay formats for travelers, couples, and groups:
+            </p>
+          </div>
+
+          <div className="nilawar-room-types-grid">
+            <div className="nilawar-room-type-item">
+              <div className="nilawar-room-type-icon">
+                <Building size={20} />
+              </div>
+              <div className="nilawar-room-type-info">
+                <h4>Deluxe Rooms</h4>
+                <p>Comfortable air-conditioned rooms opening to lush lawns with private ensuite bathrooms.</p>
+              </div>
+            </div>
+
+            <div className="nilawar-room-type-item">
+              <div className="nilawar-room-type-icon">
+                <TreePine size={20} />
+              </div>
+              <div className="nilawar-room-type-info">
+                <h4>Cottages</h4>
+                <p>Private wooden and rustic cottages featuring outdoor sit-out decks near the pool area.</p>
+              </div>
+            </div>
+
+            <div className="nilawar-room-type-item">
+              <div className="nilawar-room-type-icon">
+                <Sparkles size={20} />
+              </div>
+              <div className="nilawar-room-type-info">
+                <h4>Villa</h4>
+                <p>Spacious private villa setup with dedicated living space for families and private groups.</p>
+              </div>
+            </div>
+
+            <div className="nilawar-room-type-item">
+              <div className="nilawar-room-type-icon">
+                <Users size={20} />
+              </div>
+              <div className="nilawar-room-type-info">
+                <h4>Dormitory</h4>
+                <p>Large multi-bed accommodation equipped with AC and facilities for corporate &amp; large group stays.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
+        {/* ==========================================================
+            8. EXPERIENCES & SERVICES
+           ========================================================== */}
+        <section className="nilawar-section-card" id="experiences">
+          <div className="nilawar-section-header">
+            <div className="nilawar-section-badge">
+              <Binoculars size={16} />
+              <span>Curated Activities</span>
+            </div>
+            <h2 className="nilawar-section-title">Experiences &amp; Services</h2>
+            <p className="nilawar-section-sub">
+              Agritourism relaxation combined with authentic Tadoba jungle safari arrangements.
+            </p>
+          </div>
+
+          <div className="nilawar-experiences-split-grid">
+            {/* Column 1: Wildlife & Safari */}
+            <div className="nilawar-exp-column">
+              <div className="nilawar-exp-col-header">
+                <Binoculars size={18} className="nilawar-exp-col-icon" />
+                <h3>Wildlife &amp; Safari</h3>
+              </div>
+              <ul className="nilawar-exp-list">
+                <li className="nilawar-exp-item">
+                  <CheckCircle2 size={16} className="nilawar-exp-check" />
+                  <div>
+                    <strong>Mamla Buffer Gate Safaris</strong>
+                    <p>Experience tiger and leopard tracking just 5 minutes from the farm.</p>
+                  </div>
+                </li>
+                <li className="nilawar-exp-item">
+                  <CheckCircle2 size={16} className="nilawar-exp-check" />
+                  <div>
+                    <strong>Borda Lake Birdwatching Walks</strong>
+                    <p>Stroll to the nearby lake for morning waterfowl and migratory bird sightings.</p>
+                  </div>
+                </li>
+                <li className="nilawar-exp-item">
+                  <CheckCircle2 size={16} className="nilawar-exp-check" />
+                  <div>
+                    <strong>Night Buffer Drive Support</strong>
+                    <p>Guided night drives in adjoining forest buffer corridors.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 2: Property Services */}
+            <div className="nilawar-exp-column">
+              <div className="nilawar-exp-col-header">
+                <Building size={18} className="nilawar-exp-col-icon" />
+                <h3>Farm &amp; Property Services</h3>
+              </div>
+              <ul className="nilawar-exp-list">
+                <li className="nilawar-exp-item">
+                  <CheckCircle2 size={16} className="nilawar-exp-check" />
+                  <div>
+                    <strong>Swimming Pool &amp; Sun Deck</strong>
+                    <p>Cool off after dusty morning safaris in the clean, private pool.</p>
+                  </div>
+                </li>
+                <li className="nilawar-exp-item">
+                  <CheckCircle2 size={16} className="nilawar-exp-check" />
+                  <div>
+                    <strong>Campfire &amp; Open-air Barbecue</strong>
+                    <p>Evening bonfire setups with barbecue options under starlit skies.</p>
+                  </div>
+                </li>
+                <li className="nilawar-exp-item">
+                  <CheckCircle2 size={16} className="nilawar-exp-check" />
+                  <div>
+                    <strong>Organic Agritourism Walks</strong>
+                    <p>Explore seasonal plantation crops and fruit orchards with the host family.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* ==========================================================
+            9. LOCATION & SAFARI ACCESS
+           ========================================================== */}
+        <section className="nilawar-section-card" id="location">
+          <div className="nilawar-section-header">
+            <div className="nilawar-section-badge">
+              <MapPin size={16} />
+              <span>Geographic Advantage</span>
+            </div>
+            <h2 className="nilawar-section-title">Location &amp; Safari Access</h2>
+          </div>
+
+          <div className="nilawar-location-content-box">
+            <div className="nilawar-location-info-grid">
+              <div className="nilawar-loc-item">
+                <span className="nilawar-loc-label">Address</span>
+                <span className="nilawar-loc-val">Borda, Mul Road, Chandrapur District, Maharashtra 442401</span>
+              </div>
+              <div className="nilawar-loc-item">
+                <span className="nilawar-loc-label">Nearest Safari Gate</span>
+                <span className="nilawar-loc-val">Mamla Buffer Gate (~2.5 km / 5 minutes)</span>
+              </div>
+              <div className="nilawar-loc-item">
+                <span className="nilawar-loc-label">Other Nearby Safari Gates</span>
+                <span className="nilawar-loc-val">Agarzari (18 km), Moharli Core (22 km), Junona (15 km)</span>
+              </div>
+              <div className="nilawar-loc-item">
+                <span className="nilawar-loc-label">Transit Connectivity</span>
+                <span className="nilawar-loc-val">Chandrapur Junction (14 km) / Nagpur Airport (150 km)</span>
+              </div>
+            </div>
+
+            <div className="nilawar-map-cta-bar">
+              <div className="nilawar-map-text">
+                <Compass size={18} />
+                <span>Located conveniently on Mul Road with smooth highway connectivity.</span>
+              </div>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Nilawar+Farms+Borda+Chandrapur"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nilawar-btn-map"
+              >
+                <span>View on Google Maps</span>
+                <ExternalLink size={14} />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* ==========================================================
+            10. FOOD & DINING
+           ========================================================== */}
+        <section className="nilawar-section-card" id="dining">
+          <div className="nilawar-section-header">
+            <div className="nilawar-section-badge">
+              <Utensils size={16} />
+              <span>Culinary Experience</span>
+            </div>
+            <h2 className="nilawar-section-title">Food &amp; Dining</h2>
+            <p className="nilawar-section-sub">
+              Freshly cooked home-style Maharashtrian dishes prepared with local farm ingredients.
+            </p>
+          </div>
+
+          <div className="nilawar-dining-grid">
+            <div className="nilawar-dining-card">
+              <span className="nilawar-dining-type">Breakfast</span>
+              <h4>Safari Morning Specials</h4>
+              <p>Hot Poha, Upma, Parathas, Boiled Eggs &amp; Masala Tea served fresh before or after your safari.</p>
+            </div>
+
+            <div className="nilawar-dining-card">
+              <span className="nilawar-dining-type">Lunch &amp; Dinner</span>
+              <h4>Varhadi &amp; Saoji Delights</h4>
+              <p>Authentic spicy Varhadi chicken/mutton curries, Bhakri, fresh dal tadka, and seasonal vegetables.</p>
+            </div>
+
+            <div className="nilawar-dining-card">
+              <span className="nilawar-dining-type">Dietary Care</span>
+              <h4>Veg &amp; Custom Requests</h4>
+              <p>Dedicated vegetarian cookware with customized spice levels for kids and families upon notice.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* ==========================================================
+            11. POLICIES & IMPORTANT INFORMATION (APPROACHABLE VISUAL GRID)
+           ========================================================== */}
+        <section className="nilawar-section-card" id="policies">
+          <div className="nilawar-section-header">
+            <div className="nilawar-section-badge">
+              <ShieldCheck size={16} />
+              <span>Guidelines &amp; Policies</span>
+            </div>
+            <h2 className="nilawar-section-title">Policies &amp; Important Information</h2>
+            <p className="nilawar-section-sub">
+              Clear stay rules and guidelines to ensure a relaxed and seamless farmstay experience.
+            </p>
+          </div>
+
+          <div className="nilawar-policies-grid">
+            {/* Policy 1: Timings */}
+            <div className="nilawar-policy-card">
+              <div className="nilawar-policy-header">
+                <div className="nilawar-policy-icon">
+                  <Clock size={20} />
+                </div>
+                <div className="nilawar-policy-title-wrap">
+                  <span className="nilawar-policy-tag">Stay Schedule</span>
+                  <h3 className="nilawar-policy-title">Check-in &amp; Check-out</h3>
+                </div>
+              </div>
+              <div className="nilawar-policy-timing-row">
+                <div className="nilawar-timing-badge">
+                  <span className="nilawar-timing-label">Check-in</span>
+                  <span className="nilawar-timing-time">1:00 PM</span>
+                </div>
+                <div className="nilawar-timing-badge">
+                  <span className="nilawar-timing-label">Check-out</span>
+                  <span className="nilawar-timing-time">11:00 AM</span>
+                </div>
+              </div>
+              <p className="nilawar-policy-desc">
+                Early check-in or late check-out is accommodated based on room availability upon request.
               </p>
             </div>
 
-            {/* Highlights Grid */}
-            <div className="nilawar-highlights-box">
-              <h3 className="nilawar-highlights-title">
-                <Sparkles size={16} /> Key Highlights &amp; Features
-              </h3>
-              <div className="nilawar-highlights-grid">
-                <div className="nilawar-highlight-item">
-                  <Check size={15} className="nilawar-highlight-check" />
-                  <span>Swimming pool with open garden and sun deck</span>
+            {/* Policy 2: Pet Friendly */}
+            <div className="nilawar-policy-card">
+              <div className="nilawar-policy-header">
+                <div className="nilawar-policy-icon">
+                  <Dog size={20} />
                 </div>
-                <div className="nilawar-highlight-item">
-                  <Check size={15} className="nilawar-highlight-check" />
-                  <span>Positioned near the Mamla Gate side of Tadoba</span>
-                </div>
-                <div className="nilawar-highlight-item">
-                  <Check size={15} className="nilawar-highlight-check" />
-                  <span>Deluxe rooms, rustic cottages, dorms &amp; villa</span>
-                </div>
-                <div className="nilawar-highlight-item">
-                  <Check size={15} className="nilawar-highlight-check" />
-                  <span>Pet-friendly property with spacious open lawns</span>
-                </div>
-                <div className="nilawar-highlight-item">
-                  <Check size={15} className="nilawar-highlight-check" />
-                  <span>In-house dining with fresh local food options</span>
-                </div>
-                <div className="nilawar-highlight-item">
-                  <Check size={15} className="nilawar-highlight-check" />
-                  <span>Event hosting for celebrations &amp; retreats</span>
+                <div className="nilawar-policy-title-wrap">
+                  <span className="nilawar-policy-tag nilawar-tag-pet">100% Pet Friendly</span>
+                  <h3 className="nilawar-policy-title">Pet Guidelines</h3>
                 </div>
               </div>
+              <p className="nilawar-policy-desc">
+                Pets are warmly welcomed across the farmstay grounds. Please keep dogs on leash in common lawn areas and maintain basic pet hygiene.
+              </p>
+              <div className="nilawar-policy-highlight-pill">
+                <span>Free roaming allowed in private cottage sit-outs</span>
+              </div>
             </div>
-          </section>
 
-          {/* Amenities & Facilities */}
-          <section className="nilawar-card">
-            <div className="nilawar-card-header">
-              <span className="nilawar-card-eyebrow">Facilities</span>
-              <h2 className="nilawar-card-title">Amenities &amp; Guest Comforts</h2>
-            </div>
-            <div className="nilawar-amenities-grid">
-              <div className="nilawar-amenity-item">
-                <div className="nilawar-amenity-icon-wrap"><Sparkles size={16} /></div>
-                <span className="nilawar-amenity-label">Swimming Pool</span>
-              </div>
-              <div className="nilawar-amenity-item">
-                <div className="nilawar-amenity-icon-wrap"><Wind size={16} /></div>
-                <span className="nilawar-amenity-label">Air-Conditioned Rooms</span>
-              </div>
-              <div className="nilawar-amenity-item">
-                <div className="nilawar-amenity-icon-wrap"><Wifi size={16} /></div>
-                <span className="nilawar-amenity-label">Free Wi-Fi</span>
-              </div>
-              <div className="nilawar-amenity-item">
-                <div className="nilawar-amenity-icon-wrap"><Car size={16} /></div>
-                <span className="nilawar-amenity-label">Free Private Parking</span>
-              </div>
-              <div className="nilawar-amenity-item">
-                <div className="nilawar-amenity-icon-wrap"><Utensils size={16} /></div>
-                <span className="nilawar-amenity-label">In-House Dining</span>
-              </div>
-              <div className="nilawar-amenity-item">
-                <div className="nilawar-amenity-icon-wrap"><Dog size={16} /></div>
-                <span className="nilawar-amenity-label">Pet-Friendly Stay</span>
-              </div>
-              <div className="nilawar-amenity-item">
-                <div className="nilawar-amenity-icon-wrap"><PartyPopper size={16} /></div>
-                <span className="nilawar-amenity-label">Celebration Spaces</span>
-              </div>
-              <div className="nilawar-amenity-item">
-                <div className="nilawar-amenity-icon-wrap"><Flame size={16} /></div>
-                <span className="nilawar-amenity-label">Bonfire on Request</span>
-              </div>
-              <div className="nilawar-amenity-item">
-                <div className="nilawar-amenity-icon-wrap"><TreePine size={16} /></div>
-                <span className="nilawar-amenity-label">Gardens &amp; Lawn Trails</span>
-              </div>
-              <div className="nilawar-amenity-item">
-                <div className="nilawar-amenity-icon-wrap"><Bed size={16} /></div>
-                <span className="nilawar-amenity-label">Group Villa Format</span>
-              </div>
-            </div>
-          </section>
-
-          {/* Location & Safari Gates */}
-          <section className="nilawar-card">
-            <div className="nilawar-card-header">
-              <span className="nilawar-card-eyebrow">Location</span>
-              <h2 className="nilawar-card-title">Address &amp; Safari Proximity</h2>
-            </div>
-            <div className="nilawar-location-box">
-              <div className="nilawar-location-row">
-                <MapPin size={18} className="nilawar-loc-pin" />
-                <div>
-                  <h4 className="nilawar-loc-subtitle">Full Address</h4>
-                  <p className="nilawar-loc-text">Behind Borda Lake, Chak Borda village, Mul Road, Chandrapur, Maharashtra – 442404</p>
+            {/* Policy 3: Pool & Common Areas */}
+            <div className="nilawar-policy-card">
+              <div className="nilawar-policy-header">
+                <div className="nilawar-policy-icon">
+                  <Sparkles size={20} />
+                </div>
+                <div className="nilawar-policy-title-wrap">
+                  <span className="nilawar-policy-tag">Recreation</span>
+                  <h3 className="nilawar-policy-title">Swimming Pool &amp; Lawns</h3>
                 </div>
               </div>
-              <div className="nilawar-gate-note">
-                <Compass size={18} className="nilawar-gate-icon" />
-                <span>
-                  <strong>Safari Proximity:</strong> Located on the Mul Road side, positioned close to Tadoba's <strong>Mamla Buffer Gate</strong> (Moharli Zone). Safari permits and transfers can be planned directly with the property or booked via official forest portals.
-                </span>
+              <div className="nilawar-policy-timing-row">
+                <div className="nilawar-timing-badge">
+                  <span className="nilawar-timing-label">Pool Hours</span>
+                  <span className="nilawar-timing-time">7:00 AM – 8:00 PM</span>
+                </div>
               </div>
+              <p className="nilawar-policy-desc">
+                Appropriate swimwear is required before entering the pool. Children must be accompanied by adults at all times.
+              </p>
             </div>
-          </section>
-        </div>
 
-        {/* Right Sidebar: Plan Your Stay */}
-        <aside className="nilawar-sidebar">
-          <div className="nilawar-host-card">
-            <div className="nilawar-host-badge">
-              <Sparkles size={14} />
-              <span>Direct Property Connect</span>
-            </div>
-            <h3 className="nilawar-host-title">Plan Your Tadoba Stay</h3>
-            <p className="nilawar-host-desc">
-              Connect directly with Nilawar Farms for room reservations, group villa bookings, bonfire requests, and stay queries.
-            </p>
-
-            <button
-              type="button"
-              className="nilawar-sidebar-btn"
-              onClick={() => setShowInquiryModal(true)}
-            >
-              <Send size={15} />
-              <span>Submit Stay Inquiry</span>
-            </button>
-
-            <div className="nilawar-sidebar-perks">
-              <div className="nilawar-perk-item">
-                <Check size={14} className="nilawar-perk-icon" />
-                <span>Zero Booking Surcharge</span>
+            {/* Policy 4: Booking & Terms */}
+            <div className="nilawar-policy-card">
+              <div className="nilawar-policy-header">
+                <div className="nilawar-policy-icon">
+                  <AlertCircle size={20} />
+                </div>
+                <div className="nilawar-policy-title-wrap">
+                  <span className="nilawar-policy-tag">Reservation</span>
+                  <h3 className="nilawar-policy-title">Booking &amp; Cancellation</h3>
+                </div>
               </div>
-              <div className="nilawar-perk-item">
-                <Check size={14} className="nilawar-perk-icon" />
-                <span>Direct Host Communication</span>
-              </div>
-              <div className="nilawar-perk-item">
-                <Check size={14} className="nilawar-perk-icon" />
-                <span>Mamla Gate Travel Assistance</span>
+              <p className="nilawar-policy-desc">
+                A small advance token is required to confirm room &amp; home-cooked meal arrangements with the host.
+              </p>
+              <div className="nilawar-policy-highlight-pill">
+                <span>Flexible date rescheduling supported for emergencies</span>
               </div>
             </div>
           </div>
-        </aside>
-      </div>
+        </section>
 
-      {/* ================= 5. INQUIRY MODAL ================= */}
+        {/* ==========================================================
+            12. TRUST & VERIFICATION CARD
+           ========================================================== */}
+        <section className="nilawar-trust-section" aria-label="Trust and Verification Standards">
+          <div className="nilawar-trust-card">
+            <div className="nilawar-trust-left">
+              <div className="nilawar-trust-badge-icon">
+                <ShieldCheck size={32} />
+              </div>
+              <div className="nilawar-trust-text">
+                <h3>WildConnect Verified Agritourism Partner</h3>
+                <p>
+                  Nilawar Farms is physically inspected and verified for hospitality standards, swimming pool cleanliness, pet safety, and proximity to Tadoba’s Mamla buffer gate.
+                </p>
+                <div className="nilawar-trust-meta">
+                  <span><strong>Audit Status:</strong> Verified &amp; Compliant</span>
+                  <span><strong>Listing ID:</strong> WC-FARM-NILAWAR</span>
+                </div>
+              </div>
+            </div>
+            <div className="nilawar-trust-points">
+              <div className="nilawar-trust-point-item">
+                <CheckCircle2 size={16} />
+                <span>Direct connect with local farm management</span>
+              </div>
+              <div className="nilawar-trust-point-item">
+                <CheckCircle2 size={16} />
+                <span>5-minute drive to Mamla Gypsy Entry Point</span>
+              </div>
+              <div className="nilawar-trust-point-item">
+                <CheckCircle2 size={16} />
+                <span>100% transparent rates with no booking markup</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ==========================================================
+            13. EXPLORE MORE (OTHER TADOBA STAYS & DESTINATION LINK)
+           ========================================================== */}
+        <section className="nilawar-explore-section" aria-label="Explore Similar Accommodations">
+          <div className="nilawar-explore-header">
+            <div>
+              <span className="nilawar-explore-sub">More in {destinationName}</span>
+              <h2 className="nilawar-explore-title">Explore Other Tadoba Stays</h2>
+            </div>
+            <Link to={`/destinations/${destinationSlug}`} className="nilawar-explore-dest-btn">
+              <span>Explore {destinationName}</span>
+              <ArrowRight size={15} />
+            </Link>
+          </div>
+
+          <div className="nilawar-explore-grid">
+            {relatedStays.length > 0 ? (
+              relatedStays.map((item) => (
+                <Link key={item.id} to={`/resorts/${item.slug}`} className="nilawar-explore-card">
+                  <div className="nilawar-explore-img-wrap">
+                    <img
+                      src={getImageUrl(item.coverImage || item.images?.[0], DEFAULT_RESORT_IMAGE)}
+                      alt={item.name}
+                      className="nilawar-explore-img"
+                      loading="lazy"
+                    />
+                    <div className="nilawar-explore-tag">{item.category || item.type || 'Lodge'}</div>
+                  </div>
+                  <div className="nilawar-explore-body">
+                    <h4 className="nilawar-explore-card-title">{item.name}</h4>
+                    <div className="nilawar-explore-loc">
+                      <MapPin size={13} />
+                      <span>{item.address || 'Tadoba Buffer, Maharashtra'}</span>
+                    </div>
+                    <div className="nilawar-explore-link-row">
+                      <span>View Stay Details</span>
+                      <ArrowRight size={14} />
+                    </div>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className="nilawar-explore-single-banner">
+                <div className="nilawar-explore-banner-content">
+                  <h3>Discover Tadoba National Park</h3>
+                  <p>Learn about Moharli, Kolara, Navegaon &amp; buffer gate safari bookings and local travel guides.</p>
+                  <Link to="/destinations/tadoba" className="nilawar-btn-banner">
+                    <span>Explore Tadoba Destination Guide</span>
+                    <ArrowRight size={15} />
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
+
+      {/* ==========================================================
+          INQUIRY MODAL (Triggered by CTAs)
+         ========================================================== */}
       {showInquiryModal && (
         <BusinessInquiryForm
           businessId={business?.id || 'nilawar-farms'}
           businessName="Nilawar Farms"
           onClose={() => setShowInquiryModal(false)}
+          defaultName={user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : ''}
+          defaultEmail={user?.email || ''}
         />
       )}
 
-      {/* ================= 6. LIGHTBOX MODAL ================= */}
+      {/* ==========================================================
+          FULLSCREEN LIGHTBOX MODAL
+         ========================================================== */}
       {isLightboxOpen && (
-        <div className="nilawar-lightbox-backdrop" onClick={closeLightbox}>
+        <div
+          className="nilawar-lightbox-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image Lightbox Gallery"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeLightbox();
+          }}
+        >
           <button
             type="button"
             className="nilawar-lightbox-close"
             onClick={closeLightbox}
-            aria-label="Close photo view"
+            aria-label="Close Lightbox"
           >
             <X size={24} />
           </button>
 
-          <div
-            className="nilawar-lightbox-content"
-            onClick={(e) => e.stopPropagation()}
+          <button
+            type="button"
+            className="nilawar-lightbox-arrow nilawar-lightbox-prev"
+            onClick={prevImage}
+            aria-label="Previous image"
           >
-            <button
-              type="button"
-              className="nilawar-lightbox-nav"
-              onClick={prevImage}
-              aria-label="Previous image"
-            >
-              <ChevronLeft size={28} />
-            </button>
+            <ChevronLeft size={28} />
+          </button>
 
-            <div className="nilawar-lightbox-wrapper">
-              <img
-                src={GALLERY_IMAGES[currentImageIndex].src}
-                alt={GALLERY_IMAGES[currentImageIndex].title}
-                className="nilawar-lightbox-img"
-              />
+          <div className="nilawar-lightbox-stage">
+            <img
+              src={GALLERY_IMAGES[currentImageIndex].src}
+              alt={GALLERY_IMAGES[currentImageIndex].title}
+              className="nilawar-lightbox-img"
+            />
+            <div className="nilawar-lightbox-caption">
+              <div>
+                <strong>{GALLERY_IMAGES[currentImageIndex].title}</strong>
+                <p>{GALLERY_IMAGES[currentImageIndex].desc}</p>
+              </div>
               <span className="nilawar-lightbox-counter">
-                {currentImageIndex + 1} / {GALLERY_IMAGES.length} — {GALLERY_IMAGES[currentImageIndex].title}
+                {currentImageIndex + 1} / {GALLERY_IMAGES.length}
               </span>
             </div>
-
-            <button
-              type="button"
-              className="nilawar-lightbox-nav"
-              onClick={nextImage}
-              aria-label="Next image"
-            >
-              <ChevronRight size={28} />
-            </button>
           </div>
+
+          <button
+            type="button"
+            className="nilawar-lightbox-arrow nilawar-lightbox-next"
+            onClick={nextImage}
+            aria-label="Next image"
+          >
+            <ChevronRight size={28} />
+          </button>
         </div>
       )}
     </div>

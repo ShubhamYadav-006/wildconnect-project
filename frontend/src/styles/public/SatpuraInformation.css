@@ -265,7 +265,7 @@
    ========================================================= */
 .satpura-nav-wrapper {
   position: sticky;
-  top: 18px;
+  top: calc(4.5rem + 12px);
   z-index: 95;
   width: 100%;
   display: flex;
@@ -1403,6 +1403,13 @@
 }
 
 @media (max-width: 768px) {
+  .satpura-nav-wrapper {
+    position: relative;
+    top: auto;
+    margin: 1rem auto 0;
+    padding: 0 0.75rem;
+  }
+
   .satpura-hero-title {
     font-size: 1.85rem;
   }

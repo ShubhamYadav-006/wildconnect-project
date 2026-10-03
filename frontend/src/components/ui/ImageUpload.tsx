@@ -3,7 +3,7 @@ import { UploadCloud, X, Star, MoveLeft, MoveRight, Link as LinkIcon, Plus } fro
 import { uploadService } from '../../services/upload.service';
 import toast from 'react-hot-toast';
 import LoadingSpinner from './LoadingSpinner';
-import { getImageUrl, handleImageError, DEFAULT_RESORT_IMAGE } from '../../utils/imageUrl';
+import { getImageUrl, handleImageError, normalizeImageUrl, DEFAULT_RESORT_IMAGE } from '../../utils/imageUrl';
 
 import '../../styles/components/ImageUpload.css';
 
@@ -67,16 +67,26 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
       .filter(u => u.length > 0);
 
     const validUrls: string[] = [];
-    for (const url of urlsToAdd) {
+    for (const rawUrl of urlsToAdd) {
+      // If user pasted a Google Photos web album page link (not the direct image stream)
+      if (rawUrl.includes('photos.app.goo.gl') || (rawUrl.includes('photos.google.com') && !rawUrl.includes('googleusercontent.com'))) {
+        toast.error(
+          'Google Photos album page link detected! To embed: Open the photo in Google Photos, right-click the image, and click "Copy image address".',
+          { duration: 6000 }
+        );
+        continue;
+      }
+
+      const normalized = normalizeImageUrl(rawUrl);
       if (
-        url.startsWith('http://') ||
-        url.startsWith('https://') ||
-        url.startsWith('/') ||
-        url.startsWith('data:image/')
+        normalized.startsWith('http://') ||
+        normalized.startsWith('https://') ||
+        normalized.startsWith('/') ||
+        normalized.startsWith('data:image/')
       ) {
-        validUrls.push(url);
+        validUrls.push(normalized);
       } else {
-        toast.error(`Invalid URL: ${url.length > 30 ? url.substring(0, 30) + '...' : url}. Must start with http:// or https://`);
+        toast.error(`Invalid URL: ${rawUrl.length > 30 ? rawUrl.substring(0, 30) + '...' : rawUrl}. Must start with http:// or https://`);
       }
     }
 
@@ -92,7 +102,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
     const newGallery = newImages.filter(img => img !== newCover);
     onChange(newCover, newGallery);
     setUrlInput('');
-    toast.success(validUrls.length === 1 ? 'Image link added!' : `${validUrls.length} image links added!`);
+    toast.success(validUrls.length === 1 ? 'Image link added successfully!' : `${validUrls.length} image links added!`);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -161,7 +171,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
 
   return (
     <div className="image-upload-container">
-      {/* Option 1: Direct Image Link / URL Input */}
+      {/* Option 1: Direct Image Link / Google Photos / Google Drive / Web URL Input */}
       <div className="image-url-input-box">
         <div className="image-url-input-wrapper">
           <LinkIcon size={16} className="image-url-icon" />
@@ -175,7 +185,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
                 handleAddUrl();
               }
             }}
-            placeholder="Paste image link / web URL (e.g. Unsplash, CDN link)..."
+            placeholder="Paste Google Photos, Google Drive, or Web image URL..."
             className="image-url-field"
             disabled={disabled || isUploading}
           />
@@ -188,6 +198,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ coverImage, images, on
             <Plus size={16} />
             <span>Add Link</span>
           </button>
+        </div>
+        <div className="image-url-helper-text">
+          <span>💡 Supports direct image links, Google Drive share links, and Google Photos (right-click image & choose &quot;Copy image address&quot;).</span>
         </div>
       </div>
 

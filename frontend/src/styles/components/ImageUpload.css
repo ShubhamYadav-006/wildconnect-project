@@ -72,6 +72,14 @@
   cursor: not-allowed;
 }
 
+.image-url-helper-text {
+  font-size: 0.75rem;
+  color: var(--color-text-light, #64748b);
+  margin-top: 0.35rem;
+  padding-left: 0.25rem;
+  line-height: 1.4;
+}
+
 /* Divider */
 .image-upload-divider {
   display: flex;

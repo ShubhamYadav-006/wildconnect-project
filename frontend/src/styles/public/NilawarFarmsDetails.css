@@ -1,159 +1,201 @@
 /* ==========================================================
-   NilawarFarmsDetails Styles
-   WildConnect Agritourism & Nature Farmstay Theme
-   Creative Multi-Mode Gallery (Bento & Cinematic Slider)
+   NilawarFarmsDetails.css - WildConnect Farmstay & Resort Styles
+   Compact & Responsive Full-Width Layout
    ========================================================== */
 
 /* ==========================================
-   1. Page Container
+   1. Page Container & Reset
    ========================================== */
 .nilawar-details-page {
   max-width: 1240px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem 1.25rem 3rem 1.25rem;
+  padding: 1rem 1.25rem 2.5rem 1.25rem;
   box-sizing: border-box;
+  color: var(--color-text, #1E2923);
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
 }
 
 /* ==========================================
-   2. Header Section
+   2. Breadcrumbs
    ========================================== */
-.nilawar-header-container {
-  margin-bottom: 1.25rem;
+.nilawar-breadcrumbs {
+  margin-bottom: 0.75rem;
 }
 
-.nilawar-header-main {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.nilawar-header-info {
-  flex: 1;
-  min-width: 280px;
-}
-
-.nilawar-badge-row {
+.nilawar-breadcrumbs-container {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.35rem;
-}
-
-.nilawar-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background-color: rgba(107, 142, 90, 0.12);
-  color: #3B6B38;
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(107, 142, 90, 0.22);
-}
-
-.nilawar-verified-badge {
-  display: inline-flex;
-  align-items: center;
   gap: 0.35rem;
   font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #2F6B4F;
-  background-color: #EBF4F0;
-  padding: 0.2rem 0.55rem;
-  border-radius: 9999px;
-  border: 1px solid #D2E4DA;
-}
-
-.nilawar-title {
-  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
-  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
-  font-weight: 700;
-  color: var(--color-primary, #1F4D3A);
-  margin: 0.2rem 0 0.45rem 0;
-  line-height: 1.18;
-}
-
-.nilawar-meta-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.nilawar-meta-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
-  font-size: 0.875rem;
+  font-size: 0.78rem;
   color: var(--color-text-muted, #6F7B73);
 }
 
-.nilawar-meta-highlight {
-  color: var(--color-primary, #1F4D3A);
-  font-weight: 600;
+.nilawar-crumb-link {
+  color: var(--color-text-muted, #6F7B73);
+  text-decoration: none;
+  transition: color 0.15s ease;
 }
 
-.nilawar-meta-icon {
+.nilawar-crumb-link:hover {
+  color: var(--color-primary, #1F4D3A);
+  text-decoration: underline;
+}
+
+.nilawar-crumb-sep {
+  color: #B5C4BC;
+  font-size: 0.7rem;
+}
+
+.nilawar-crumb-current {
+  color: var(--color-primary, #1F4D3A);
+  font-weight: 700;
+}
+
+/* ==========================================
+   3. Resort Hero Header
+   ========================================== */
+.nilawar-hero-header {
+  margin-bottom: 1rem;
+}
+
+.nilawar-hero-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.nilawar-hero-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted, #6F7B73);
+}
+
+.nilawar-hero-loc-icon {
   color: var(--color-secondary, #6B8E5A);
   flex-shrink: 0;
 }
 
-.nilawar-header-actions {
-  display: flex;
+.nilawar-hero-verified-badge {
+  display: inline-flex;
   align-items: center;
+  gap: 0.3rem;
+  padding: 0.18rem 0.55rem;
+  background-color: #E8F5E9;
+  color: #2E7D32;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: var(--font-display, 'Outfit', sans-serif);
 }
 
-.nilawar-btn-enquire {
+.nilawar-hero-title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.nilawar-hero-title-content {
+  flex: 1;
+}
+
+.nilawar-main-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.95rem;
+  font-weight: 800;
+  color: var(--color-primary, #1F4D3A);
+  line-height: 1.2;
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.015em;
+}
+
+.nilawar-hero-tagline {
+  color: var(--color-text-muted, #6F7B73);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 48rem;
+}
+
+.nilawar-hero-cta-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.nilawar-btn-primary-cta {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.65rem 1.35rem;
+  padding: 0.55rem 1.15rem;
   background-color: var(--color-primary, #1F4D3A);
   color: #FFFFFF;
   border: none;
   border-radius: 9999px;
   font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 3px 10px rgba(31, 77, 58, 0.16);
 }
 
-.nilawar-btn-enquire:hover {
+.nilawar-btn-primary-cta:hover {
   background-color: #16382B;
   transform: translateY(-1px);
-  box-shadow: 0 5px 14px rgba(31, 77, 58, 0.24);
+  box-shadow: 0 4px 14px rgba(31, 77, 58, 0.22);
+}
+
+.nilawar-btn-whatsapp-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.15rem;
+  background-color: #25D366;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.2);
+}
+
+.nilawar-btn-whatsapp-hero:hover {
+  background-color: #20BA5A;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.28);
 }
 
 /* ==========================================
-   3. Modern Luxury 5-Image Mosaic Showcase
+   4. Photo Gallery (Clean 3-Image Showcase)
    ========================================== */
-.nilawar-mosaic-showcase {
+.nilawar-gallery-section {
   position: relative;
   width: 100%;
-  margin-bottom: 1.5rem;
-  border-radius: 1.25rem;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(18, 43, 33, 0.08);
+  margin-bottom: 1.15rem;
 }
 
 .nilawar-mosaic-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: 210px 210px;
-  gap: 0.5rem;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  height: 220px;
+  gap: 0.35rem;
+  border-radius: 0.875rem;
+  overflow: hidden;
   background-color: #0E231A;
+  box-shadow: 0 3px 12px rgba(18, 43, 33, 0.06);
 }
 
 .nilawar-mosaic-item {
@@ -161,36 +203,7 @@
   overflow: hidden;
   cursor: pointer;
   background-color: #17382B;
-}
-
-/* Item 0 - Large Hero Tile (Spans 2 rows on left) */
-.nilawar-mosaic-item-0 {
-  grid-column: 1 / 2;
-  grid-row: 1 / 3;
-}
-
-/* Item 1 - Top Middle */
-.nilawar-mosaic-item-1 {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-}
-
-/* Item 2 - Top Right */
-.nilawar-mosaic-item-2 {
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
-}
-
-/* Item 3 - Bottom Middle */
-.nilawar-mosaic-item-3 {
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
-}
-
-/* Item 4 - Bottom Right */
-.nilawar-mosaic-item-4 {
-  grid-column: 3 / 4;
-  grid-row: 2 / 3;
+  height: 100%;
 }
 
 .nilawar-mosaic-img {
@@ -199,85 +212,60 @@
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .nilawar-mosaic-item:hover .nilawar-mosaic-img {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
-/* Category Badge Pill */
-.nilawar-mosaic-badge {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  background: rgba(14, 35, 26, 0.72);
-  backdrop-filter: blur(6px);
-  color: #FFFFFF;
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  padding: 0.25rem 0.65rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* Scrim & Caption Overlay */
 .nilawar-mosaic-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(14, 35, 26, 0.88) 0%,
-    rgba(14, 35, 26, 0.25) 50%,
+    rgba(14, 35, 26, 0.85) 0%,
+    rgba(14, 35, 26, 0.15) 50%,
     transparent 100%
   );
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 1rem 1.15rem;
+  padding: 0.6rem 0.75rem;
   color: #FFFFFF;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
   z-index: 1;
 }
 
-.nilawar-mosaic-item:hover .nilawar-mosaic-overlay,
-.nilawar-mosaic-hero .nilawar-mosaic-overlay {
+.nilawar-mosaic-item:hover .nilawar-mosaic-overlay {
   opacity: 1;
 }
 
 .nilawar-mosaic-caption {
   flex: 1;
-  padding-right: 0.5rem;
+  padding-right: 0.35rem;
 }
 
 .nilawar-mosaic-title {
   font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
-  font-size: 0.95rem;
+  font-size: 0.825rem;
   font-weight: 700;
-  margin: 0 0 0.15rem 0;
-  line-height: 1.25;
+  margin: 0 0 0.1rem 0;
+  line-height: 1.2;
   color: #FFFFFF;
 }
 
-.nilawar-mosaic-hero .nilawar-mosaic-title {
-  font-size: 1.25rem;
-}
-
 .nilawar-mosaic-desc {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: #D2DDD6;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
 .nilawar-mosaic-zoom-icon {
-  width: 2rem;
-  height: 2rem;
+  width: 1.65rem;
+  height: 1.65rem;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(4px);
@@ -291,194 +279,287 @@
 
 .nilawar-mosaic-item:hover .nilawar-mosaic-zoom-icon {
   background: rgba(255, 255, 255, 0.35);
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
-/* Floating "Show all photos" Button */
 .nilawar-mosaic-view-all-btn {
   position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+  bottom: 0.75rem;
+  right: 0.75rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   background-color: #FFFFFF;
   color: var(--color-primary, #1F4D3A);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 0.625rem;
-  padding: 0.55rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.85rem;
   font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.825rem;
+  font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   transition: all 0.2s ease;
   z-index: 5;
 }
 
 .nilawar-mosaic-view-all-btn:hover {
   background-color: #F6FAF7;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
 }
 
 /* ==========================================
-   6. Quick Highlights Strip
+   5. Quick Highlights Strip
    ========================================== */
-.nilawar-quick-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  background: var(--color-surface, #FFFFFF);
-  border: 1px solid var(--color-border, #DCE2DC);
-  border-radius: 0.875rem;
-  padding: 0.875rem 1.25rem;
-  box-shadow: 0 2px 8px rgba(38, 51, 45, 0.03);
-  margin-bottom: 1.5rem;
-  align-items: center;
-}
-
-.nilawar-quick-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  padding: 0 0.5rem;
-}
-
-.nilawar-quick-label {
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-secondary, #6B8E5A);
-}
-
-.nilawar-quick-value {
-  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
-  font-size: 0.825rem;
-  font-weight: 700;
-  color: var(--color-primary, #1F4D3A);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.nilawar-quick-divider {
-  display: none;
-}
-
-/* ==========================================
-   7. Content Layout Grid
-   ========================================== */
-.nilawar-layout-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  gap: 1.5rem;
-  align-items: flex-start;
-}
-
-.nilawar-main-col {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.nilawar-rooms-wrapper {
-  margin-bottom: 0;
-}
-
-/* ==========================================
-   8. Reusable Compact Cards
-   ========================================== */
-.nilawar-card {
-  background: var(--color-surface, #FFFFFF);
-  border: 1px solid var(--color-border, #DCE2DC);
-  border-radius: 1rem;
-  padding: 1.35rem 1.5rem;
-  box-shadow: 0 2px 10px rgba(38, 51, 45, 0.03);
-}
-
-.nilawar-card-header {
-  margin-bottom: 0.875rem;
-}
-
-.nilawar-card-eyebrow {
-  display: block;
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-secondary, #6B8E5A);
-  margin-bottom: 0.15rem;
-}
-
-.nilawar-card-title {
-  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--color-primary, #1F4D3A);
-  margin: 0;
-  line-height: 1.25;
-}
-
-.nilawar-description {
-  color: #3C4A42;
-  font-size: 0.9rem;
-  line-height: 1.6;
-}
-
-.nilawar-description p {
-  margin: 0 0 0.65rem 0;
-}
-
-.nilawar-description p:last-child {
-  margin-bottom: 0;
-}
-
-/* Key Highlights Box */
-.nilawar-highlights-box {
-  background-color: #F8F6F0;
-  border: 1px solid #E6E1D6;
-  border-radius: 0.75rem;
-  padding: 1rem 1.15rem;
-  margin-top: 1rem;
-}
-
-.nilawar-highlights-title {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
-  font-size: 0.98rem;
-  font-weight: 700;
-  color: var(--color-primary, #1F4D3A);
-  margin: 0 0 0.65rem 0;
+.nilawar-highlights-strip {
+  margin-bottom: 1.15rem;
 }
 
 .nilawar-highlights-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem 1rem;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.55rem;
 }
 
-.nilawar-highlight-item {
+.nilawar-highlight-card {
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.6rem;
   display: flex;
-  align-items: flex-start;
-  gap: 0.45rem;
-  font-size: 0.8rem;
-  color: #43544B;
-  line-height: 1.4;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
 }
 
-.nilawar-highlight-check {
-  color: var(--color-secondary, #6B8E5A);
-  flex-shrink: 0;
-  margin-top: 0.1rem;
+.nilawar-highlight-card:hover {
+  border-color: var(--color-secondary, #6B8E5A);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(31, 77, 58, 0.05);
+}
+
+.nilawar-hl-icon-wrap {
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 0.5rem;
+  background: #EBF4F0;
+  color: var(--color-primary, #1F4D3A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nilawar-hl-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.nilawar-hl-label {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--color-text-muted, #6F7B73);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.nilawar-hl-value {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary, #1F4D3A);
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 /* ==========================================
-   9. Amenities Grid (Compact 3-Columns)
+   6. Main Content Flow (Full-Width)
+   ========================================== */
+.nilawar-main-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  width: 100%;
+}
+
+/* Reusable Section Card Container */
+.nilawar-section-card {
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: 0.875rem;
+  padding: 1.2rem 1.35rem;
+  box-shadow: 0 2px 6px rgba(38, 51, 45, 0.02);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nilawar-section-header {
+  margin-bottom: 0.85rem;
+}
+
+.nilawar-section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.5rem;
+  background-color: #EBF4F0;
+  color: var(--color-primary, #1F4D3A);
+  border-radius: 9999px;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.25rem;
+}
+
+.nilawar-section-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0 0 0.2rem 0;
+  line-height: 1.25;
+}
+
+.nilawar-section-sub {
+  color: var(--color-text-muted, #6F7B73);
+  font-size: 0.825rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* About Prose */
+.nilawar-about-prose p {
+  color: #3C4A42;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  margin: 0 0 0.5rem 0;
+}
+
+.nilawar-about-bullet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border, #E4EAE4);
+  margin-top: 0.75rem;
+}
+
+.nilawar-about-bullet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.8125rem;
+  color: #33443B;
+  line-height: 1.4;
+}
+
+.nilawar-bullet-check {
+  color: var(--color-secondary, #6B8E5A);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+/* ==========================================
+   7. Available Room Types (Modern Compact)
+   ========================================== */
+.nilawar-room-types-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+.nilawar-room-type-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAF8 100%);
+  border: 1px solid #DCE5DF;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(31, 77, 58, 0.02);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.nilawar-room-type-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, #1F4D3A 0%, #6B8E5A 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.nilawar-room-type-item:hover {
+  background: #FFFFFF;
+  border-color: #9DBFA9;
+  box-shadow: 0 6px 16px -3px rgba(31, 77, 58, 0.08);
+  transform: translateY(-2px);
+}
+
+.nilawar-room-type-item:hover::before {
+  opacity: 1;
+}
+
+.nilawar-room-type-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 0.65rem;
+  background: linear-gradient(135deg, #EBF5F0 0%, #DCEDE3 100%);
+  border: 1px solid #C5E0D0;
+  color: var(--color-primary, #1F4D3A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+  box-shadow: 0 1px 4px rgba(31, 77, 58, 0.04);
+}
+
+.nilawar-room-type-item:hover .nilawar-room-type-icon {
+  background: var(--color-primary, #1F4D3A);
+  color: #FFFFFF;
+  border-color: var(--color-primary, #1F4D3A);
+  transform: scale(1.04);
+}
+
+.nilawar-room-type-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+}
+
+.nilawar-room-type-info h4 {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.nilawar-room-type-info p {
+  font-size: 0.8rem;
+  color: #4C5F54;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ==========================================
+   8. Amenities & Facilities (Icon Grid)
    ========================================== */
 .nilawar-amenities-grid {
   display: grid;
@@ -486,258 +567,669 @@
   gap: 0.65rem;
 }
 
-.nilawar-amenity-item {
+.nilawar-amenity-tile {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.6rem 0.75rem;
-  background-color: #FBF9F5;
-  border: 1px solid #ECE7DD;
-  border-radius: 0.625rem;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  gap: 0.6rem;
+  padding: 0.65rem 0.85rem;
+  background-color: #F8FAF8;
+  border: 1px solid var(--color-border, #E4EAE4);
+  border-radius: 0.65rem;
+  transition: all 0.2s ease;
 }
 
-.nilawar-amenity-item:hover {
-  background-color: #F4EFE6;
-  border-color: #DDD5C7;
+.nilawar-amenity-tile:hover {
+  background-color: #FFFFFF;
+  border-color: var(--color-secondary, #6B8E5A);
 }
 
-.nilawar-amenity-icon-wrap {
-  width: 1.85rem;
-  height: 1.85rem;
-  border-radius: 0.4rem;
-  background-color: rgba(31, 77, 58, 0.08);
+.nilawar-amenity-tile-icon {
   color: var(--color-primary, #1F4D3A);
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
 }
 
-.nilawar-amenity-label {
-  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+.nilawar-amenity-tile-label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #27362E;
-  line-height: 1.25;
+  color: #2F3E36;
 }
 
 /* ==========================================
-   10. Location & Safari Gate Box
+   9. Experiences & Services (Split Column)
    ========================================== */
-.nilawar-location-box {
-  display: flex;
-  flex-direction: column;
-  gap: 0.875rem;
+.nilawar-experiences-split-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
 }
 
-.nilawar-location-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
+.nilawar-exp-column {
+  background: #F8FAF8;
+  border: 1px solid var(--color-border, #E4EAE4);
+  border-radius: 0.75rem;
+  padding: 1rem 1.15rem;
 }
 
-.nilawar-loc-pin {
+.nilawar-exp-col-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid #E1E8E2;
+}
+
+.nilawar-exp-col-icon {
   color: var(--color-secondary, #6B8E5A);
-  margin-top: 0.15rem;
-  flex-shrink: 0;
 }
 
-.nilawar-loc-subtitle {
+.nilawar-exp-col-header h3 {
   font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--color-primary, #1F4D3A);
-  margin: 0 0 0.15rem 0;
-}
-
-.nilawar-loc-text {
-  font-size: 0.825rem;
-  color: #4A5B51;
-  line-height: 1.45;
   margin: 0;
 }
 
-.nilawar-gate-note {
+.nilawar-exp-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
   gap: 0.65rem;
-  background-color: #F2F6F3;
-  border: 1px solid #D7E4DA;
-  border-radius: 0.625rem;
-  padding: 0.75rem 0.875rem;
-  font-size: 0.78rem;
-  color: #2D4C3A;
-  line-height: 1.45;
 }
 
-.nilawar-gate-icon {
-  color: #2F6B4F;
+.nilawar-exp-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.nilawar-exp-check {
+  color: var(--color-secondary, #6B8E5A);
   flex-shrink: 0;
   margin-top: 0.1rem;
 }
 
+.nilawar-exp-item strong {
+  display: block;
+  font-size: 0.825rem;
+  color: #1F362A;
+  margin-bottom: 0.1rem;
+}
+
+.nilawar-exp-item p {
+  font-size: 0.775rem;
+  color: var(--color-text-muted, #6F7B73);
+  line-height: 1.35;
+  margin: 0;
+}
+
 /* ==========================================
-   11. Sticky Sidebar (Plan Your Stay)
+   10. Location & Safari Access
    ========================================== */
-.nilawar-sidebar {
-  position: relative;
+.nilawar-location-content-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.nilawar-host-card {
-  position: sticky;
-  top: 5.5rem;
-  background: var(--color-surface, #FFFFFF);
-  border: 1px solid var(--color-border, #DCE2DC);
-  border-radius: 1rem;
-  padding: 1.35rem 1.25rem;
-  box-shadow: 0 4px 18px rgba(31, 77, 58, 0.05);
+.nilawar-location-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  background-color: #F8FAF8;
+  border: 1px solid var(--color-border, #E4EAE4);
+  border-radius: 0.75rem;
+  padding: 0.9rem 1.1rem;
 }
 
-.nilawar-host-badge {
+.nilawar-loc-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.nilawar-loc-label {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-text-muted, #6F7B73);
+  text-transform: uppercase;
+}
+
+.nilawar-loc-val {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--color-primary, #1F4D3A);
+  line-height: 1.35;
+}
+
+.nilawar-map-cta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  background-color: #EBF4F0;
+  border-radius: 0.65rem;
+}
+
+.nilawar-map-text {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-primary, #1F4D3A);
+}
+
+.nilawar-btn-map {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #2F6B4F;
-  background-color: #EAF3EE;
-  padding: 0.2rem 0.55rem;
-  border-radius: 9999px;
-  margin-bottom: 0.6rem;
-}
-
-.nilawar-host-title {
-  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--color-primary, #1F4D3A);
-  margin: 0 0 0.4rem 0;
-  line-height: 1.25;
-}
-
-.nilawar-host-desc {
-  font-size: 0.825rem;
-  color: #55675D;
-  line-height: 1.45;
-  margin: 0 0 1rem 0;
-}
-
-.nilawar-sidebar-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.4rem 0.95rem;
   background-color: var(--color-primary, #1F4D3A);
   color: #FFFFFF;
-  border: none;
-  border-radius: 0.625rem;
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.85rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-size: 0.75rem;
   font-weight: 700;
-  cursor: pointer;
+  font-family: var(--font-display, 'Outfit', sans-serif);
   transition: all 0.2s ease;
-  box-shadow: 0 3px 10px rgba(31, 77, 58, 0.16);
-  margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
-.nilawar-sidebar-btn:hover {
+.nilawar-btn-map:hover {
   background-color: #16382B;
+}
+
+/* ==========================================
+   11. Food & Dining
+   ========================================== */
+.nilawar-dining-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.nilawar-dining-card {
+  background: #F8FAF8;
+  border: 1px solid var(--color-border, #E4EAE4);
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nilawar-dining-type {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-secondary, #6B8E5A);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.nilawar-dining-card h4 {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1rem;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0;
+}
+
+.nilawar-dining-card p {
+  font-size: 0.78rem;
+  color: #55665D;
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* ==========================================
+   12. Policies & Important Information (Visual Grid)
+   ========================================== */
+.nilawar-policies-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+.nilawar-policy-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.85rem 1.1rem;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F9FBFA 100%);
+  border: 1px solid #DCE5DF;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(31, 77, 58, 0.02);
+  transition: all 0.25s ease;
+}
+
+.nilawar-policy-card:hover {
+  background: #FFFFFF;
+  border-color: #A9C5B4;
+  box-shadow: 0 6px 16px -3px rgba(31, 77, 58, 0.06);
   transform: translateY(-1px);
 }
 
-.nilawar-sidebar-perks {
+.nilawar-policy-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nilawar-policy-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 0.6rem;
+  background: linear-gradient(135deg, #EBF5F0 0%, #DCEDE3 100%);
+  border: 1px solid #C5E0D0;
+  color: var(--color-primary, #1F4D3A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nilawar-policy-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.nilawar-policy-tag {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--color-secondary, #6B8E5A);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.nilawar-tag-pet {
+  color: #1F734A;
+}
+
+.nilawar-policy-title {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.nilawar-policy-timing-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.nilawar-timing-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  background: #EBF4F0;
+  border: 1px solid #D2E5DA;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+
+.nilawar-timing-label {
+  color: #55665D;
+  font-weight: 600;
+}
+
+.nilawar-timing-time {
+  color: var(--color-primary, #1F4D3A);
+  font-weight: 800;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+}
+
+.nilawar-policy-desc {
+  font-size: 0.78rem;
+  color: #4C5E54;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.nilawar-policy-highlight-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.55rem;
+  background: #F1F6F3;
+  border-radius: 0.4rem;
+  font-size: 0.72rem;
+  color: #274C3A;
+  font-weight: 600;
+}
+
+/* ==========================================
+   13. Trust & Verification Card
+   ========================================== */
+.nilawar-trust-section {
+  width: 100%;
+}
+
+.nilawar-trust-card {
+  background: linear-gradient(135deg, #133326 0%, #1F4D3A 100%);
+  border-radius: 0.875rem;
+  padding: 1.25rem 1.5rem;
+  color: #FFFFFF;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.25rem;
+  align-items: center;
+  box-shadow: 0 4px 18px rgba(18, 43, 33, 0.1);
+}
+
+.nilawar-trust-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.nilawar-trust-badge-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8FD8A8;
+  flex-shrink: 0;
+}
+
+.nilawar-trust-text h3 {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.nilawar-trust-text p {
+  font-size: 0.8125rem;
+  color: #D2E4D8;
+  line-height: 1.4;
+  margin: 0 0 0.5rem 0;
+}
+
+.nilawar-trust-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.72rem;
+  color: #A3C9B0;
+}
+
+.nilawar-trust-points {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  padding-top: 0.875rem;
-  border-top: 1px solid #ECEEEB;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 0.65rem;
+  padding: 0.75rem 1rem;
 }
 
-.nilawar-perk-item {
+.nilawar-trust-point-item {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  font-size: 0.775rem;
-  color: #4A5B51;
-  font-weight: 500;
+  font-size: 0.78rem;
+  color: #E8F4EC;
 }
 
-.nilawar-perk-icon {
-  color: var(--color-secondary, #6B8E5A);
+.nilawar-trust-point-item svg {
+  color: #8FD8A8;
   flex-shrink: 0;
 }
 
 /* ==========================================
-   12. Lightbox Modal
+   14. Explore More Section
    ========================================== */
-.nilawar-lightbox-backdrop {
+.nilawar-explore-section {
+  width: 100%;
+}
+
+.nilawar-explore-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.nilawar-explore-sub {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-secondary, #6B8E5A);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.nilawar-explore-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0.15rem 0 0 0;
+}
+
+.nilawar-explore-dest-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-primary, #1F4D3A);
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.nilawar-explore-dest-btn:hover {
+  color: var(--color-secondary, #6B8E5A);
+  transform: translateX(2px);
+}
+
+.nilawar-explore-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+}
+
+.nilawar-explore-card {
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #DCE2DC);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.nilawar-explore-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-secondary, #6B8E5A);
+  box-shadow: 0 4px 14px rgba(31, 77, 58, 0.06);
+}
+
+.nilawar-explore-img-wrap {
+  position: relative;
+  height: 140px;
+  background: #17382B;
+}
+
+.nilawar-explore-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.nilawar-explore-tag {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.55rem;
+  background: rgba(14, 35, 26, 0.75);
+  backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nilawar-explore-body {
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nilawar-explore-card-title {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0;
+}
+
+.nilawar-explore-loc {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  color: var(--color-text-muted, #6F7B73);
+}
+
+.nilawar-explore-link-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-secondary, #6B8E5A);
+}
+
+.nilawar-explore-single-banner {
+  grid-column: span 3;
+  background: #EBF4F0;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}
+
+.nilawar-explore-banner-content h3 {
+  font-family: var(--font-editorial, 'Playfair Display', Georgia, serif);
+  font-size: 1.15rem;
+  color: var(--color-primary, #1F4D3A);
+  margin: 0 0 0.25rem 0;
+}
+
+.nilawar-explore-banner-content p {
+  font-size: 0.8rem;
+  color: #4A5C52;
+  margin: 0 0 0.75rem 0;
+}
+
+.nilawar-btn-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 1.25rem;
+  background-color: var(--color-primary, #1F4D3A);
+  color: #FFFFFF;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+/* ==========================================
+   15. Lightbox Modal Overlay
+   ========================================== */
+.nilawar-lightbox-modal {
   position: fixed;
   inset: 0;
-  background-color: rgba(10, 20, 15, 0.94);
+  background: rgba(8, 20, 15, 0.95);
   backdrop-filter: blur(8px);
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 .nilawar-lightbox-close {
   position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #FFFFFF;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 50%;
   width: 2.75rem;
   height: 2.75rem;
-  border-radius: 50%;
+  color: #FFFFFF;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
+  z-index: 10;
 }
 
 .nilawar-lightbox-close:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: scale(1.05);
-}
-
-.nilawar-lightbox-content {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  max-width: 1000px;
-  width: 100%;
-}
-
-.nilawar-lightbox-nav {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #FFFFFF;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-  flex-shrink: 0;
-}
-
-.nilawar-lightbox-nav:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.3);
   transform: scale(1.08);
 }
 
-.nilawar-lightbox-wrapper {
-  flex: 1;
+.nilawar-lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 50%;
+  width: 3.25rem;
+  height: 3.25rem;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.nilawar-lightbox-arrow:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.nilawar-lightbox-prev {
+  left: 1.5rem;
+}
+
+.nilawar-lightbox-next {
+  right: 1.5rem;
+}
+
+.nilawar-lightbox-stage {
+  max-width: 900px;
+  max-height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -746,90 +1238,106 @@
 
 .nilawar-lightbox-img {
   max-width: 100%;
-  max-height: 72vh;
+  max-height: 70vh;
   object-fit: contain;
   border-radius: 0.75rem;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.nilawar-lightbox-caption {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  color: #D2DDD6;
+}
+
+.nilawar-lightbox-caption strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #FFFFFF;
+  margin-bottom: 0.15rem;
+}
+
+.nilawar-lightbox-caption p {
+  font-size: 0.8rem;
+  color: #A4B8AC;
+  margin: 0;
 }
 
 .nilawar-lightbox-counter {
-  color: #D2DCD5;
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-align: center;
+  font-weight: 700;
+  color: #FFFFFF;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  margin-left: 1rem;
 }
 
 /* ==========================================
-   13. Responsive Media Queries
+   16. Responsive Media Queries
    ========================================== */
 @media (max-width: 1024px) {
-  .nilawar-layout-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .nilawar-sidebar {
-    order: 2;
-  }
-
-  .nilawar-host-card {
-    position: static;
-  }
-
   .nilawar-mosaic-grid {
-    grid-template-columns: 1.4fr 1fr 1fr;
-    grid-template-rows: 180px 180px;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    height: 240px;
+  }
+
+  .nilawar-highlights-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .nilawar-rooms-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .nilawar-amenities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nilawar-trust-card {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .nilawar-explore-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
   .nilawar-details-page {
-    padding: 1rem 1rem 2.5rem 1rem;
+    padding: 1rem 1rem 3rem 1rem;
   }
 
-  .nilawar-header-main {
+  .nilawar-hero-title-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
 
-  .nilawar-header-actions {
+  .nilawar-hero-cta-box {
     width: 100%;
+    flex-direction: column;
   }
 
-  .nilawar-btn-enquire {
+  .nilawar-btn-primary-cta,
+  .nilawar-btn-whatsapp-hero {
     width: 100%;
     justify-content: center;
   }
 
+  .nilawar-main-title {
+    font-size: 1.75rem;
+  }
+
   .nilawar-mosaic-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 240px 140px;
-    gap: 0.35rem;
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 0.4rem;
   }
 
-  .nilawar-mosaic-item-0 {
-    grid-column: 1 / 3;
-    grid-row: 1 / 2;
-  }
-
-  .nilawar-mosaic-item-1 {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-  }
-
-  .nilawar-mosaic-item-2 {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-  }
-
-  .nilawar-mosaic-item-3,
-  .nilawar-mosaic-item-4 {
-    display: none;
+  .nilawar-mosaic-item {
+    height: 180px;
   }
 
   .nilawar-mosaic-view-all-btn {
@@ -839,10 +1347,52 @@
     font-size: 0.78rem;
   }
 
-  .nilawar-quick-strip {
+  .nilawar-highlights-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-    padding: 0.875rem 1rem;
+  }
+
+  .nilawar-room-types-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nilawar-experiences-split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nilawar-dining-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nilawar-policies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nilawar-location-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nilawar-map-cta-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nilawar-btn-map {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nilawar-explore-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nilawar-lightbox-arrow {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .nilawar-mosaic-item {
+    height: 150px;
   }
 
   .nilawar-highlights-grid {
@@ -853,34 +1403,7 @@
     grid-template-columns: 1fr;
   }
 
-  .nilawar-lightbox-nav {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .nilawar-title {
-    font-size: 1.5rem;
-  }
-
-  .nilawar-mosaic-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: 260px;
-  }
-
-  .nilawar-mosaic-item-0 {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-  }
-
-  .nilawar-mosaic-item-1,
-  .nilawar-mosaic-item-2,
-  .nilawar-mosaic-item-3,
-  .nilawar-mosaic-item-4 {
-    display: none;
-  }
-
-  .nilawar-quick-strip {
+  .nilawar-about-bullet-grid {
     grid-template-columns: 1fr;
   }
 }

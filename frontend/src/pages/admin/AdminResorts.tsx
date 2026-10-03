@@ -737,7 +737,7 @@ const AdminResorts = () => {
                 />
 
                 <small className="admin-form-help">
-                  Paste web image links (Unsplash, CDN) or upload local files. The first image is set as the Cover Photo (click the star icon to change).
+                  Paste Google Photos links, Google Drive share links, Unsplash/CDN URLs, or upload files from your device. The first image is set as the Cover Photo (click the star icon to change).
                 </small>
 
               </div>
