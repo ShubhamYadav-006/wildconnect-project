@@ -56,8 +56,8 @@ const KANHA_MASTER_GATES: SafariGate[] = [
     name: 'Khatia Gate',
     type: 'Core',
     district: 'Mandla District, MP',
-    description: 'Khatia village, near Kisli, western side of the reserve. Most popular gate providing access to Kanha, Kisli, Mukki, and Sarhi core zones, plus Khatia buffer.',
-    highlights: 'Kisli & Kanha meadows, highest visitor hub, closest entrance when traveling from Jabalpur',
+    description: 'The main western entrance and the busiest tourism hub of Kanha. It is the closest gate from Jabalpur and provides direct access to Kanha, Kisli, Mukki, and Sarhi core zones.',
+    highlights: 'Kisli & Kanha meadows, major hotel & resort hub, closest entry gate when traveling from Jabalpur',
     quota: 'Morning & Afternoon Shifts (Wed afternoon closed)',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Khatia+Gate+Kanha+National+Park'
   },
@@ -66,8 +66,8 @@ const KANHA_MASTER_GATES: SafariGate[] = [
     name: 'Mukki Gate',
     type: 'Core',
     district: 'Balaghat District, MP',
-    description: 'Mukki, southern side of the reserve. Prime tiger territory with direct access to Mukki, Kanha, and Kisli core zones, plus Khapa buffer.',
-    highlights: 'Mukki zone waterholes, Babathenga waterbody, ideal for arrivals via Raipur, Gondia & Nagpur',
+    description: 'The famous southern entrance set amidst lush sal forests and prime tiger territory. It is the most convenient gate for tourists arriving from Raipur, Gondia, or Nagpur.',
+    highlights: 'Babathenga waterhole, Mukki meadow, high tiger sighting record, ideal for arrivals from Raipur & Nagpur',
     quota: 'Morning & Afternoon Shifts (Wed afternoon closed)',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Mukki+Gate+Kanha+National+Park'
   },
@@ -76,8 +76,8 @@ const KANHA_MASTER_GATES: SafariGate[] = [
     name: 'Sarhi Gate',
     type: 'Core',
     district: 'Mandla District (Bichhiya), MP',
-    description: 'Sarhi, near Bichhiya on the northern fringe. Serene, uncrowded core entrance accessing Sarhi and Kanha core zones, plus Sijora buffer.',
-    highlights: 'Rolling hills, tranquil sal tracks, exceptional raptor birdwatching, northern corridor access',
+    description: 'The peaceful northern entrance near Bichhiya. Known for scenic rolling hills, dry deciduous forests, and a quiet, uncrowded safari experience.',
+    highlights: 'Rolling hills, quiet sal tracks, exceptional raptor birdwatching, northern corridor access',
     quota: 'Morning & Afternoon Shifts (Wed afternoon closed)',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Sarhi+Gate+Kanha+National+Park'
   },
@@ -87,8 +87,8 @@ const KANHA_MASTER_GATES: SafariGate[] = [
     name: 'Khatia Buffer Gate',
     type: 'Buffer',
     district: 'Mandla District, MP',
-    description: 'Western side buffer zone accessed via Khatia gate. Kanha’s largest buffer zone spanning roughly 357 sq km of rich mixed deciduous woodland.',
-    highlights: 'Year-round safari access (including monsoon), nocturnal species, active predator tracking',
+    description: 'A large, 357 sq km buffer forest on the western side. Offers peaceful jungle drives, night safaris, and remains open all year round (even during monsoons).',
+    highlights: 'Open year-round (including monsoon), night safaris, active predator tracking & birdwatching',
     quota: 'Day & Year-Round Drives Available',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Khatia+Buffer+Gate+Kanha'
   },
@@ -97,8 +97,8 @@ const KANHA_MASTER_GATES: SafariGate[] = [
     name: 'Khapa Buffer Gate',
     type: 'Buffer',
     district: 'Balaghat District, MP',
-    description: 'Southwestern buffer zone accessed via Mukki gate. Lush forest corridors connecting southern ranges with steady wildlife movement.',
-    highlights: 'Monsoon safari enabled, open meadow fringes, leopards and herbivore herds',
+    description: 'Southwestern buffer forest accessed via Mukki gate. Features beautiful forest trails connecting southern ranges with steady wildlife movement.',
+    highlights: 'Open year-round for safaris, open meadow fringes, leopards, deer herds and birdlife',
     quota: 'Day & Year-Round Drives Available',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Khapa+Buffer+Gate+Kanha'
   },
@@ -107,8 +107,8 @@ const KANHA_MASTER_GATES: SafariGate[] = [
     name: 'Sijora / Sijhora Buffer Gate',
     type: 'Buffer',
     district: 'Mandla District, MP',
-    description: 'Northern buffer sector accessed via Sarhi gate. Quiet landscape with scenic rocky outcroppings and seasonal water streams.',
-    highlights: 'Offbeat wilderness exploration, birding trails, open year-round during monsoon',
+    description: 'Northern buffer forest accessed via Sarhi gate. A tranquil setting with scenic rocky outcroppings, streams, and offbeat nature trails.',
+    highlights: 'Offbeat wilderness exploration, peaceful birding trails, open year-round during monsoon',
     quota: 'Day & Year-Round Drives Available',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Sijora+Buffer+Gate+Kanha'
   },
@@ -117,8 +117,8 @@ const KANHA_MASTER_GATES: SafariGate[] = [
     name: 'Phen Wildlife Sanctuary Gate',
     type: 'Buffer',
     district: 'Mandla / Balaghat Border, MP',
-    description: 'Contiguous 110.74 sq km satellite wildlife sanctuary managed as a satellite micro-core under unified control of the Kanha Field Director.',
-    highlights: 'Pristine untouched wilderness, leopards, chital, gaur, exclusive eco-trails',
+    description: 'A pristine 110 sq km satellite sanctuary connected to Kanha. A quiet paradise for nature lovers wanting untouched forest trails away from crowds.',
+    highlights: 'Pristine untouched wilderness, leopards, chital, Indian gaur (bison), exclusive eco-trails',
     quota: 'Special Buffer / Sanctuary Quota',
     mapLink: 'https://www.google.com/maps/search/?api=1&query=Phen+Wildlife+Sanctuary+Kanha'
   }
@@ -128,33 +128,33 @@ const KANHA_HISTORICAL_MILESTONES = [
   {
     year: '1933',
     stepNumber: '01',
-    shortLabel: 'Sanctuaries Declared',
-    title: 'Banjar & Halon Sanctuaries',
-    description: 'The Banjar valley (233 sq km) in 1933 and Halon valley (500 sq km) in 1935 declared Wildlife Sanctuaries, marking the first formal wildlife protection decades after the 1879 reserve forest decree.',
-    badge: 'Sanctuary Era'
+    shortLabel: 'Sanctuary Era',
+    title: 'Banjar Valley Sanctuary Created',
+    description: 'Formal wildlife conservation began in the lush Banjar valley (233 sq km) to protect dwindling wildlife and save the indigenous hard-ground Barasingha.',
+    badge: 'Sanctuary Formed'
   },
   {
     year: '1955',
     stepNumber: '02',
     shortLabel: 'National Park',
-    title: 'Upgraded to Kanha National Park',
-    description: 'On 1 June 1955, Banjar valley sanctuary was formally upgraded to Kanha National Park, establishing the cornerstone of Central India’s conservation landscape.',
+    title: 'Declared Kanha National Park',
+    description: 'On 1 June 1955, the sanctuary was upgraded to Kanha National Park, establishing the cornerstone of Central India’s wildlife protection.',
     badge: 'National Park'
   },
   {
     year: '1973',
     stepNumber: '03',
     shortLabel: 'Project Tiger',
-    title: 'Original 9 Project Tiger Reserves',
-    description: 'Kanha inducted as one of India’s first 9 Project Tiger Reserves on 1 April 1973. Phased enlargement over subsequent decades expanded the National Park area to 940 sq km.',
+    title: 'Pioneer Project Tiger Reserve',
+    description: 'Kanha was chosen as one of India’s first 9 Project Tiger Reserves on 1 April 1973, expanding the protected core park area to 940 sq km.',
     badge: 'Project Tiger'
   },
   {
     year: '1995',
     stepNumber: '04',
-    shortLabel: 'Buffer Constituted',
-    title: 'Dedicated Buffer Zone Constituted',
-    description: 'A 1,134.36 sq km dedicated buffer management division was constituted from West-Mandla, East-Mandla, and North-Balaghat territorial forest divisions for unified landscape stewardship.',
+    shortLabel: 'Buffer Division',
+    title: 'Dedicated Buffer Zone Added',
+    description: 'Over 1,134 sq km of surrounding forests were designated as a protective buffer zone to create wildlife corridors and support community-led ecotourism.',
     badge: 'Buffer Expansion'
   },
   {
@@ -162,8 +162,8 @@ const KANHA_HISTORICAL_MILESTONES = [
     stepNumber: '05',
     shortLabel: 'Critical Habitat',
     title: 'Critical Tiger Habitat Notified',
-    description: '917.43 sq km core area formally notified as Critical Tiger Habitat under the 2006 Wildlife Protection Act amendment, providing the highest tier of legal protection in India.',
-    badge: 'Apex NTCA Status'
+    description: 'A 917 sq km core forest was formally notified with the highest tier of legal protection in India, cementing Kanha as a global model for wildlife conservation.',
+    badge: 'Apex Conservation Status'
   }
 ];
 
@@ -192,27 +192,27 @@ const KANHA_FAQS = [
   {
     question: '1. What is the best time to visit Kanha Tiger Reserve?',
     answer:
-      'Kanha is open from October 1 to June 30. December to February offers pleasant winter weather (temperatures can approach freezing in early mornings) with lush post-monsoon sal canopies. March to May (summer) provides peak tiger-sighting probabilities as wildlife concentrates around shrinking waterholes and open dadars. Core zones are closed during the monsoon (July to September/mid-October), but buffer zones remain open year-round.'
+      'Kanha is open for core-zone safaris from 1 October to 30 June each year. October to February brings cool, refreshing weather and lush green sal forests (winter mornings can be chilly!). March to May (summer) is ideal for maximum tiger and wildlife sightings, as animals gather around waterholes and open meadows. Buffer zones (Khatia, Khapa, Sijora) remain open year-round, including during the monsoon.'
   },
   {
     question: '2. How do I book safari permits for Kanha?',
     answer:
-      'Safaris are booked online through the official MP Forest Department portal (forest.mponline.gov.in). Bookings for core zones (Kanha, Kisli, Mukki, Sarhi) and buffer zones (Khatia, Khapa, Sijora) are made separately by zone. Advance bookings open up to 120 days prior at 08:00 AM IST. Vehicle and guide charges are paid separately at the gate.'
+      'Safari permits must be booked online through the official Madhya Pradesh Forest Department portal (forest.mponline.gov.in). Bookings for core zones (Kanha, Kisli, Mukki, Sarhi) open 120 days in advance at 08:00 AM IST. Because permits for popular zones like Kanha and Mukki sell out rapidly, booking well in advance is highly recommended.'
   },
   {
-    question: '3. How long does a safari last, and how many can I take in a day?',
+    question: '3. How many safaris can I take in a day, and how long are they?',
     answer:
-      'Two shifts operate daily — morning (roughly 4.5 to 5 hours, starting 05:30–06:45 AM to 11:00 AM) and afternoon/evening (roughly 3 to 3.5 hours, ending at sunset). Only one safari per shift is permitted per vehicle permit.'
+      'You can take two safaris per day — one Morning shift (approx. 4.5 to 5 hours, starting around sunrise) and one Afternoon shift (approx. 3 to 3.5 hours, ending around sunset). Please note that all safari zones are closed on Wednesday afternoons for park rest and maintenance.'
   },
   {
     question: '4. Which entry gate should I choose — Khatia, Mukki, or Sarhi?',
     answer:
-      'Khatia Gate (western side) is the most popular, providing access to all four core zones (Kanha, Kisli, Mukki, Sarhi) and closest to Jabalpur. Mukki Gate (southern side) is renowned for tiger tracking and ideal for guests arriving from Raipur, Gondia, or Nagpur. Sarhi Gate (northern side) is tranquil, ideal for birdwatching and avoiding safari traffic.'
+      'Khatia Gate (western side) is the most popular, offers the largest selection of hotels/resorts, and is closest to Jabalpur. Mukki Gate (southern side) is world-renowned for thrilling tiger sightings and is ideal if you are traveling from Raipur, Gondia, or Nagpur. Sarhi Gate (northern side) offers peaceful, uncrowded forest drives perfect for birdwatchers.'
   },
   {
-    question: '5. What identity documents and essentials should I carry?',
+    question: '5. What identity documents and essentials should I carry on safari?',
     answer:
-      'Original government-issued photo ID (Aadhaar, Passport, Voter ID, or Driving License) used during MPOnline booking is mandatory for gate verification. Warm layers and jackets are essential for winter morning safaris, while hats, sunscreen, and light cottons are recommended for March–June drives.'
+      'You must carry the original Government Photo ID (Passport for international tourists, Aadhaar/Voter ID/Driving License for Indian citizens) that matches your booking permit. Wear earthy colors (greens, khakis, browns). In winter (Nov–Feb), pack heavy warm layers and a beanie for open-jeep morning drives; in summer (Mar–Jun), carry sunscreen, sunglasses, and a wide-brim hat.'
   }
 ];
 
@@ -310,7 +310,7 @@ const KanhaInformation = ({
             </h1>
 
             <p className="kanha-hero-subtitle">
-              The iconic wilderness that inspired <em>The Jungle Book</em> and saved the hard-ground Barasingha from extinction. Spanning over 2,074 sq km of towering sal forests, open meadows ('dadars'), and thriving tiger habitats across the Maikal hills.
+              The legendary land that inspired <em>The Jungle Book</em> and saved the hard-ground Barasingha (swamp deer) from extinction. Spanning over 2,074 sq km of majestic sal tree forests, open grassy meadows ('dadars'), and thriving tiger habitats across the Maikal hills.
             </p>
 
             <div className="kanha-hero-actions">
@@ -399,12 +399,15 @@ const KanhaInformation = ({
           <section id="about" className="kanha-card kanha-about-card">
             <div className="kanha-card-header">
               <span className="kanha-card-eyebrow">ABOUT KANHA</span>
-              <h2 className="kanha-card-title">The Land of Sal Canopies &amp; Barasingha</h2>
+              <h2 className="kanha-card-title">The Land of Sal Canopies &amp; The Jungle Book</h2>
             </div>
 
             <div className="kanha-about-body">
               <p>
-                Spread across the Maikal range of the Satpura hills in southeastern Madhya Pradesh, Kanha Tiger Reserve is the state's largest national park and one of India's most celebrated wildlife destinations. Its lowland forests are a lush mix of sal (<em>Shorea robusta</em>) and mixed deciduous trees interspersed with open, rolling grasslands (locally called 'dadars'), while the highlands support moist bamboo thickets. Kanha is globally renowned as the last natural refuge that saved the <strong>hard-ground barasingha (swamp deer)</strong> from extinction, sustaining an estimated <strong>105+ resident Bengal tigers</strong>, leopards, Indian gaur, sloth bears, dholes (Asiatic wild dogs), and over 300 bird species.
+                Spread across the Maikal hills of southeastern Madhya Pradesh, <strong>Kanha Tiger Reserve</strong> is the state's largest and most famous national park. Its storybook landscapes feature towering sal tree forests, sweeping open grasslands (locally called <em>dadars</em>), clear forest streams, and bamboo ridges.
+              </p>
+              <p>
+                Kanha is globally celebrated as the only natural home that successfully saved the rare <strong>hard-ground Barasingha (swamp deer)</strong> from extinction. It also shelters over <strong>105+ Royal Bengal Tigers</strong>, leopards, Indian gaur (the world's largest wild bison), sloth bears, wild dogs (dholes), and more than 300 colorful bird species.
               </p>
             </div>
 
@@ -433,11 +436,11 @@ const KanhaInformation = ({
             <div className="kanha-story-card">
               <div className="kanha-story-badge">
                 <TreePine size={16} />
-                <span>VALLEY HERITAGE &amp; TRIBAL LINEAGE</span>
+                <span>INSPIRATION FOR THE JUNGLE BOOK</span>
               </div>
               <h3 className="kanha-story-title">The Legend of the Maikal Valley</h3>
               <p className="kanha-story-text">
-                First declared a reserve forest in 1879, the sanctuary derives its name directly from the ancient Kanha valley within the Maikal hills. Alongside neighboring Pench, these rolling sal highlands are widely celebrated as the geographical inspiration for Rudyard Kipling’s 1894 classic <em>The Jungle Book</em>. Kanha also shares deep indigenous connections with the Gond and Baiga tribal communities, whose historical stewardship shaped the conservation ethics of the reserve.
+                First protected as a reserve forest in 1879, Kanha’s rolling sal forests and meadows provided the geographical inspiration for Rudyard Kipling’s world-famous 1894 classic <em>The Jungle Book</em>. Kanha also shares deep cultural roots with the indigenous Gond and Baiga tribal communities, who have lived harmoniously alongside these forests for generations.
               </p>
             </div>
           </section>
@@ -510,7 +513,7 @@ const KanhaInformation = ({
               <span className="kanha-card-eyebrow">SAFARI PLANNING &amp; GATES DIRECTORY</span>
               <h2 className="kanha-card-title">Kanha Safari Planning Hub</h2>
               <p className="kanha-card-subtitle">
-                Interactive directory of official 4x4 safari vehicles, monthly gate shift timings, and MP core vs. buffer gate locations.
+                Official guide to 4x4 Gypsy capacities, monthly shift schedules, and core vs. buffer gate directories.
               </p>
             </div>
 
@@ -554,29 +557,29 @@ const KanhaInformation = ({
                         <Car size={24} />
                       </div>
                       <div>
-                        <span className="kanha-vehicle-tag">STANDARD SAFARI</span>
-                        <h3 className="kanha-vehicle-title">Open 4x4 Maruti Gypsy</h3>
+                        <span className="kanha-vehicle-tag">OPEN 4X4 GYPSY</span>
+                        <h3 className="kanha-vehicle-title">Maruti 4x4 Gypsy Safari</h3>
                       </div>
                     </div>
                     <p className="kanha-vehicle-desc">
-                      Standard registered open 4x4 Gypsy vehicle operated for official forest drives across all core zones (Kanha, Kisli, Mukki, Sarhi) and buffer tracks.
+                      The classic open-top safari vehicle designed for 360-degree wildlife viewing and photography across all core zones (Kanha, Kisli, Mukki, Sarhi) and buffer areas.
                     </p>
                     <ul className="kanha-vehicle-features">
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Permit Scope:</strong> Valid across 4 Core Zones &amp; 4 Buffer Gates</span>
+                        <span><strong>Available Zones:</strong> 4 Core Zones (Kanha, Kisli, Mukki, Sarhi) &amp; 4 Buffer Zones</span>
                       </li>
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Occupancy:</strong> Strictly capped at 6 tourists + 1 guide + 1 driver</span>
+                        <span><strong>Capacity:</strong> Up to 6 tourists + 1 registered forest guide + 1 driver</span>
                       </li>
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Shift Types:</strong> Morning &amp; Afternoon Game Drives</span>
+                        <span><strong>Daily Shifts:</strong> Morning (sunrise) &amp; Afternoon (until sunset)</span>
                       </li>
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Booking Type:</strong> Full vehicle permit or single-seat reservation</span>
+                        <span><strong>Booking Options:</strong> Private Full Vehicle or individual Single Seats</span>
                       </li>
                     </ul>
                   </div>
@@ -587,12 +590,12 @@ const KanhaInformation = ({
                         <Layers size={24} />
                       </div>
                       <div>
-                        <span className="kanha-vehicle-tag">ZONE CEILINGS</span>
-                        <h3 className="kanha-vehicle-title">Vehicle Quota Allocation</h3>
+                        <span className="kanha-vehicle-tag">ZONE PERMIT LIMITS</span>
+                        <h3 className="kanha-vehicle-title">Daily Vehicle Limits</h3>
                       </div>
                     </div>
                     <p className="kanha-vehicle-desc">
-                      Strict daily vehicle ceilings enforced by the MP Forest Department to preserve wildlife ecology.
+                      To protect wildlife and ensure peaceful drives, the Forest Department sets fixed vehicle limits per shift:
                     </p>
                     <ul className="kanha-vehicle-features">
                       <li>
@@ -609,7 +612,7 @@ const KanhaInformation = ({
                       </li>
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Permit Window:</strong> MPOnline portal opens 120 days in advance at 08:00 AM</span>
+                        <span><strong>Advance Booking:</strong> MPOnline portal opens 120 days in advance at 08:00 AM IST</span>
                       </li>
                     </ul>
                   </div>
@@ -668,13 +671,13 @@ const KanhaInformation = ({
                   <div className="kanha-closure-item">
                     <AlertTriangle className="kanha-closure-icon" size={16} />
                     <div>
-                      <strong>Wednesday Afternoon Closure:</strong> All Core and Buffer safari zones are closed every Wednesday afternoon (morning safaris run normally).
+                      <strong>Wednesday Afternoon Rest:</strong> All core and buffer safari zones are closed on Wednesday afternoons for forest maintenance. Morning safaris operate normally.
                     </div>
                   </div>
                   <div className="kanha-closure-item">
                     <AlertTriangle className="kanha-closure-icon" size={16} />
                     <div>
-                      <strong>Monsoon Policy:</strong> Core zones close July 1 to Sept 30. Buffer zones (Khatia, Khapa, Sijora) remain open year-round for ecotourism.
+                      <strong>Monsoon Policy:</strong> Core zones close from 1 July to 30 September. Buffer zones (Khatia, Khapa, Sijora) remain open year-round for ecotourism.
                     </div>
                   </div>
                 </div>

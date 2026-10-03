@@ -322,7 +322,7 @@ const SatpuraInformation = ({
             </h1>
 
             <p className="satpura-hero-subtitle">
-              India's Only Walking Safari Tiger Reserve — Wild, Rugged and Untamed. Spanning 2,133 sq km of prehistoric sandstone gorges, tranquil Denwa river backwaters, and untamed forests crowned by Mount Dhoopgarh (1,350 m).
+              India's Only Walking Safari Tiger Reserve — quiet, scenic, and untamed. Experience core jungle walking trails on foot, serene boat and canoe cruises on the Denwa River, open 4x4 Gypsy drives, and thrilling night safaris across 2,133 sq km of ancient sandstone hills.
             </p>
 
             <div className="satpura-hero-actions">
@@ -411,15 +411,15 @@ const SatpuraInformation = ({
           <section id="about" className="satpura-card satpura-about-card">
             <div className="satpura-card-header">
               <span className="satpura-card-eyebrow">ABOUT SATPURA</span>
-              <h2 className="satpura-card-title">Prehistoric Highlands &amp; Multi-Format Wilderness</h2>
+              <h2 className="satpura-card-title">Ancient Sandstone Highlands &amp; Multi-Mode Safaris</h2>
             </div>
 
             <div className="satpura-about-body">
               <p>
-                Set in the rugged Satpura hill range south of the Narmada River in Madhya Pradesh, <strong>Satpura Tiger Reserve</strong> represents one of India's most pristine, uncommercialized wildlife sanctuaries. Uniting <strong>Satpura National Park</strong> with the historic <strong>Bori</strong> and <strong>Pachmarhi Wildlife Sanctuaries</strong>, its dramatic terrain ranges from sandstone ravines and waterfalls to Mount Dhoopgarh (1,350 m — MP’s highest peak) down to the sprawling Churna grasslands.
+                Tucked away in the Satpura mountain range south of the Narmada River in Madhya Pradesh, <strong>Satpura Tiger Reserve</strong> is one of India's most scenic and peaceful wildlife destinations. Uniting <strong>Satpura National Park</strong> with the historic <strong>Bori</strong> and <strong>Pachmarhi Wildlife Sanctuaries</strong>, the landscape rises from the blue waters of the Denwa River to dramatic sandstone gorges, waterfalls, and Mount Dhoopgarh (1,350 m — the highest peak in Central India).
               </p>
               <p>
-                Satpura is unique across all 55+ Indian tiger reserves for offering four distinct safari modes: <strong>guided core-zone walking safaris</strong>, <strong>boat and canoe safaris</strong> across the Tawa/Denwa backwaters, <strong>open 4x4 jeep safaris</strong>, and <strong>buffer night drives</strong>. It is a triumphant conservation landscape for the reintroduced hard-ground barasingha, Indian gaur, leopards, dholes, sloth bears, and an expanding tiger population.
+                What makes Satpura truly unforgettable is how you explore it: it is the <strong>only tiger reserve in India where you can walk on foot inside core wilderness</strong> with armed naturalists. In addition to walking safaris, you can glide on tranquil <strong>boat and canoe safaris</strong>, embark on <strong>4x4 Gypsy drives</strong>, and go on thrilling <strong>night safaris</strong>. It is a haven for leopards, sloth bears, Indian gaur (bison), rare hard-ground barasingha deer, marsh crocodiles, and wild tigers.
               </p>
             </div>
 
@@ -454,11 +454,11 @@ const SatpuraInformation = ({
             <div className="satpura-story-card">
               <div className="satpura-story-badge">
                 <TreePine size={16} />
-                <span>ANCIENT SANSKRIT HERITAGE &amp; ROCK ART</span>
+                <span>ANCIENT HERITAGE &amp; 10,000-YEAR-OLD ROCK ART</span>
               </div>
-              <h3 className="satpura-story-title">The Seven Sacred Folds ("Sapta-Pura")</h3>
+              <h3 className="satpura-story-title">The Seven Sacred Hills ("Sapta-Pura")</h3>
               <p className="satpura-story-text">
-                The name <em>Satpura</em> derives from the Sanskrit compound <strong>Sapta-Pura</strong> (<em>Sapta</em> = seven, <em>Pura</em> = mountain folds), honoring the seven continuous hill ranges of Central India. First documented systematically by British Captain James Forsyth in 1862 during his historic survey (chronicled in <em>The Highlands of Central India</em>), the region is also globally celebrated for its archaeological heritage: over 50 documented sandstone rock shelters featuring prehistoric paintings dating from 1,500 to over 10,000 years old.
+                The name <em>Satpura</em> comes from the ancient Sanskrit words <strong>Sapta-Pura</strong> (meaning "Seven Mountain Folds"), referring to the seven majestic hill ranges of Central India. First documented by British officer Captain James Forsyth in 1862, Satpura is also a world-renowned archaeological treasure: hidden inside its sandstone cliffs are more than 50 prehistoric rock shelters decorated with rock paintings dating back between 1,500 and 10,000 years.
               </p>
             </div>
           </section>
@@ -581,20 +581,20 @@ const SatpuraInformation = ({
                       </div>
                     </div>
                     <p className="satpura-vehicle-desc">
-                      Satpura is the only tiger reserve in India where visitors can traverse core wilderness trails on foot, accompanied by trained naturalists and armed forest guards.
+                      Satpura is the only tiger reserve in India where you can walk through the core forest on foot, accompanied by expert naturalists and armed forest guards.
                     </p>
                     <ul className="satpura-vehicle-features">
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Trail Focus:</strong> Pugmarks, birding, micro-fauna, botany &amp; silent stalking</span>
+                        <span><strong>What You Experience:</strong> Animal tracks, rare birds, butterflies, medicinal trees &amp; silent stalking</span>
                       </li>
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Safety:</strong> Mandatory accompaniment by armed forest guards</span>
+                        <span><strong>Safety:</strong> Always escorted by trained naturalists and armed forest guards</span>
                       </li>
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Starting Point:</strong> Madhai core trailheads (via Denwa boat crossing)</span>
+                        <span><strong>Starting Hub:</strong> Madhai core trailheads (accessed via a short scenic boat crossing)</span>
                       </li>
                     </ul>
                   </div>
@@ -611,20 +611,20 @@ const SatpuraInformation = ({
                       </div>
                     </div>
                     <p className="satpura-vehicle-desc">
-                      Glide silently across the tranquil Tawa and Denwa reservoir backwaters for exceptional marsh crocodile and waterfowl watching.
+                      Glide along the peaceful Denwa and Tawa reservoir waters for incredible views of sunbathing marsh crocodiles, water birds, and drinking animals.
                     </p>
                     <ul className="satpura-vehicle-features">
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Water Activities:</strong> Motor boat cruises, silent canoeing &amp; shoreline birding</span>
+                        <span><strong>Activities:</strong> Motor boat cruises, silent canoeing &amp; shoreline birdwatching</span>
                       </li>
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Species Seen:</strong> Marsh crocodiles, Indian skimmers, osprey, migratory ducks</span>
+                        <span><strong>Wildlife to Spot:</strong> Marsh crocodiles, Indian skimmers, osprey, kingfishers &amp; migratory ducks</span>
                       </li>
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Eco-friendly:</strong> Cycling and canoe permits officially permitted</span>
+                        <span><strong>Eco-friendly:</strong> Silent canoes and guided forest cycling permits available</span>
                       </li>
                     </ul>
                   </div>
@@ -641,16 +641,16 @@ const SatpuraInformation = ({
                       </div>
                     </div>
                     <p className="satpura-vehicle-desc">
-                      Traditional open 4x4 vehicle game drives exploring rugged sandstone valleys, Keria, Lagda, and the epic 30 km deep Churna plains.
+                      Classic open-top 4x4 Gypsy safaris traversing rugged sandstone valleys, teak woodlands, and full-day deep expeditions to the remote Churna grasslands.
                     </p>
                     <ul className="satpura-vehicle-features">
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Core Routes:</strong> Keria, Lagda, and full-day deep Churna drives</span>
+                        <span><strong>Popular Routes:</strong> Keria, Lagda, and the famous full-day Churna deep-forest drive</span>
                       </li>
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Capacity:</strong> 6 tourists + 1 registered guide + 1 driver</span>
+                        <span><strong>Capacity:</strong> Up to 6 tourists + 1 registered forest guide + 1 driver</span>
                       </li>
                     </ul>
                   </div>
@@ -667,16 +667,16 @@ const SatpuraInformation = ({
                       </div>
                     </div>
                     <p className="satpura-vehicle-desc">
-                      Conducted in select buffer zones such as Parsapani and Burgodi after dusk to observe leopards, rusty-spotted cats, civets, and owls.
+                      Explore buffer zones like Parsapani and Burgodi after dark with spotlights to observe leopards, rusty-spotted cats, civets, and owls.
                     </p>
                     <ul className="satpura-vehicle-features">
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Prime Locations:</strong> Parsapani and Burgodi Buffer gates</span>
+                        <span><strong>Best Gates:</strong> Parsapani and Burgodi buffer gates</span>
                       </li>
                       <li>
                         <CheckCircle2 size={16} />
-                        <span><strong>Sightings:</strong> High frequency of leopards and nocturnal predators</span>
+                        <span><strong>Sightings:</strong> High chances of leopards, civets, nightjars, and nocturnal animals</span>
                       </li>
                     </ul>
                   </div>
@@ -735,13 +735,13 @@ const SatpuraInformation = ({
                   <div className="satpura-closure-item">
                     <AlertTriangle className="satpura-closure-icon" size={16} />
                     <div>
-                      <strong>Wednesday Afternoon Closure:</strong> Consistent with MP state forest regulations, afternoon safaris are closed every Wednesday for forest rest (morning safaris run normally).
+                      <strong>Wednesday Afternoon Rest:</strong> In line with MP forest rules, all safari zones are closed on Wednesday afternoons for park rest. Morning safaris operate normally.
                     </div>
                   </div>
                   <div className="satpura-closure-item">
                     <AlertTriangle className="satpura-closure-icon" size={16} />
                     <div>
-                      <strong>Monsoon Closure Period:</strong> Core safari zones are closed from July 1 to mid-October. The Pachmarhi hill station area remains open year-round.
+                      <strong>Monsoon Closure Period:</strong> Core safari zones are closed during monsoon from 1 July to mid-October. The Pachmarhi hill station remains open all year round.
                     </div>
                   </div>
                 </div>
